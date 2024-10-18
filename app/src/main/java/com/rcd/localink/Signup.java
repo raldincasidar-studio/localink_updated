@@ -1,8 +1,10 @@
 package com.rcd.localink;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,15 +14,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class Signup extends AppCompatActivity {
 
@@ -30,6 +40,7 @@ public class Signup extends AppCompatActivity {
     private ImageView imageView;
     private TextView textView;
     private Button signupGoogleButton;
+    private Button upload_profile;
     private EditText firstNameEditText;
     private EditText middleNameEditText;
     private EditText lastNameEditText;
@@ -38,7 +49,11 @@ public class Signup extends AppCompatActivity {
     private EditText phoneNumberEditText;
     private EditText addressEditText;
 
+    private ImageView profile_image;
+
     private Button loginButton;
+
+    private Uri profile_uri = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +82,39 @@ public class Signup extends AppCompatActivity {
         phoneNumberEditText = findViewById(R.id.phone_number);
         addressEditText = findViewById(R.id.address);
         loginButton = findViewById(R.id.login_button);
-
+        upload_profile = findViewById(R.id.upload_profile);
+        profile_image = findViewById(R.id.profile_image);
 
         // signup onclick listener
+
+        // Create an ActivityResultLauncher
+        ActivityResultLauncher<Intent> launcher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    // Handle the result data
+                    profile_uri = data.getData();
+                    upload_profile.setEnabled(true);
+                    upload_profile.setText("Change profile picture");
+                    profile_image.setImageURI(profile_uri);
+                }
+            });
+
+
+        upload_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Add your code logic here for the upload_profile button click event
+
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("*/*");
+                upload_profile.setEnabled(false);
+                upload_profile.setText("File picking ...");
+                launcher.launch(intent);
+            }
+        });
 
 
         employer_button.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +156,28 @@ public class Signup extends AppCompatActivity {
                 String phoneNumber = phoneNumberEditText.getText().toString();
                 String address = addressEditText.getText().toString();
 
+
+                if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || profile_uri == null) {
+                    Toast.makeText(Signup.this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Upload the profile_uri to Firebase Storage
+                String filename = UUID.randomUUID().toString();
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference storageRef = storage.getReference();
+                StorageReference profileRef = storageRef.child("profile_picture/" + filename);
+                UploadTask uploadTask = profileRef.putFile(profile_uri);
+                Task<Uri> urlTask = uploadTask.continueWithTask(task -> {
+                    if (!task.isSuccessful()) {
+                        // Handle the failed upload
+                        return null;
+                    }
+                    // Return the download URL
+                    return profileRef.getDownloadUrl();
+                });
+
+
                 // Create a new user with the gathered data
                 Map<String, Object> user = new HashMap<>();
                 user.put("firstName", firstName);
@@ -121,13 +188,14 @@ public class Signup extends AppCompatActivity {
                 user.put("phoneNumber", phoneNumber);
                 user.put("address", address);
                 user.put("user_type", user_type);
+                user.put("profile_picture", urlTask.toString());
 
                 // Add a new document with a generated ID in the "users" collection
                 db.collection("users")
                     .add(user)
                     .addOnSuccessListener(documentReference -> {
                         // Successful addition
-                        Toast.makeText(Signup.this, "User added with ID: " + documentReference.getId(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Signup.this, "User added Please login", Toast.LENGTH_SHORT).show();
 
                         // Redirect to the login page
                         Intent intent = new Intent(Signup.this, MainActivity.class);

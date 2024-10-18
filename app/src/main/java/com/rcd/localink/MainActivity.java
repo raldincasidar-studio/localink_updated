@@ -115,6 +115,10 @@ public class MainActivity extends AppCompatActivity {
 
                                 Toast.makeText(MainActivity.this, "Welcome " + firstName + "!", Toast.LENGTH_SHORT).show();
 
+                                Intent intent = new Intent(MainActivity.this, UploadDocuments.class);
+                                startActivity(intent);
+                                finish();
+
                                 loginButton.setEnabled(true);
                                 loginButton.setText("LOGIN");
                             }

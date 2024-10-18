@@ -113,7 +113,7 @@
                         android:textAlignment="center" />
 
                     <Button
-                        android:id="@+id/signup_google"
+                        android:id="@+id/upload_profile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Upload Image"
