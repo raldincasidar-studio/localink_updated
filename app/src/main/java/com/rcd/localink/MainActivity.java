@@ -51,6 +51,17 @@ public class MainActivity extends AppCompatActivity {
         signUpButton = findViewById(R.id.sign_up);
 
 
+        SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
+        String token = sharedPrefs.getString("token", "");
+
+        if (!token.isEmpty()) {
+            // go to Dashboard Activity
+            Intent intent = new Intent(MainActivity.this, Dashboard.class);
+            startActivity(intent);
+            finish();
+        }
+
+
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

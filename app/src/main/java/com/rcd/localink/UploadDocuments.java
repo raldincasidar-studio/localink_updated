@@ -105,6 +105,11 @@ if ("Worker".equals(userType)) {
 
 
                         Toast.makeText(UploadDocuments.this, "Upload of valid id successful", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(UploadDocuments.this, Dashboard.class);
+                        startActivity(intent);
+                        finish();
+
                         upload_valid_id.setEnabled(true);
                         upload_valid_id.setText("UPLOAD VALID ID (PDF/JPG/PNG)");
 
