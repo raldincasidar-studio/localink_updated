@@ -22,6 +22,7 @@ import android.widget.Toast; // Import Toast class
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.Map;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,12 +52,13 @@ public class MainActivity extends AppCompatActivity {
         signUpButton = findViewById(R.id.sign_up);
 
 
+        // Redirect to dashboard if already logged in
         SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
         String token = sharedPrefs.getString("token", "");
 
         if (!token.isEmpty()) {
             // go to Dashboard Activity
-            Intent intent = new Intent(MainActivity.this, Dashboard.class);
+            Intent intent = new Intent(MainActivity.this, UploadDocuments.class);
             startActivity(intent);
             finish();
         }
@@ -108,13 +110,10 @@ public class MainActivity extends AppCompatActivity {
                                 SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPrefs.edit();
                                 editor.putString("documentId", documentId);
-                                editor.putString("address", document.getString("address"));
-                                editor.putString("email", document.getString("email"));
-                                editor.putString("firstName", document.getString("firstName"));
-                                editor.putString("lastName", document.getString("lastName"));
-                                editor.putString("middleName", document.getString("middleName"));
-                                editor.putString("phoneNumber", document.getString("phoneNumber"));
-                                editor.putString("user_type", document.getString("user_type"));
+                                for (Map.Entry<String, Object> entry : document.getData().entrySet()) {
+                                    editor.putString(entry.getKey(), String.valueOf(entry.getValue()));
+                                    Log.d(TAG, "Key: " + entry.getKey() + ", Value: " + String.valueOf(entry.getValue()));
+                                }
                                 editor.putString("token", token);
                                 editor.commit();
 

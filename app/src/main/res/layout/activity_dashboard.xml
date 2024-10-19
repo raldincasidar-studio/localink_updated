@@ -284,13 +284,14 @@
                     >
 
                     <ImageView
+                        android:id="@+id/announcement_image"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:baselineAlignBottom="false"
                         android:layout_margin="10dp"
                         android:maxWidth="30dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/announcement_image"
+                        android:src="@drawable/circle_avatar"
                         android:textAlignment="center" />
 
                     <LinearLayout
@@ -301,30 +302,33 @@
                         android:gravity="center">
 
                         <TextView
+                            android:id="@+id/announcement_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="ATTENTION"
+                            android:text="Loading Announcement ..."
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             android:layout_marginBottom="10dp"
                             android:textStyle="bold"/>
 
                         <TextView
+                            android:id="@+id/announcement_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="There would be a feeding program in Brgy. San Isidro Labrador."
+                            android:text="Loading content ..."
                             android:textColor="#808080"
                             android:textSize="15sp"
                             android:lineHeight="20dp"
                             android:layout_marginBottom="10dp"/>
 
                         <TextView
+                            android:id="@+id/announcement_dateandtime"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="December 3, 2024 - 11:00 A.M"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="15sp"
                             android:lineHeight="20dp"

@@ -1,11 +1,14 @@
 package com.rcd.localink;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,6 +57,10 @@ public class Signup extends AppCompatActivity {
     private Button loginButton;
 
     private Uri profile_uri = null;
+
+    private String firebaseDownloadUrl = null;
+
+    public Map<String, Object> user = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +151,7 @@ public class Signup extends AppCompatActivity {
             public void onClick(View v) {
 
 
+
                 // Initialize Firestore
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -162,6 +170,12 @@ public class Signup extends AppCompatActivity {
                     return;
                 }
 
+                signupGoogleButton.setEnabled(false);
+                signupGoogleButton.setText("Signing up ...");
+
+                // Create a new user with the gathered data
+
+
                 // Upload the profile_uri to Firebase Storage
                 String filename = UUID.randomUUID().toString();
                 FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -171,40 +185,69 @@ public class Signup extends AppCompatActivity {
                 Task<Uri> urlTask = uploadTask.continueWithTask(task -> {
                     if (!task.isSuccessful()) {
                         // Handle the failed upload
+                        Log.e(TAG, "Error uploading profile", task.getException());
+
+
+                        Toast.makeText(Signup.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+
+                        signupGoogleButton.setText("SIGNUP (NEXT STEP)");
+                        signupGoogleButton.setEnabled(true);
                         return null;
                     }
                     // Return the download URL
                     return profileRef.getDownloadUrl();
+                }).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Profile Picture: " + task.getResult());
+                        firebaseDownloadUrl = task.getResult().toString();
+
+                        user.put("firstName", firstName);
+                        user.put("middleName", middleName);
+                        user.put("lastName", lastName);
+                        user.put("email", email);
+                        user.put("password", password);
+                        user.put("phoneNumber", phoneNumber);
+                        user.put("address", address);
+                        user.put("user_type", user_type);
+                        user.put("profile_picture", firebaseDownloadUrl);
+
+
+                        // Add a new document with a generated ID in the "users" collection
+                        db.collection("users")
+                            .add(user)
+                            .addOnSuccessListener(documentReference -> {
+                                // Successful addition
+                                Toast.makeText(Signup.this, "User added Please login", Toast.LENGTH_SHORT).show();
+
+                                // Redirect to the login page
+                                Intent intent = new Intent(Signup.this, MainActivity.class);
+                                startActivity(intent);
+
+
+                                signupGoogleButton.setText("SIGNUP (NEXT STEP)");
+                                signupGoogleButton.setEnabled(true);
+                            })
+                            .addOnFailureListener(e -> {
+                                // Failed addition
+                                Toast.makeText(Signup.this, "Error adding user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+
+                                signupGoogleButton.setText("SIGNUP (NEXT STEP)");
+                                signupGoogleButton.setEnabled(true);
+                            });
+                    } else {
+                        Log.e(TAG, "Error getting download URL", task.getException());
+
+                        Toast.makeText(Signup.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+
+                        signupGoogleButton.setText("SIGNUP (NEXT STEP)");
+                        signupGoogleButton.setEnabled(true);
+                    }
                 });
 
 
-                // Create a new user with the gathered data
-                Map<String, Object> user = new HashMap<>();
-                user.put("firstName", firstName);
-                user.put("middleName", middleName);
-                user.put("lastName", lastName);
-                user.put("email", email);
-                user.put("password", password);
-                user.put("phoneNumber", phoneNumber);
-                user.put("address", address);
-                user.put("user_type", user_type);
-                user.put("profile_picture", urlTask.toString());
 
-                // Add a new document with a generated ID in the "users" collection
-                db.collection("users")
-                    .add(user)
-                    .addOnSuccessListener(documentReference -> {
-                        // Successful addition
-                        Toast.makeText(Signup.this, "User added Please login", Toast.LENGTH_SHORT).show();
 
-                        // Redirect to the login page
-                        Intent intent = new Intent(Signup.this, MainActivity.class);
-                        startActivity(intent);
-                    })
-                    .addOnFailureListener(e -> {
-                        // Failed addition
-                        Toast.makeText(Signup.this, "Error adding user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
 
             }
         });

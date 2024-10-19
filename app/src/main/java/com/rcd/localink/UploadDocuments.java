@@ -61,14 +61,23 @@ public class UploadDocuments extends AppCompatActivity {
         logout = findViewById(R.id.logout);
 
 
-SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
-String userType = sharedPrefs.getString("user_type", "");
+        SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
+        String userType = sharedPrefs.getString("user_type", "");
 
-if ("Worker".equals(userType)) {
-    type_of_work_container.setVisibility(View.VISIBLE);
-} else {
-    type_of_work_container.setVisibility(View.GONE);
-}
+        if ("Worker".equals(userType)) {
+            type_of_work_container.setVisibility(View.VISIBLE);
+        } else {
+            type_of_work_container.setVisibility(View.GONE);
+        }
+
+        String valid_id = sharedPrefs.getString("valid_id", "");
+
+        if (!valid_id.isEmpty()) {
+            // go to Dashboard Activity
+            Intent intent = new Intent(UploadDocuments.this, Dashboard.class);
+            startActivity(intent);
+            finish();
+        }
 
         // Create an ActivityResultLauncher
         ActivityResultLauncher<Intent> launcher = registerForActivityResult(
@@ -103,6 +112,9 @@ if ("Worker".equals(userType)) {
                         db.collection("users").document(documentId)
                                 .update("valid_id", downloadUrl, "type_of_work", type_of_work.getText().toString());
 
+                        SharedPreferences.Editor editor = sharedPrefss.edit();
+                        editor.putString("valid_id", downloadUrl);
+                        editor.apply();
 
                         Toast.makeText(UploadDocuments.this, "Upload of valid id successful", Toast.LENGTH_SHORT).show();
 
