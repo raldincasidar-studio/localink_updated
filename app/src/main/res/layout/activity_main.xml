@@ -25,7 +25,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="188dp"
                 android:layout_height="76dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="70dp"
                 android:baselineAlignBottom="false"
                 android:maxWidth="30dp"
                 android:src="@drawable/logo"
@@ -47,37 +47,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="40dp"
                 android:text="Enter your email to sign in for this app"
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="16dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal"
-                >
-
-                <Button
-                    android:id="@+id/employer_button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Employer"
-                    android:textColor="@color/white"
-                    android:layout_weight="1"
-                    android:backgroundTint="#000000"></Button>
-
-                <Button
-                    android:id="@+id/worker_button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Worker"
-                    android:layout_weight="1"
-                    android:backgroundTint="#22996E"></Button>
-
-            </LinearLayout>
 
             <EditText
                 android:id="@+id/email"

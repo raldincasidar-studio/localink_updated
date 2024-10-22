@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -26,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 public class Dashboard extends AppCompatActivity {
 
@@ -37,6 +39,8 @@ public class Dashboard extends AppCompatActivity {
     private TextView announcement_title;
     private TextView announcement_description;
     private TextView announcement_date;
+
+    private LinearLayout community_wall_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,12 @@ public class Dashboard extends AppCompatActivity {
         announcement_title = findViewById(R.id.announcement_title);
         announcement_description = findViewById(R.id.announcement_description);
         announcement_date = findViewById(R.id.announcement_dateandtime);
+        community_wall_button = findViewById(R.id.community_wall_button);
+
+        community_wall_button.setOnClickListener(v -> {
+            Intent intent = new Intent(Dashboard.this, CommunityWall.class);
+            startActivity(intent);
+        });
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("announcements").whereEqualTo("isPinned", true)
@@ -68,21 +78,12 @@ public class Dashboard extends AppCompatActivity {
                 String description = document.getString("description");
                 String date = document.getString("date");
                 String time = document.getString("time");
-                Uri imageUri = Uri.parse(document.getString("image"));
 
                 announcement_title.setText(title);
                 announcement_description.setText(description);
                 announcement_date.setText(date + " - " + time);
 
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageRef = storage.getReferenceFromUrl(imageUri.toString());
-                storageRef.getBytes(10240 * 10240).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                    @Override
-                    public void onSuccess(byte[] bytes) {
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        announcement_image.setImageBitmap(bitmap);
-                    }
-                });
+                Picasso.get().load(document.getString("image")).into(announcement_image);
             } else {
                 Log.d(TAG, "Error getting documents: ", task.getException());
             }
@@ -90,22 +91,7 @@ public class Dashboard extends AppCompatActivity {
 
         SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
         String profilePicture = sharedPrefs.getString("profile_picture", "");
-        if (!profilePicture.isEmpty()) {
-            Log.d(TAG, "Profile picure link: " + profilePicture);
-            StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(profilePicture);
-            storageRef.getBytes(10240 * 10240).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                @Override
-                public void onSuccess(byte[] bytes) {
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    profile_image.setImageBitmap(bitmap);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    // Handle failure
-                }
-            });
-        }
+        Picasso.get().load(profilePicture).into(profile_image);
 
         back_button.setOnClickListener(v -> {
 
