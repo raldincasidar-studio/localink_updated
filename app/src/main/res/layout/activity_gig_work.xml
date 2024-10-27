@@ -5,10 +5,10 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Dashboard">
+    tools:context=".GigWork">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_post_button"
+        android:id="@+id/add_job_posting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -100,126 +100,75 @@
 
             </LinearLayout>
 
-            <!-- Volunteer and Hiring -->
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="What are you looking for?"
+                android:layout_margin="10dp"
+                android:paddingVertical="15dp"
+                android:paddingHorizontal="20dp"
+                android:background="@drawable/edittext_border"></EditText>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:padding="10dp">
 
                 <Button
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:id="@+id/worker_list_button"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Volunteer"
-                    android:backgroundTint="#22996E"
-                    android:layout_marginVertical="2.5dp" />
+                    android:text="Workers List"
+                    android:stateListAnimator="@null"
+                    android:padding="15dp"
+                    android:backgroundTint="#22996E"/>
 
                 <Button
-                    android:id="@+id/hiring_button"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:id="@+id/my_posts_button"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hiring"
-                    android:backgroundTint="@color/black"
-                    android:textColor="@color/white"
-                    android:layout_marginVertical="2.5dp" />
-
-
+                    android:text="Your Posts"
+                    android:stateListAnimator="@null"
+                    android:padding="15dp"/>
             </LinearLayout>
 
-            <!-- Calendar -->
-            <!-- Add CalendarView to display the Calendar -->
-            <CalendarView
-                android:id="@+id/calendar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </CalendarView>
 
-            <!-- Current Volunteer Work -->
+            <!-- Transaction History -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Current Volunteer Work"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="10dp"/>
+                android:padding="15dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/dashboard_border"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/current_volunteer_works_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <!--                    <Button-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:text="Collect Plastic Bottles (Available)"-->
-                    <!--                        android:textAlignment="textStart"-->
-                    <!--                        android:background="@drawable/dashboard_border"-->
-                    <!--                        android:paddingVertical="2dp"-->
-                    <!--                        android:paddingHorizontal="15dp"-->
-                    <!--                        android:drawableEnd="@drawable/available"-->
-                    <!--                        android:layout_marginVertical="2.5dp" />-->
-
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="10dp"
+                    >
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/gig_work_title"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Fetching data ..."
-                        android:textAlignment="center"/>
+                        android:layout_weight="1"
+                        android:text="Job Posting"
+                        android:textColor="@color/black"
+                        android:textSize="19sp"
+                        />
 
                 </LinearLayout>
 
-
-            </LinearLayout>
-
-            <!-- Volunteer Work -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Volunteer Works Available"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="10dp"/>
-
+                <!-- Transaction History Person -->
                 <LinearLayout
-                    android:id="@+id/volunteer_works_list"
+                    android:id="@+id/gig_work_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingVertical="10dp"
                     android:orientation="vertical">
-
-<!--                    <Button-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Collect Plastic Bottles (Available)"-->
-<!--                        android:textAlignment="textStart"-->
-<!--                        android:background="@drawable/dashboard_border"-->
-<!--                        android:paddingVertical="2dp"-->
-<!--                        android:paddingHorizontal="15dp"-->
-<!--                        android:drawableEnd="@drawable/available"-->
-<!--                        android:layout_marginVertical="2.5dp" />-->
-
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Fetching data ..."
-                        android:textAlignment="center"/>
 
                 </LinearLayout>
 

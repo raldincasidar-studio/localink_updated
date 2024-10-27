@@ -43,6 +43,9 @@ public class Dashboard extends AppCompatActivity {
     private LinearLayout barangay_button;
 
     private LinearLayout community_wall_button;
+    private LinearLayout gig_work;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,7 @@ public class Dashboard extends AppCompatActivity {
         announcement_date = findViewById(R.id.announcement_dateandtime);
         community_wall_button = findViewById(R.id.community_wall_button);
         barangay_button = findViewById(R.id.barangay_button);
+        gig_work = findViewById(R.id.gig_work);
 
         community_wall_button.setOnClickListener(v -> {
             Intent intent = new Intent(Dashboard.this, CommunityWall.class);
@@ -72,6 +76,11 @@ public class Dashboard extends AppCompatActivity {
 
         barangay_button.setOnClickListener(v -> {
             Intent intent = new Intent(Dashboard.this, Barangay.class);
+            startActivity(intent);
+        });
+
+        gig_work.setOnClickListener(v -> {
+            Intent intent = new Intent(Dashboard.this, GigWork.class);
             startActivity(intent);
         });
 

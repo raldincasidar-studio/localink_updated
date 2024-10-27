@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Dashboard">
+    tools:context=".BarangayHiring">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_post_button"
@@ -108,21 +108,21 @@
                 android:padding="10dp">
 
                 <Button
+                    android:id="@+id/volunteer_button"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="Volunteer"
-                    android:backgroundTint="#22996E"
+                    android:backgroundTint="@color/black"
+                    android:textColor="@color/white"
                     android:layout_marginVertical="2.5dp" />
 
                 <Button
-                    android:id="@+id/hiring_button"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="Hiring"
-                    android:backgroundTint="@color/black"
-                    android:textColor="@color/white"
+                    android:backgroundTint="#22996E"
                     android:layout_marginVertical="2.5dp" />
 
 
@@ -146,7 +146,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Current Volunteer Work"
+                    android:text="On-going Contract"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -191,7 +191,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Volunteer Works Available"
+                    android:text="Available Contract"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -203,16 +203,16 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-<!--                    <Button-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Collect Plastic Bottles (Available)"-->
-<!--                        android:textAlignment="textStart"-->
-<!--                        android:background="@drawable/dashboard_border"-->
-<!--                        android:paddingVertical="2dp"-->
-<!--                        android:paddingHorizontal="15dp"-->
-<!--                        android:drawableEnd="@drawable/available"-->
-<!--                        android:layout_marginVertical="2.5dp" />-->
+                    <!--                    <Button-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:text="Collect Plastic Bottles (Available)"-->
+                    <!--                        android:textAlignment="textStart"-->
+                    <!--                        android:background="@drawable/dashboard_border"-->
+                    <!--                        android:paddingVertical="2dp"-->
+                    <!--                        android:paddingHorizontal="15dp"-->
+                    <!--                        android:drawableEnd="@drawable/available"-->
+                    <!--                        android:layout_marginVertical="2.5dp" />-->
 
 
                     <TextView

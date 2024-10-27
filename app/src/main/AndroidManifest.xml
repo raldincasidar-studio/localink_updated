@@ -13,6 +13,24 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".AddGigWork"
+            android:exported="false" />
+        <activity
+            android:name=".GigWork"
+            android:exported="false" />
+        <activity
+            android:name=".EditBarangayHiring"
+            android:exported="false" />
+        <activity
+            android:name=".HiringDescription"
+            android:exported="false" />
+        <activity
+            android:name=".AddBarangayHiring"
+            android:exported="false" />
+        <activity
+            android:name=".BarangayHiring"
+            android:exported="false" />
+        <activity
             android:name=".EditVolunteerWork"
             android:exported="false" />
         <activity
