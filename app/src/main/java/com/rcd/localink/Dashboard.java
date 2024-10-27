@@ -40,6 +40,8 @@ public class Dashboard extends AppCompatActivity {
     private TextView announcement_description;
     private TextView announcement_date;
 
+    private LinearLayout barangay_button;
+
     private LinearLayout community_wall_button;
 
     @Override
@@ -61,9 +63,15 @@ public class Dashboard extends AppCompatActivity {
         announcement_description = findViewById(R.id.announcement_description);
         announcement_date = findViewById(R.id.announcement_dateandtime);
         community_wall_button = findViewById(R.id.community_wall_button);
+        barangay_button = findViewById(R.id.barangay_button);
 
         community_wall_button.setOnClickListener(v -> {
             Intent intent = new Intent(Dashboard.this, CommunityWall.class);
+            startActivity(intent);
+        });
+
+        barangay_button.setOnClickListener(v -> {
+            Intent intent = new Intent(Dashboard.this, Barangay.class);
             startActivity(intent);
         });
 

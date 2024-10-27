@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,7 +46,9 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -64,6 +67,8 @@ public class CommunityWall extends AppCompatActivity {
     private Button upload_image_button;
 
     private Button new_post_button;
+
+    private LinearLayout like_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -264,6 +269,8 @@ public class CommunityWall extends AppCompatActivity {
         });
 
 
+
+
         back_button.setOnClickListener(v -> {
             Intent intent = new Intent(CommunityWall.this, Dashboard.class);
             startActivity(intent);
@@ -291,18 +298,32 @@ public class CommunityWall extends AppCompatActivity {
                                 ImageView post_image_imageView = postView.findViewById(R.id.post_image);
                                 TextView post_username_textView = postView.findViewById(R.id.post_name);
                                 TextView post_date_textView = postView.findViewById(R.id.post_date);
+                                LinearLayout like_button = postView.findViewById(R.id.like_button);
+                                ImageView edit_post = postView.findViewById(R.id.edit_post);
 
+                                String post_id = document.getId();
                                 String postContent = document.getString("postContent");
                                 String profile_image = document.getString("profile_image");
                                 String imageUrl = document.getString("imageUrl");
                                 String user_fullname = document.getString("user_fullname");
+                                String userId3 = document.getString("userId");
                                 Timestamp date_added = document.getTimestamp("date_added");
 
-                                long likesCount = document.get("likes") == null ? 0 : ((ArrayList<?>)document.get("comments")).size();
+                                long likesCount = document.get("likes") == null ? 0 : ((ArrayList<?>)document.get("likes")).size();
                                 long commentsCount = document.get("comments") == null ? 0 : ((ArrayList<?>)document.get("comments")).size();
+
+                                SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
+                                String documentId = sharedPrefs.getString("documentId", "");
+                                if (userId3.equals(documentId)) {
+                                    edit_post.setVisibility(View.VISIBLE);
+                                } else {
+                                    edit_post.setVisibility(View.GONE);
+                                }
 
                                 TextView post_likes_textView = postView.findViewById(R.id.post_likes);
                                 TextView post_comments_textView = postView.findViewById(R.id.post_comments);
+                                EditText comment_box = postView.findViewById(R.id.comment_box);
+                                Button comment_button = postView.findViewById(R.id.comment_button);
 
                                 if (profile_image != "") {
                                     Picasso.get().load(profile_image).into(post_profile_picture);
@@ -311,6 +332,14 @@ public class CommunityWall extends AppCompatActivity {
                                 post_likes_textView.setText(likesCount + " like(s)");
                                 post_comments_textView.setText(commentsCount + " comment(s)");
 
+                                ArrayList likesArray = (ArrayList<?>)document.get("likes");
+
+
+
+                                if (likesArray.contains(sharedPrefs.getString("documentId", ""))) {
+                                    post_likes_textView.setTextColor(Color.rgb(255, 0, 0));
+                                }
+
                                 post_content_textView.setText(postContent);
                                 if (imageUrl != null && !imageUrl.isEmpty()) {
                                     Picasso.get().load(imageUrl).into(post_image_imageView);
@@ -318,6 +347,130 @@ public class CommunityWall extends AppCompatActivity {
                                     post_image_imageView.setVisibility(View.GONE);
                                 }
 
+                                comment_button.setOnClickListener(v -> {
+                                    comment_button.setEnabled(false);
+                                    comment_button.setText("Commenting...");
+
+                                    String comment = comment_box.getText().toString();
+                                    if (!comment.isEmpty()) {
+
+                                        String profilePicture = sharedPrefs.getString("profile_picture", "");
+
+                                        String firstName = sharedPrefs.getString("firstName", "");
+                                        String middleName = sharedPrefs.getString("middleName", "");
+                                        String lastName = sharedPrefs.getString("lastName", "");
+                                        String fullName = firstName + " " + middleName + " " + lastName;
+
+                                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                        HashMap<String, Object> newComment = new HashMap<>();
+                                        newComment.put("userId", "123");
+                                        newComment.put("user_fullname", fullName);
+                                        newComment.put("profile_image", sharedPrefs.getString("profile_picture", ""));
+                                        newComment.put("date_added", new Timestamp(new Date()));
+                                        newComment.put("comment", comment);
+                                        newComment.put("likes", new ArrayList<>());
+
+                                        db.collection("posts").document(post_id).update("comments", FieldValue.arrayUnion(newComment))
+                                            .addOnSuccessListener(aVoid -> {
+                                                Toast.makeText(CommunityWall.this, "Comment added", Toast.LENGTH_SHORT).show();
+                                                comment_box.setText("");
+
+                                                comment_button.setEnabled(true);
+                                                comment_button.setText("Comment");
+
+
+                                                getPosts();
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Toast.makeText(CommunityWall.this, "Failed to add comment", Toast.LENGTH_SHORT).show();
+
+                                                comment_button.setEnabled(true);
+                                                comment_button.setText("Comment");
+                                            });
+
+                                        comment_box.setText("");
+                                    }
+                                });
+
+
+                                like_button.setOnClickListener(v -> {
+
+                                    if (likesArray.contains(sharedPrefs.getString("documentId", ""))) {
+
+                                        post_likes_textView.setText("Unliking...");
+
+                                        db.collection("posts").document(post_id).update("likes", FieldValue.arrayRemove(sharedPrefs.getString("documentId", "")))
+                                            .addOnSuccessListener(aVoid -> {
+                                                post_likes_textView.setTextColor(Color.rgb(0, 0, 0));
+                                                like_button.setEnabled(true);
+                                                getPosts();
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Toast.makeText(CommunityWall.this, "Failed to unlike", Toast.LENGTH_SHORT).show();
+                                                like_button.setEnabled(true);
+                                                post_likes_textView.setText(likesCount + " like(s)");
+                                            });
+
+                                        return;
+                                    }
+
+                                    post_likes_textView.setText("Liking...");
+
+                                    SharedPreferences sharedPrefs2 = getSharedPreferences("userAuth", MODE_PRIVATE);
+                                    String userId = sharedPrefs2.getString("documentId", "");
+
+                                    db.collection("posts").document(post_id).update("likes", FieldValue.arrayUnion(userId))
+                                        .addOnSuccessListener(aVoid -> {
+                                            Toast.makeText(CommunityWall.this, "Liked", Toast.LENGTH_SHORT).show();
+                                            like_button.setEnabled(true);
+                                            getPosts();
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Toast.makeText(CommunityWall.this, "Failed to like", Toast.LENGTH_SHORT).show();
+
+                                            like_button.setEnabled(true);
+                                            post_likes_textView.setText(likesCount + " like(s)");
+                                        });
+
+                                });
+
+
+                                edit_post.setOnClickListener(v -> {
+
+                                    Intent intent = new Intent(CommunityWall.this, EditPost.class);
+                                    intent.putExtra("post_id", post_id);
+                                    startActivity(intent);
+                                });
+
+                                // Display comments
+                                LinearLayout comment_container = postView.findViewById(R.id.comment_container);
+                                comment_container.removeAllViews();
+                                List<HashMap<String, Object>> comments = (List<HashMap<String, Object>>) document.get("comments");
+                                if (comments != null) {
+                                    for (HashMap<String, Object> comment : comments) {
+                                        View commentView = getLayoutInflater().inflate(R.layout.commss, null);
+                                        ImageView comment_profile_pic = commentView.findViewById(R.id.comment_profile_pic);
+                                        TextView comment_fullname_textView = commentView.findViewById(R.id.comment_fullname);
+                                        TextView comment_date_textView = commentView.findViewById(R.id.comment_date);
+                                        TextView comment_comment_textView = commentView.findViewById(R.id.comment_content);
+
+                                        String userId = (String) comment.get("userId");
+                                        String comment_profile_image = (String) comment.get("profile_image");
+                                        String comment_fullname = (String) comment.get("user_fullname");
+                                        Timestamp comment_date_added = (Timestamp) comment.get("date_added");
+                                        String comment_content = (String) comment.get("comment");
+
+                                        comment_fullname_textView.setText(comment_fullname);
+
+                                        if (comment_profile_image != "") {
+                                            Picasso.get().load(comment_profile_image).into(comment_profile_pic);
+                                        }
+                                        comment_date_textView.setText(new SimpleDateFormat("MMMM dd, yyyy hh:mm a").format(comment_date_added.toDate()));
+                                        comment_comment_textView.setText(comment_content);
+
+                                        comment_container.addView(commentView);
+                                    }
+                                }
 
                                 post_username_textView.setText(user_fullname);
                                 post_date_textView.setText(new SimpleDateFormat("MMMM dd, yyyy hh:mm a").format(date_added.toDate()));
