@@ -38,6 +38,7 @@ public class GigWorkerProfile extends AppCompatActivity {
         TextView rates = findViewById(R.id.rates);
         TextView availability = findViewById(R.id.availability);
         Button propose_contract = findViewById(R.id.propose_contract);
+        Button chat = findViewById(R.id.chat);
 
 
         
@@ -61,6 +62,12 @@ public class GigWorkerProfile extends AppCompatActivity {
                     location.setText(workerLocation != null ? workerLocation : "Not set yet");
                     rates.setText(workerRates != null ? workerRates : "Not set yet");
                     availability.setText(workerAvailability != null ? workerAvailability : "Not set yet");
+
+                    chat.setOnClickListener(v -> {
+                        Intent intent = new Intent(GigWorkerProfile.this, ChatPage.class);
+                        intent.putExtra("person", workerId);
+                        startActivity(intent);
+                    });
 
                     propose_contract.setOnClickListener(v -> {
 

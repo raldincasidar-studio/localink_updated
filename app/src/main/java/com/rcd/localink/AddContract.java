@@ -1,5 +1,6 @@
 package com.rcd.localink;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,10 +13,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class AddContract extends AppCompatActivity {
 
@@ -44,10 +47,15 @@ public class AddContract extends AppCompatActivity {
             finish();
         });
 
+        SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
+        String profilePicture = sharedPrefs.getString("profile_picture", "");
+
         String jobId = getIntent().getStringExtra("jobId");
         String type = getIntent().getStringExtra("type");
 
         propose_contract.setOnClickListener(v -> {
+
+            AtomicReference<String> contractId = new AtomicReference<>();
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             HashMap<String, Object> data = new HashMap<>();
@@ -63,12 +71,32 @@ public class AddContract extends AppCompatActivity {
             data.put("dateAdded", FieldValue.serverTimestamp());
             db.collection("work_contracts").add(data).addOnSuccessListener(documentReference -> {
                 Toast.makeText(AddContract.this, "Proposal sent", Toast.LENGTH_SHORT).show();
+                contractId.set(documentReference.getId());
                 finish();
             });
 
+            AtomicReference<String> userId = new AtomicReference<>();
+            db.collection(type.equals("worker") ? "users" : "job_postings").document(jobId).get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null && document.exists()) {
+                                userId.set(type.equals("worker") ? document.getId() : document.getString("employer_id"));
+                            }
+                        }
+                    });
+
+            db.collection("notifications").add(new HashMap<String, Object>(){{
+                put("date_added", FieldValue.serverTimestamp());
+                put("for", userId.get());
+                put("picture", profilePicture);
+                put("notification_content", "You have a new proposal for you");
+                put("isSeen", false);
+                put("type", type);
+                put("extraIntent", jobId);
+            }}).addOnSuccessListener(documentReference -> {
+                Toast.makeText(AddContract.this, "Proposal successfuly sent! for: " + userId.get(), Toast.LENGTH_SHORT).show();
+            });
         });
-
-
 
     }
 }

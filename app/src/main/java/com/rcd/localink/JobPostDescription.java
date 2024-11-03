@@ -74,7 +74,7 @@ public class JobPostDescription extends AppCompatActivity {
 
                             chat.setOnClickListener(v -> {
                                 Intent intent = new Intent(this, ChatPage.class);
-                                intent.putExtra("jobId", employerId);
+                                intent.putExtra("person", employerId);
                                 startActivity(intent);
                             });
 
