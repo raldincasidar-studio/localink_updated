@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GigWorkerProfile">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <!-- Navbar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="horizontal"
+                android:layout_gravity="fill_horizontal">
+
+                <ImageView
+                    android:id="@+id/back_button"
+                    android:layout_width="42dp"
+                    android:layout_height="38dp"
+                    android:baselineAlignBottom="false"
+                    android:maxWidth="30dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/back"
+                    android:textAlignment="center" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="114dp"
+                    android:layout_height="39dp"
+                    android:baselineAlignBottom="false"
+                    android:layout_marginLeft="40dp"
+                    android:maxWidth="30dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/logo"
+                    android:textAlignment="center" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:baselineAlignBottom="false"
+                        android:maxWidth="30dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/bell"
+                        android:textAlignment="center" />
+
+                    <ImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="10dp"
+                        android:baselineAlignBottom="false"
+                        android:background="@drawable/circle_avatar"
+                        android:clipToOutline="true"
+
+                        android:maxWidth="30dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/avatar"
+                        android:textAlignment="center" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <!-- Ongoing Transaction -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
+
+
+                <ImageView
+                    android:id="@+id/worker_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:baselineAlignBottom="false"
+                    android:layout_margin="10dp"
+                    android:maxWidth="30dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/avatar"
+                    android:background="@drawable/circle_avatar"
+                    android:clipToOutline="true"
+                    android:textAlignment="center" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:background="@drawable/dashboard_border"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Active"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/work_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Micky Saposino"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Laundry Lady"
+                        android:textColor="#828282"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <!-- Pinned Announcements -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/dashboard_border"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Services"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/service"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Babysit(5-10 years old only)"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Location"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Simoun Corner Alejos St. La Loma, Quezon City"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Rates"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/rates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Php 150/hour"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Availability"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/availability"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Negotiable"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
+
+            </LinearLayout>
+
+            <!-- Reviews -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/dashboard_border"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="10dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Reviews"
+                        android:textColor="@color/black"
+                        android:textSize="19sp"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="See More"
+                        android:textColor="#868484"
+                        android:textSize="15sp"
+                        android:textAlignment="textEnd"
+                        />
+
+                </LinearLayout>
+
+                <!-- Transaction History Person -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    >
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:baselineAlignBottom="false"
+                        android:layout_margin="10dp"
+                        android:maxWidth="30dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/avatar"
+                        android:background="@drawable/circle_avatar"
+                        android:clipToOutline="true"
+                        android:textAlignment="center" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Aubrey Gonzales"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:layout_marginBottom="10dp"
+                            android:textStyle="bold"/>
+
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Sobrang Bait ni maam Zephanie. She handled it ..."
+                            android:textColor="#808080"
+                            android:textSize="15sp"
+                            android:lineHeight="20dp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="10dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Transaction History Person -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    >
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:baselineAlignBottom="false"
+                        android:layout_margin="10dp"
+                        android:maxWidth="30dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/avatar"
+                        android:background="@drawable/circle_avatar"
+                        android:clipToOutline="true"
+                        android:textAlignment="center" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Aubrey Gonzales"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:layout_marginBottom="10dp"
+                            android:textStyle="bold"/>
+
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Sobrang Bait ni maam Zephanie. She handled it ..."
+                            android:textColor="#808080"
+                            android:textSize="15sp"
+                            android:lineHeight="20dp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="10dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/propose_contract"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:backgroundTint="#22996E"
+                    android:text="Propose Contract"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"></Button>
+
+                <Button
+                    android:id="@+id/chat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:backgroundTint="#808080"
+                    android:text="Chat Worker"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"></Button>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

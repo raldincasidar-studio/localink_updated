@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+
+        <!-- Comment Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/comment_profile_pic"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle_avatar"
+                android:clipToOutline="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/announcement_image" />
+
+
+            <!-- Comment content and header -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingVertical="5dp"
+                android:paddingHorizontal="10dp"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/comment_fullname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Juan Dela Cruz"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/comment_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="3 min ago"
+                    android:textColor="#828282"
+                    android:textSize="12sp" />
+
+
+                <!-- Post Content -->
+                <TextView
+                    android:id="@+id/comment_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:lineHeight="23sp"
+                    android:text="Ayos yan tol, mukhang mapapasabak na naman tayo sa team work"/>
+
+                <!-- Post Content End -->
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
