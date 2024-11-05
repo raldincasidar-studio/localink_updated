@@ -1,5 +1,6 @@
 package com.rcd.localink;
 
+import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
@@ -17,11 +18,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class AddContract extends AppCompatActivity {
 
+    EditText dateOfContract = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +37,9 @@ public class AddContract extends AppCompatActivity {
             return insets;
         });
 
+
         ImageView backButton = findViewById(R.id.back_button);
-        EditText dateOfContract = findViewById(R.id.date_of_contract);
+        dateOfContract = findViewById(R.id.date_of_contract);
         EditText duration = findViewById(R.id.duration);
         EditText siteOfContract = findViewById(R.id.site_of_contract);
         EditText notesToContractor = findViewById(R.id.notes_to_contractor);
@@ -52,6 +57,26 @@ public class AddContract extends AppCompatActivity {
 
         String jobId = getIntent().getStringExtra("jobId");
         String type = getIntent().getStringExtra("type");
+
+        dateOfContract.setOnClickListener(v -> {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, (datePicker, year, month, dayOfMonth) -> {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, dayOfMonth);
+                SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy");
+                dateOfContract.setText(format.format(calendar.getTime()));
+            }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.show();
+        });
+
+        duration.setOnClickListener(v -> {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, (datePicker, year, month, dayOfMonth) -> {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, dayOfMonth);
+                SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy");
+                duration.setText(format.format(calendar.getTime()));
+            }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.show();
+        });
 
         propose_contract.setOnClickListener(v -> {
 
@@ -76,14 +101,21 @@ public class AddContract extends AppCompatActivity {
             });
 
             AtomicReference<String> userId = new AtomicReference<>();
-            db.collection(type.equals("worker") ? "users" : "job_postings").document(jobId).get().addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document != null && document.exists()) {
-                                userId.set(type.equals("worker") ? document.getId() : document.getString("employer_id"));
-                            }
+            if (type.equals("job")) {
+                db.collection("job_postings").document(jobId).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document != null && document.exists()) {
+                            userId.set(document.getString("employer_id"));
+                            Toast.makeText(AddContract.this, "userId: " + userId.get(), Toast.LENGTH_SHORT).show();
                         }
-                    });
+                    }
+                });
+            } else {
+                userId.set(jobId);
+                Toast.makeText(AddContract.this, "userId: " + userId.get(), Toast.LENGTH_SHORT).show();
+            }
+            Toast.makeText(AddContract.this, "userId: " + userId, Toast.LENGTH_SHORT).show();
 
             db.collection("notifications").add(new HashMap<String, Object>(){{
                 put("date_added", FieldValue.serverTimestamp());
@@ -98,5 +130,16 @@ public class AddContract extends AppCompatActivity {
             });
         });
 
+    }
+
+
+    private void showDatePickerDialog() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
+            // Handle date selection
+            String selectedDate = String.format("%d/%d/%d", dayOfMonth, month + 1, year);
+            dateOfContract.setText(selectedDate);
+        }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+
+        datePickerDialog.show();
     }
 }

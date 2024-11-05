@@ -113,18 +113,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Date of Contract"
-                    android:inputType="date"
+                    android:inputType="none"
                     android:layout_marginTop="20dp"
                     android:padding="15dp"
                     android:background="@drawable/edittext_border"
-                    android:layout_marginBottom="10dp" />
+                    android:layout_marginBottom="10dp"/>
 
                 <EditText
                     android:id="@+id/duration"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Duration"
-                    android:inputType="number"
+                    android:inputType="none"
                     android:padding="15dp"
                     android:background="@drawable/edittext_border"
                     android:layout_marginBottom="10dp" />

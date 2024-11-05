@@ -82,7 +82,6 @@ public class EditProfile extends AppCompatActivity {
         user_type = "Employer";
         employer_button = findViewById(R.id.employer_button);
         worker = findViewById(R.id.worker_button);
-        imageView = findViewById(R.id.imageView);
         textView = findViewById(R.id.textView);
         signupGoogleButton = findViewById(R.id.signup_button);
         firstNameEditText = findViewById(R.id.first_name);
@@ -93,7 +92,6 @@ public class EditProfile extends AppCompatActivity {
         confirmPasswordEditText = findViewById(R.id.confirm_password);
         phoneNumberEditText = findViewById(R.id.phone_number);
         addressEditText = findViewById(R.id.address);
-        loginButton = findViewById(R.id.login_button);
         upload_profile = findViewById(R.id.upload_profile);
         profile_image = findViewById(R.id.profile_image);
 
@@ -120,6 +118,19 @@ public class EditProfile extends AppCompatActivity {
         emailEditText.setText(email);
         phoneNumberEditText.setText(phoneNumber);
         addressEditText.setText(address);
+        user_type = sharedPrefs.getString("user_type", "");
+
+        if (user_type.equals("Worker")) {
+            worker.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#22996E")));
+            worker.setTextColor(Color.BLACK);
+            employer_button.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+            employer_button.setTextColor(Color.WHITE);
+        } else {
+            employer_button.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#22996E")));
+            employer_button.setTextColor(Color.BLACK);
+            worker.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+            worker.setTextColor(Color.WHITE);
+        }
 
         Picasso.get().load(profilePicture).into(profile_image);
 
@@ -194,8 +205,13 @@ public class EditProfile extends AppCompatActivity {
                 String address = addressEditText.getText().toString();
 
 
-                if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || profile_uri == null) {
+                if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || profile_uri == null) {
                     Toast.makeText(EditProfile.this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!password.isEmpty() && !password.equals(confirmPasswordEditText.getText().toString())) {
+                    Toast.makeText(EditProfile.this, "Password and confirm password is not the same", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -227,16 +243,6 @@ public class EditProfile extends AppCompatActivity {
                 // Create a new user with the gathered data
 
 
-                TextView terms_and_conditiom = findViewById(R.id.terms_and_conditiom);
-
-                terms_and_conditiom.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(EditProfile.this, TermsAndConditions.class);
-                        startActivity(intent);
-                    }
-                });
-
                 // Upload the profile_uri to Firebase Storage
                 String filename = UUID.randomUUID().toString();
                 FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -266,7 +272,9 @@ public class EditProfile extends AppCompatActivity {
                         user.put("middleName", middleName);
                         user.put("lastName", lastName);
                         user.put("email", email);
-                        user.put("password", password);
+                        if (!password.isEmpty()) {
+                            user.put("password", password);
+                        }
                         user.put("phoneNumber", phoneNumber);
                         user.put("address", address);
                         user.put("user_type", user_type);
@@ -311,15 +319,6 @@ public class EditProfile extends AppCompatActivity {
 
 
 
-            }
-        });
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // go to Login Activity
-                Intent intent = new Intent(EditProfile.this, MainActivity.class);
-                startActivity(intent);
             }
         });
     }
