@@ -34,6 +34,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 public class Signup extends AppCompatActivity {
 
@@ -169,6 +170,22 @@ public class Signup extends AppCompatActivity {
                     Toast.makeText(Signup.this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+                Pattern pat = Pattern.compile(emailRegex);
+                if (!pat.matcher(email).matches()) {
+                    Toast.makeText(Signup.this, "Invalid email address", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                String phoneNumberRegex = "^(09|\\+639)\\d{9}$";
+                Pattern phoneNumberPat = Pattern.compile(phoneNumberRegex);
+                if (!phoneNumberPat.matcher(phoneNumber).matches()) {
+                    Toast.makeText(Signup.this, "Invalid phone number", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
 
                 signupGoogleButton.setEnabled(false);
                 signupGoogleButton.setText("Signing up ...");
