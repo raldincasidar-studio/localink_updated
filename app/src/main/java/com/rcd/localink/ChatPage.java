@@ -2,6 +2,7 @@ package com.rcd.localink;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ChatPage extends AppCompatActivity {
 
@@ -56,6 +58,7 @@ public class ChatPage extends AppCompatActivity {
         Arrays.sort(ids);
 
         String chatId = ids[0] + "-" + ids[1];
+        AtomicReference<String> phoneNumber = new AtomicReference<>();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(person)
@@ -66,6 +69,15 @@ public class ChatPage extends AppCompatActivity {
                     String firstName = document.getString("firstName");
                     TextView chat_name = findViewById(R.id.chat_name);
                     chat_name.setText(firstName);
+                    phoneNumber.set(document.getString("phoneNumber"));
+
+                    ImageView profile_image = findViewById(R.id.profile_image);
+
+                    profile_image.setOnClickListener(v -> {
+                        Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                        callIntent.setData(Uri.parse("tel:" + phoneNumber.get()));
+                        startActivity(callIntent);
+                    });
                 }
             });
 

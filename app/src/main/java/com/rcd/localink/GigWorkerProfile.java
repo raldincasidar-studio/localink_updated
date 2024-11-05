@@ -40,6 +40,11 @@ public class GigWorkerProfile extends AppCompatActivity {
         Button propose_contract = findViewById(R.id.propose_contract);
         Button chat = findViewById(R.id.chat);
 
+        ImageView back_button = findViewById(R.id.back_button);
+
+        back_button.setOnClickListener(v -> {
+            finish();
+        });
 
         
         

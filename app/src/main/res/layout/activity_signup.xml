@@ -262,11 +262,22 @@
                 android:background="@drawable/edittext_border"
                 android:layout_marginBottom="10dp" />
 
+            <TextView
+                android:id="@+id/terms_and_condition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="By clicking continue, you agree to our Terms of Service and Privacy Policy"
+                android:textAlignment="center"
+                android:layout_marginTop="25dp"
+                android:lineHeight="25dp"
+                android:layout_marginBottom="0dp"
+                android:textColor="#828282" />
+
             <Button
                 android:id="@+id/signup_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Update Profile"
+                android:text="SIGNUP (NEXT)"
                 android:textColor="@color/white"
                 android:backgroundTint="#000000"
                 android:shadowColor="@color/black"
