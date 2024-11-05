@@ -3,6 +3,7 @@ package com.rcd.localink;
 import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -363,7 +364,7 @@ public class CommunityWall extends AppCompatActivity {
 
                                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                                         HashMap<String, Object> newComment = new HashMap<>();
-                                        newComment.put("userId", "123");
+                                        newComment.put("userId", sharedPrefs.getString("documentId", ""));
                                         newComment.put("user_fullname", fullName);
                                         newComment.put("profile_image", sharedPrefs.getString("profile_picture", ""));
                                         newComment.put("date_added", new Timestamp(new Date()));
@@ -453,6 +454,7 @@ public class CommunityWall extends AppCompatActivity {
                                         TextView comment_fullname_textView = commentView.findViewById(R.id.comment_fullname);
                                         TextView comment_date_textView = commentView.findViewById(R.id.comment_date);
                                         TextView comment_comment_textView = commentView.findViewById(R.id.comment_content);
+                                        ImageView edit_comment = commentView.findViewById(R.id.edit_comment);
 
                                         String userId = (String) comment.get("userId");
                                         String comment_profile_image = (String) comment.get("profile_image");
@@ -467,6 +469,38 @@ public class CommunityWall extends AppCompatActivity {
                                         }
                                         comment_date_textView.setText(new SimpleDateFormat("MMMM dd, yyyy hh:mm a").format(comment_date_added.toDate()));
                                         comment_comment_textView.setText(comment_content);
+
+                                        String myDocumentId = sharedPrefs.getString("documentId", "");
+
+                                        if (userId.equals(myDocumentId)) {
+                                            edit_comment.setVisibility(View.VISIBLE);
+                                        } else {
+                                            edit_comment.setVisibility(View.GONE);
+                                        }
+
+                                        edit_comment.setOnClickListener(v -> {
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(CommunityWall.this);
+                                            builder.setMessage("Are you sure you want to delete this comment?")
+                                                .setPositiveButton("Yes", (dialog, id) -> {
+                                                    // Code to delete the comment goes here
+
+                                                    db.collection("posts").document(post_id).update("comments", FieldValue.arrayRemove(comment))
+                                                        .addOnSuccessListener(aVoid -> {
+                                                            Toast.makeText(CommunityWall.this, "Comment deleted", Toast.LENGTH_SHORT).show();
+                                                            getPosts();
+                                                        })
+                                                        .addOnFailureListener(e -> {
+                                                            Toast.makeText(CommunityWall.this, "Failed to delete comment", Toast.LENGTH_SHORT).show();
+                                                        });
+
+                                                })
+                                                .setNegativeButton("No", (dialog, id) -> {
+                                                    // User cancelled the dialog
+                                                    dialog.dismiss();
+                                                });
+                                            AlertDialog alert = builder.create();
+                                            alert.show();
+                                        });
 
                                         comment_container.addView(commentView);
                                     }
