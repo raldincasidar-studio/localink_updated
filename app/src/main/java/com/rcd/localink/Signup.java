@@ -50,6 +50,7 @@ public class Signup extends AppCompatActivity {
     private EditText lastNameEditText;
     private EditText emailEditText;
     private EditText passwordEditText;
+    private EditText confirmPasswordEditText;
     private EditText phoneNumberEditText;
     private EditText addressEditText;
 
@@ -87,6 +88,7 @@ public class Signup extends AppCompatActivity {
         lastNameEditText = findViewById(R.id.last_name);
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
+        confirmPasswordEditText = findViewById(R.id.confirm_password);
         phoneNumberEditText = findViewById(R.id.phone_number);
         addressEditText = findViewById(R.id.address);
         loginButton = findViewById(R.id.login_button);
@@ -182,6 +184,12 @@ public class Signup extends AppCompatActivity {
                 Pattern phoneNumberPat = Pattern.compile(phoneNumberRegex);
                 if (!phoneNumberPat.matcher(phoneNumber).matches()) {
                     Toast.makeText(Signup.this, "Invalid phone number", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                String confirmPassword = confirmPasswordEditText.getText().toString();
+                if(!password.equals(confirmPassword)) {
+                    Toast.makeText(Signup.this, "Password and confirm password is not the same", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
