@@ -44,9 +44,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        TextView terms_and_conditiom = findViewById(R.id.terms_and_conditiom);
-
-        terms_and_conditiom.setOnClickListener(new View.OnClickListener() {
+        TextView terms_and_condition = findViewById(R.id.terms_and_condition);
+        terms_and_condition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, TermsAndConditions.class);
