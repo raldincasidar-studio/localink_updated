@@ -176,6 +176,16 @@ public class Signup extends AppCompatActivity {
                 // Create a new user with the gathered data
 
 
+                TextView terms_and_conditiom = findViewById(R.id.terms_and_conditiom);
+
+                terms_and_conditiom.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Signup.this, TermsAndConditions.class);
+                        startActivity(intent);
+                    }
+                });
+
                 // Upload the profile_uri to Firebase Storage
                 String filename = UUID.randomUUID().toString();
                 FirebaseStorage storage = FirebaseStorage.getInstance();

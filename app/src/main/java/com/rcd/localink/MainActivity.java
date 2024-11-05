@@ -44,7 +44,15 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        TextView terms_and_conditiom = findViewById(R.id.terms_and_conditiom);
 
+        terms_and_conditiom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TermsAndConditions.class);
+                startActivity(intent);
+            }
+        });
 
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
@@ -105,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
 
                                 // Update the document with the token
                                 document.getReference().update("token", token);
+
+
 
                                 // Store the user data in SharedPreferences
                                 SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
