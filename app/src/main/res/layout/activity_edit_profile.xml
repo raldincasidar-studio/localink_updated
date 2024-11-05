@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Signup">
+    tools:context=".EditProfile">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,35 +21,87 @@
             android:gravity="center"
             android:padding="10dp">
 
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="142dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="50dp"
-                android:baselineAlignBottom="false"
-                android:maxWidth="30dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/logo"
-                android:textAlignment="center" />
-
-            <TextView
+            <!-- Navbar -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="0dp"
-                android:text="Signup"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:textColor="#000000"
-                android:textSize="20dp" />
+                android:padding="10dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                >
+
+
+                <ImageView
+                    android:id="@+id/back_button"
+                    android:layout_width="42dp"
+                    android:layout_height="38dp"
+                    android:baselineAlignBottom="false"
+                    android:maxWidth="30dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/back"
+                    android:textAlignment="center" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edit Profile"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:textStyle="bold"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:visibility="invisible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:baselineAlignBottom="false"
+                        android:maxWidth="30dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/bell"
+                        android:textAlignment="center" />
+
+                    <ImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="10dp"
+                        android:baselineAlignBottom="false"
+                        android:background="@drawable/circle_avatar"
+                        android:clipToOutline="true"
+
+                        android:maxWidth="30dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/avatar"
+                        android:textAlignment="center" />
+                </LinearLayout>
+
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
-                android:text="Enter the asked information for your account"
+                android:text="Edit your profile content here"
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="16dp" />
@@ -266,7 +318,7 @@
                 android:id="@+id/signup_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Update Profile"
+                android:text="Signup (Next Step)"
                 android:textColor="@color/white"
                 android:backgroundTint="#000000"
                 android:shadowColor="@color/black"
@@ -276,6 +328,42 @@
 
                 android:shadowRadius="20"/>
 
+            <TextView
+                android:id="@+id/terms_and_conditiom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="By clicking continue, you agree to our Terms of Service and Privacy Policy"
+                android:textAlignment="center"
+                android:layout_marginTop="25dp"
+                android:lineHeight="25dp"
+                android:layout_marginBottom="30dp"
+                android:textColor="#828282" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Already have an account?"
+                android:textAlignment="center"
+                android:layout_marginTop="25dp"
+                android:textStyle="italic"
+                android:textSize="17dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#828282" />
+
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/white"
+                android:padding="15dp"
+                android:elevation="0dp"
+                android:shadowDy="0"
+                android:shadowDx="0"
+                android:shadowColor="@color/white"
+                android:layout_marginBottom="20dp"
+                android:shadowRadius="20"/>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

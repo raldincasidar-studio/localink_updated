@@ -110,6 +110,11 @@ public class Dashboard extends AppCompatActivity {
         String profilePicture = sharedPrefs.getString("profile_picture", "");
         Picasso.get().load(profilePicture).into(profile_image);
 
+        profile_image.setOnClickListener(v -> {
+            Intent intent = new Intent(Dashboard.this, EditProfile.class);
+            startActivity(intent);
+        });
+
         back_button.setOnClickListener(v -> {
 
             SharedPreferences sharedPrefs2 = getSharedPreferences("userAuth", MODE_PRIVATE);
