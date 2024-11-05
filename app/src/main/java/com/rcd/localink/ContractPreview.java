@@ -1,8 +1,11 @@
 package com.rcd.localink;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,12 +47,16 @@ public class ContractPreview extends AppCompatActivity {
         Button chat = findViewById(R.id.chat);
         Button contract_details = findViewById(R.id.contract_details);
 
+        LinearLayout accept_buttons = findViewById(R.id.accept_buttons);
+
         String id = getIntent().getStringExtra("contractId");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         AtomicReference<String> by = new AtomicReference<>();
         AtomicReference<String> for_id = new AtomicReference<>();
         AtomicReference<String> job_id = new AtomicReference<>();
+
+
 
         db.collection("work_contracts").document(id).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -70,6 +77,14 @@ public class ContractPreview extends AppCompatActivity {
                     String type = document.getString("type");
 
 
+                    SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
+                    String documentId = sharedPrefs.getString("documentId", "");
+
+                    if (documentId.equals(for_id.get())) {
+                        accept_buttons.setVisibility(View.VISIBLE);
+                    } else {
+                        accept_buttons.setVisibility(View.GONE);
+                    }
 
 
                     if (type.equals("worker")) {

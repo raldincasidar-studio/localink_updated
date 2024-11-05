@@ -253,29 +253,36 @@
                 android:padding="15dp"
                 android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/accept"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="15dp"
-                    android:backgroundTint="#22996E"
-                    android:text="ACCEPT CONTRACT AND START WORK"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"></Button>
 
-                <Button
-                    android:id="@+id/decline"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/accept_buttons"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="15dp"
-                    android:backgroundTint="#FF0000"
-                    android:text="DECLINE"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"></Button>
+                    android:orientation="vertical">
+                    <Button
+                        android:id="@+id/accept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:backgroundTint="#22996E"
+                        android:text="ACCEPT CONTRACT AND START WORK"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"></Button>
+
+                    <Button
+                        android:id="@+id/decline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:backgroundTint="#FF0000"
+                        android:text="DECLINE"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"></Button>
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/chat"
