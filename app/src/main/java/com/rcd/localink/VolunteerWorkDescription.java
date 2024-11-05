@@ -85,6 +85,13 @@ public class VolunteerWorkDescription extends AppCompatActivity {
 
         question_prompt = findViewById(R.id.question_prompt);
 
+        String type = sharedPrefs.getString("user_type", "");
+        if (type.equals("admin")) {
+            edit_button.setVisibility(View.VISIBLE);
+        } else {
+            edit_button.setVisibility(View.GONE);
+        }
+
         String volunteer_work_id = getIntent().getStringExtra("volunteer_work_id");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -113,17 +120,21 @@ public class VolunteerWorkDescription extends AppCompatActivity {
 
 
                     yes_no.setVisibility(View.GONE);
-                    done_cont.setVisibility(View.VISIBLE);
+
+                    if (type.equals("admin")) {
+                        done_cont.setVisibility(View.VISIBLE);
+                    }
 
                     if(querySnapshot.getDocuments().get(0).getBoolean("isCompleted")){
                         done_button.setEnabled(false);
                         done_button.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
                         done_button.setText("VOLUNTEER IS COMPLETED!");
+                        done_cont.setVisibility(View.VISIBLE);
                         return;
                     }
 
                     volunteerTransactionId.set(querySnapshot.getDocuments().get(0).getId());
-                    question_prompt.setText("Have you completed this volunteer work?");
+                    question_prompt.setText("Work is pending. Please coordinate with your Barangay Administrator");
                 }
             }
         });

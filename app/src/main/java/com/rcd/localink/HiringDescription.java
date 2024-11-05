@@ -61,8 +61,17 @@ public class HiringDescription extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+
+
+        SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
+        String type = sharedPrefs.getString("user_type", "");
+        if (type.equals("admin")) {
+            edit_button.setVisibility(View.VISIBLE);
+        } else {
+            edit_button.setVisibility(View.GONE);
+        }
+
         yesButton.setOnClickListener(v -> {
-            SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
             String userId = sharedPrefs.getString("documentId", "");
             HashMap<String, Object> data = new HashMap<>();
             data.put("userId", userId);
@@ -106,7 +115,6 @@ public class HiringDescription extends AppCompatActivity {
                             duration.setText("Starts in: " + document.getString("startsIn") + "\nEnds in: " + document.getString("endsIn") + "\nTime: " + document.getString("time"));
                             instruction.setText(document.getString("instruction"));
 
-                            SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
                             String userId = sharedPrefs.getString("documentId", "");
 
 
@@ -129,15 +137,23 @@ public class HiringDescription extends AppCompatActivity {
                                                 } else if (document2.getString("status").equals("active")) {
                                                     pending.setVisibility(View.GONE);
                                                     yes_no.setVisibility(View.GONE);
-                                                    done_cont.setVisibility(View.VISIBLE);
+                                                    if (type.equals("admin")) {
+                                                        done_cont.setVisibility(View.VISIBLE);
+                                                    } else {
+                                                        done_cont.setVisibility(View.GONE);
+                                                    }
                                                 } else if (document2.getString("status").equals("done")) {
                                                     pending.setVisibility(View.GONE);
                                                     yes_no.setVisibility(View.GONE);
-                                                    done_cont.setVisibility(View.VISIBLE);
+                                                    if (type.equals("admin")) {
+                                                        done_cont.setVisibility(View.VISIBLE);
 
-                                                    done.setEnabled(false);
-                                                    done.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
-                                                    done.setText("Project already finished");
+                                                        done.setEnabled(false);
+                                                        done.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+                                                        done.setText("Project already finished");
+                                                    } else {
+                                                        done_cont.setVisibility(View.GONE);
+                                                    }
                                                 }
 
                                             }

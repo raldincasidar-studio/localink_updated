@@ -2,6 +2,8 @@ package com.rcd.localink;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.AlertDialog;
+import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -68,6 +71,12 @@ public class Dashboard extends AppCompatActivity {
         community_wall_button = findViewById(R.id.community_wall_button);
         barangay_button = findViewById(R.id.barangay_button);
         gig_work = findViewById(R.id.gig_work);
+        ImageView notification = findViewById(R.id.notification);
+
+        notification.setOnClickListener(v -> {
+            Intent intent = new Intent(Dashboard.this, Notifications.class);
+            startActivity(intent);
+        });
 
         community_wall_button.setOnClickListener(v -> {
             Intent intent = new Intent(Dashboard.this, CommunityWall.class);
@@ -117,16 +126,26 @@ public class Dashboard extends AppCompatActivity {
 
         back_button.setOnClickListener(v -> {
 
-            SharedPreferences sharedPrefs2 = getSharedPreferences("userAuth", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPrefs2.edit();
-            editor.clear();
-            editor.apply();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Are you sure you want to log out?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", (dialog, id) -> {
+                        SharedPreferences sharedPrefs2 = getSharedPreferences("userAuth", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPrefs2.edit();
+                        editor.clear();
+                        editor.apply();
 
-            Intent intent = new Intent(Dashboard.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+                        Toast.makeText(Dashboard.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
 
-            finish();
+                        Intent intent = new Intent(Dashboard.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("No", (dialog, id) -> dialog.cancel());
+            AlertDialog alert = builder.create();
+            alert.show();
+
+
         });
     }
 }

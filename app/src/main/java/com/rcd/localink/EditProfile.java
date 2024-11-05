@@ -276,7 +276,7 @@ public class EditProfile extends AppCompatActivity {
                         // Update the document with the given ID in the "users" collection
                         db.collection("users")
                                 .document(userId)
-                                .set(user)
+                                .update(user)
                                 .addOnSuccessListener(unused -> {
                                     // Successful update
                                     Toast.makeText(EditProfile.this, "User updated Please login", Toast.LENGTH_SHORT).show();
