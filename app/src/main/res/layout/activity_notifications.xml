@@ -108,7 +108,7 @@
 
                 <!-- ChatContainer-->
                 <LinearLayout
-                    android:id="@+id/chat_container"
+                    android:id="@+id/notification_container"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:padding="10dp"
@@ -119,111 +119,11 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
 
-                    <!-- Transaction History Person -->
-                    <LinearLayout
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="15dp"
-                        android:gravity="center"
-                        >
-
-                        <ImageView
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:baselineAlignBottom="false"
-                            android:layout_margin="10dp"
-                            android:maxWidth="30dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/avatar"
-                            android:background="@drawable/circle_avatar"
-                            android:clipToOutline="true"
-                            android:textAlignment="center" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="NEW!"
-                                android:textColor="#22996E"
-                                android:textSize="15sp"
-                                android:lineHeight="20dp"
-                                android:textStyle="bold"
-                                android:layout_marginBottom="10dp"/>
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Aubrey proposed you an contract. See it now"
-                                android:textColor="@color/black"
-                                android:textSize="18sp"
-                                android:layout_marginBottom="10dp"
-                                android:textStyle="bold"/>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <!-- Transaction History Person -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="15dp"
-                        android:gravity="center"
-                        >
-
-                        <ImageView
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:baselineAlignBottom="false"
-                            android:layout_margin="10dp"
-                            android:maxWidth="30dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/avatar"
-                            android:background="@drawable/circle_avatar"
-                            android:clipToOutline="true"
-                            android:textAlignment="center" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="NEW!"
-                                android:textColor="#22996E"
-                                android:textSize="15sp"
-                                android:lineHeight="20dp"
-                                android:textStyle="bold"
-                                android:layout_marginBottom="10dp"/>
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Jose proposed you an contract. See it now"
-                                android:textColor="@color/black"
-                                android:textSize="18sp"
-                                android:layout_marginBottom="10dp"
-                                android:textStyle="bold"/>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
+                        android:text="Loading Notifications ..."
+                        android:textAlignment="center" />
 
 
                 </LinearLayout>

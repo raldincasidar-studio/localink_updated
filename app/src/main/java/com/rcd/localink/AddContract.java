@@ -25,6 +25,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class AddContract extends AppCompatActivity {
 
+    AtomicReference<String> contractId = new AtomicReference<>();
+
     EditText dateOfContract = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,27 +80,11 @@ public class AddContract extends AppCompatActivity {
             datePickerDialog.show();
         });
 
+
+
         propose_contract.setOnClickListener(v -> {
 
-            AtomicReference<String> contractId = new AtomicReference<>();
-
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            HashMap<String, Object> data = new HashMap<>();
-            data.put("jobId", jobId);
-            data.put("type", type);
-            data.put("dateOfContract", dateOfContract.getText().toString());
-            data.put("duration", duration.getText().toString());
-            data.put("siteOfContract", siteOfContract.getText().toString());
-            data.put("notesToContractor", notesToContractor.getText().toString());
-            data.put("otherSpecificNegotiations", otherSpecificNegotiations.getText().toString());
-            data.put("modeOfPayment", modeOfPayment.getText().toString());
-            data.put("status", "pending");
-            data.put("dateAdded", FieldValue.serverTimestamp());
-            db.collection("work_contracts").add(data).addOnSuccessListener(documentReference -> {
-                Toast.makeText(AddContract.this, "Proposal sent", Toast.LENGTH_SHORT).show();
-                contractId.set(documentReference.getId());
-                finish();
-            });
 
             AtomicReference<String> userId = new AtomicReference<>();
             if (type.equals("job")) {
@@ -107,29 +93,73 @@ public class AddContract extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         if (document != null && document.exists()) {
                             userId.set(document.getString("employer_id"));
-                            Toast.makeText(AddContract.this, "userId: " + userId.get(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddContract.this, "userId 1: " + userId.get(), Toast.LENGTH_SHORT).show();
+                            addContract(jobId, type, duration, document.getString("employer_id"), siteOfContract, notesToContractor, otherSpecificNegotiations, modeOfPayment, sharedPrefs, db);
+
                         }
                     }
                 });
             } else {
                 userId.set(jobId);
-                Toast.makeText(AddContract.this, "userId: " + userId.get(), Toast.LENGTH_SHORT).show();
-            }
-            Toast.makeText(AddContract.this, "userId: " + userId, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddContract.this, "userId 2: " + userId.get(), Toast.LENGTH_SHORT).show();
 
-            db.collection("notifications").add(new HashMap<String, Object>(){{
-                put("date_added", FieldValue.serverTimestamp());
-                put("for", userId.get());
-                put("picture", profilePicture);
-                put("notification_content", "You have a new proposal for you");
-                put("isSeen", false);
-                put("type", type);
-                put("extraIntent", jobId);
-            }}).addOnSuccessListener(documentReference -> {
-                Toast.makeText(AddContract.this, "Proposal successfuly sent! for: " + userId.get(), Toast.LENGTH_SHORT).show();
-            });
+                addContract(jobId, type, duration, jobId, siteOfContract, notesToContractor, otherSpecificNegotiations, modeOfPayment, sharedPrefs, db);
+
+            }
         });
 
+    }
+
+    private void addContract(String jobId, String type, EditText duration, String for_id, EditText siteOfContract, EditText notesToContractor, EditText otherSpecificNegotiations, EditText modeOfPayment, SharedPreferences sharedPrefs, FirebaseFirestore db) {
+
+        String documentId = sharedPrefs.getString("documentId", "");
+
+
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("jobId", jobId);
+        data.put("type", type);
+        data.put("dateOfContract", dateOfContract.getText().toString());
+        data.put("duration", duration.getText().toString());
+        data.put("siteOfContract", siteOfContract.getText().toString());
+        data.put("notesToContractor", notesToContractor.getText().toString());
+        data.put("otherSpecificNegotiations", otherSpecificNegotiations.getText().toString());
+        data.put("modeOfPayment", modeOfPayment.getText().toString());
+        data.put("status", "pending");
+        data.put("for", for_id);
+        data.put("by", documentId);
+        data.put("dateAdded", FieldValue.serverTimestamp());
+        db.collection("work_contracts").add(data).addOnSuccessListener(documentReference -> {
+            Toast.makeText(AddContract.this, "Proposal sent", Toast.LENGTH_SHORT).show();
+            contractId.set(documentReference.getId());
+
+            addData(db, for_id, documentReference.getId());
+            finish();
+        });
+    }
+
+    private void addData(FirebaseFirestore db, String userId, String extraIntent) {
+
+        SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
+        String firstName = sharedPrefs.getString("firstName", "");
+        String myUserId = sharedPrefs.getString("documentId", "");
+        String profilePicture = sharedPrefs.getString("profile_picture", "");
+        String jobId = getIntent().getStringExtra("jobId");
+        String type = getIntent().getStringExtra("type");
+
+
+        db.collection("notifications").add(new HashMap<String, Object>(){{
+            put("date_added", FieldValue.serverTimestamp());
+            put("for", userId);
+            put("by", myUserId);
+            put("picture", profilePicture);
+            put("notification_content", firstName + " have a new proposal for you");
+            put("isSeen", false);
+            put("extraIntent", extraIntent);
+            put("type", "contract");
+        }}).addOnSuccessListener(documentReference -> {
+            Toast.makeText(AddContract.this, "Proposal successfuly sent! for: " + userId, Toast.LENGTH_SHORT).show();
+        });
     }
 
 
