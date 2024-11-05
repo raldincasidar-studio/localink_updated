@@ -50,6 +50,8 @@ public class ContractPreview extends AppCompatActivity {
         Button contract_details = findViewById(R.id.contract_details);
         Button complete_contract = findViewById(R.id.complete_contract);
 
+        LinearLayout user_profile_container = findViewById(R.id.user_profile_container);
+
         LinearLayout accept_buttons = findViewById(R.id.accept_buttons);
 
         String id = getIntent().getStringExtra("contractId");
@@ -170,7 +172,6 @@ public class ContractPreview extends AppCompatActivity {
 
                     String type = document.getString("type");
 
-
                     String documentId = sharedPrefs.getString("documentId", "");
 
                     if (documentId.equals(for_id.get()) && document.getString("status").equals("pending") ) {
@@ -179,7 +180,7 @@ public class ContractPreview extends AppCompatActivity {
                         accept_buttons.setVisibility(View.GONE);
                     }
 
-                    if (document.getString("status").equals("On-going transaction")) {
+                    if (document.getString("status").equals("On-going transaction") && sharedPrefs.getString("user_type", "").equals("Employer")) {
                         complete_contract.setVisibility(View.VISIBLE);
                     }
                     else {

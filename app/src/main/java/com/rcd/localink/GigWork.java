@@ -71,6 +71,11 @@ public class GigWork extends AppCompatActivity {
             startActivity(intent);
         });
 
+        my_posts_button.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MyGigPosts.class);
+            startActivity(intent);
+        });
+
 
         if (userType.equals("Worker")) {
             fetchJobPostings();

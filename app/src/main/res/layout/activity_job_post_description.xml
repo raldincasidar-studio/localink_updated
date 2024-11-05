@@ -91,6 +91,7 @@
 
             <!-- Ongoing Transaction -->
             <LinearLayout
+                android:id="@+id/user_profile_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"

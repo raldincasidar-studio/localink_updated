@@ -1,7 +1,9 @@
 package com.rcd.localink;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,7 +43,6 @@ public class JobPostDescription extends AppCompatActivity {
         Button propose_contract = findViewById(R.id.propose_contract);
 
 
-
         backButton.setOnClickListener(v -> {
             finish();
         });
@@ -77,6 +78,13 @@ public class JobPostDescription extends AppCompatActivity {
                                 intent.putExtra("person", employerId);
                                 startActivity(intent);
                             });
+
+                            SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
+                            String documentId = sharedPrefs.getString("documentId", "");
+                            if (documentId.equals(employerId)) {
+                                chat.setVisibility(View.GONE);
+                                propose_contract.setVisibility(View.GONE);
+                            }
 
                             propose_contract.setOnClickListener(v -> {
 

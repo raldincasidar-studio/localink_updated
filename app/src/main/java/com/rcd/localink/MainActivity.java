@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast; // Import Toast class
 
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText passwordEditText;
     private Button loginButton;
     private Button signUpButton;
+    private Button signup_google;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,16 @@ public class MainActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.password);
         loginButton = findViewById(R.id.login_button);
         signUpButton = findViewById(R.id.sign_up);
+        signup_google = findViewById(R.id.signup_google);
 
+
+        signup_google.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Initialize Google Sign-in
+                Toast.makeText(MainActivity.this, "Google Sign-in is upcoming!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Redirect to dashboard if already logged in
         SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);

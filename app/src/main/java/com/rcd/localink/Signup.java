@@ -187,6 +187,13 @@ public class Signup extends AppCompatActivity {
                     return;
                 }
 
+                String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{6,}$";
+                Pattern passwordPat = Pattern.compile(passwordRegex);
+                if (!passwordPat.matcher(password).matches()) {
+                    Toast.makeText(Signup.this, "Password must be at least 6 characters long, include an uppercase letter, a lowercase letter, a number, and a special character", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 String confirmPassword = confirmPasswordEditText.getText().toString();
                 if(!password.equals(confirmPassword)) {
                     Toast.makeText(Signup.this, "Password and confirm password is not the same", Toast.LENGTH_SHORT).show();
