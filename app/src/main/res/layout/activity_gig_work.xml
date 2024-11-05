@@ -101,9 +101,11 @@
             </LinearLayout>
 
             <EditText
+                android:id="@+id/search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="What are you looking for?"
+                android:inputType="text"
                 android:layout_margin="10dp"
                 android:paddingVertical="15dp"
                 android:paddingHorizontal="20dp"

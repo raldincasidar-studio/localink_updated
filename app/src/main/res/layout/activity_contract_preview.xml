@@ -285,6 +285,18 @@
                 </LinearLayout>
 
                 <Button
+                    android:id="@+id/complete_contract"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:backgroundTint="#22996E"
+                    android:text="COMPLETE CONTRACT"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"></Button>
+
+                <Button
                     android:id="@+id/chat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

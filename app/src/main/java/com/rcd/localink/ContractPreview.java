@@ -16,8 +16,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ContractPreview extends AppCompatActivity {
@@ -46,6 +48,7 @@ public class ContractPreview extends AppCompatActivity {
         Button decline = findViewById(R.id.decline);
         Button chat = findViewById(R.id.chat);
         Button contract_details = findViewById(R.id.contract_details);
+        Button complete_contract = findViewById(R.id.complete_contract);
 
         LinearLayout accept_buttons = findViewById(R.id.accept_buttons);
 
@@ -58,6 +61,97 @@ public class ContractPreview extends AppCompatActivity {
 
 
 
+        SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
+
+        initializeData(db, id, date_of_contract, duration, mode_of_payment, notes_to_contractor, other_specific_negotiations, site_of_contract, status, by, for_id, job_id, sharedPrefs, accept_buttons, complete_contract, contract_details);
+
+        complete_contract.setOnClickListener(v -> {
+            db.collection("work_contracts").document(id).update("status", "Completed")
+                    .addOnSuccessListener(aVoid -> {
+                        status.setText("Completed");
+
+
+                        db.collection("notifications").add(new HashMap<String, Object>(){{
+                            put("date_added", FieldValue.serverTimestamp());
+                            put("for", by.get());
+                            put("by", sharedPrefs.getString("documentId", ""));
+                            put("picture", sharedPrefs.getString("profile_picture", ""));
+                            put("notification_content", "Your contract with " + sharedPrefs.getString("firstName", "") + " has been completed. Check your contract information here");
+                            put("isSeen", false);
+                            put("extraIntent", id);
+                            put("type", "contract");
+                        }}).addOnSuccessListener(documentReference -> {
+                            Toast.makeText(ContractPreview.this, "Successfuly completed", Toast.LENGTH_SHORT).show();
+                            initializeData(db, id, date_of_contract, duration, mode_of_payment, notes_to_contractor, other_specific_negotiations, site_of_contract, status, by, for_id, job_id, sharedPrefs, accept_buttons, complete_contract, contract_details);
+                        });
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(ContractPreview.this, "Failed to accept contract", Toast.LENGTH_SHORT).show();
+                    });
+        });
+
+
+        accept.setOnClickListener(v -> {
+            db.collection("work_contracts").document(id).update("status", "On-going transaction")
+                .addOnSuccessListener(aVoid -> {
+                    status.setText("On-going transaction");
+
+
+                    accept_buttons.setVisibility(View.GONE);
+
+                    db.collection("notifications").add(new HashMap<String, Object>(){{
+                        put("date_added", FieldValue.serverTimestamp());
+                        put("for", by.get());
+                        put("by", sharedPrefs.getString("documentId", ""));
+                        put("picture", sharedPrefs.getString("profile_picture", ""));
+                        put("notification_content", sharedPrefs.getString("firstName", "") + " have a accepted your contract");
+                        put("isSeen", false);
+                        put("extraIntent", id);
+                        put("type", "contract");
+                    }}).addOnSuccessListener(documentReference -> {
+                        Toast.makeText(ContractPreview.this, "Successfuly accepted", Toast.LENGTH_SHORT).show();
+                        initializeData(db, id, date_of_contract, duration, mode_of_payment, notes_to_contractor, other_specific_negotiations, site_of_contract, status, by, for_id, job_id, sharedPrefs, accept_buttons, complete_contract, contract_details);
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(ContractPreview.this, "Failed to accept contract", Toast.LENGTH_SHORT).show();
+                });
+        });
+
+        decline.setOnClickListener(v -> {
+            db.collection("work_contracts").document(id).update("status", "Declined")
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(ContractPreview.this, "Contract declined", Toast.LENGTH_SHORT).show();
+                    status.setText("Declined");
+
+                    db.collection("notifications").add(new HashMap<String, Object>(){{
+                        put("date_added", FieldValue.serverTimestamp());
+                        put("for", by.get());
+                        put("by", sharedPrefs.getString("documentId", ""));
+                        put("picture", sharedPrefs.getString("profile_picture", ""));
+                        put("notification_content", sharedPrefs.getString("firstName", "") + " have a declined your contract");
+                        put("isSeen", false);
+                        put("extraIntent", id);
+                        put("type", "contract");
+                    }}).addOnSuccessListener(documentReference -> {
+                        Toast.makeText(ContractPreview.this, "Successfuly accepted", Toast.LENGTH_SHORT).show();
+                        initializeData(db, id, date_of_contract, duration, mode_of_payment, notes_to_contractor, other_specific_negotiations, site_of_contract, status, by, for_id, job_id, sharedPrefs, accept_buttons, complete_contract, contract_details);
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(ContractPreview.this, "Failed to decline contract", Toast.LENGTH_SHORT).show();
+                });
+        });
+
+        chat.setOnClickListener(v -> {
+            Toast.makeText(ContractPreview.this, "Chat with employer", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ContractPreview.this, ChatPage.class);
+            intent.putExtra("person", by.get());
+            startActivity(intent);
+        });
+    }
+
+    private void initializeData(FirebaseFirestore db, String id, TextView date_of_contract, TextView duration, TextView mode_of_payment, TextView notes_to_contractor, TextView other_specific_negotiations, TextView site_of_contract, TextView status, AtomicReference<String> by, AtomicReference<String> for_id, AtomicReference<String> job_id, SharedPreferences sharedPrefs, LinearLayout accept_buttons, Button complete_contract, Button contract_details) {
         db.collection("work_contracts").document(id).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
@@ -77,15 +171,20 @@ public class ContractPreview extends AppCompatActivity {
                     String type = document.getString("type");
 
 
-                    SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
                     String documentId = sharedPrefs.getString("documentId", "");
 
-                    if (documentId.equals(for_id.get())) {
+                    if (documentId.equals(for_id.get()) && document.getString("status").equals("pending") ) {
                         accept_buttons.setVisibility(View.VISIBLE);
                     } else {
                         accept_buttons.setVisibility(View.GONE);
                     }
 
+                    if (document.getString("status").equals("On-going transaction")) {
+                        complete_contract.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        complete_contract.setVisibility(View.GONE);
+                    }
 
                     if (type.equals("worker")) {
                         contract_details.setText("Hiring Details");
@@ -104,34 +203,6 @@ public class ContractPreview extends AppCompatActivity {
                     }
                 }
             }
-        });
-        accept.setOnClickListener(v -> {
-            db.collection("work_contracts").document(id).update("status", "Accepted")
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(ContractPreview.this, "Contract accepted", Toast.LENGTH_SHORT).show();
-                    status.setText("Accepted");
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(ContractPreview.this, "Failed to accept contract", Toast.LENGTH_SHORT).show();
-                });
-        });
-
-        decline.setOnClickListener(v -> {
-            db.collection("work_contracts").document(id).update("status", "Declined")
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(ContractPreview.this, "Contract declined", Toast.LENGTH_SHORT).show();
-                    status.setText("Declined");
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(ContractPreview.this, "Failed to decline contract", Toast.LENGTH_SHORT).show();
-                });
-        });
-
-        chat.setOnClickListener(v -> {
-            Toast.makeText(ContractPreview.this, "Chat with employer", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(ContractPreview.this, ChatPage.class);
-            intent.putExtra("person", by.get());
-            startActivity(intent);
         });
     }
 }

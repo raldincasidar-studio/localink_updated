@@ -3,6 +3,7 @@ package com.rcd.localink;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.squareup.picasso.Picasso;
 
 public class Notifications extends AppCompatActivity {
@@ -42,6 +44,7 @@ public class Notifications extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("notifications")
                 .whereEqualTo("for", documentId)
+                .orderBy("date_added", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -78,6 +81,9 @@ public class Notifications extends AppCompatActivity {
                     } else {
                         Toast.makeText(Notifications.this, "Error fetching notifications", Toast.LENGTH_SHORT).show();
                     }
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(Notifications.this, "Error fetching notifications", Toast.LENGTH_SHORT).show();
+                    Log.e("Notifications", "Error fetching notifications", e);
                 });
 
         back_button.setOnClickListener(view -> {

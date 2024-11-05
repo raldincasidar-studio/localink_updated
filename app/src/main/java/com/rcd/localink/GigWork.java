@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -79,8 +81,71 @@ public class GigWork extends AppCompatActivity {
         }
     }
 
+//    private void fetchJobPostings() {
+//        Toast.makeText(this, "Fetching job postings", Toast.LENGTH_SHORT).show();
+//
+//        db.collection("job_postings").get().addOnCompleteListener(task -> {
+//            Log.d(TAG, "fetchJobPostings: Fetching on db");
+//            if (task.isSuccessful()) {
+//                QuerySnapshot querySnapshot = task.getResult();
+//                Log.d("GigWork", "Fetched " + querySnapshot.size() + " job postings");
+//                if (querySnapshot != null) {
+//                    LinearLayout gigWorkList = findViewById(R.id.gig_work_list);
+//                    gigWorkList.removeAllViews();
+//                    for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+//                        Log.d(TAG, "fetchJobPostings: Document ID: " + document.getId());
+//                        String jobTitle = document.getString("title");
+//                        String jobDescription = document.getString("employer_name");
+//                        String profile_picture_firebase = document.getString("employer_profile_pic");
+//
+//                        // Display job postings in the UI
+//                        View gigWorkItem = getLayoutInflater().inflate(R.layout.gig_work_item, null);
+//                        TextView jobTitleTextView = gigWorkItem.findViewById(R.id.job_title);
+//                        TextView jobDescriptionTextView = gigWorkItem.findViewById(R.id.worker_name);
+//                        TextView online_or_not = gigWorkItem.findViewById(R.id.online_or_not);
+//                        ImageView profile_picture = gigWorkItem.findViewById(R.id.profile_picture);
+//
+//
+//
+//                        jobTitleTextView.setText(jobTitle);
+//                        jobDescriptionTextView.setText(jobDescription);
+//                        online_or_not.setText("Looking for Hiring:");
+//                        Picasso.get().load(profile_picture_firebase).into(profile_picture);
+//
+//                        gigWorkItem.setOnClickListener(v -> {
+//                            Intent intent = new Intent(GigWork.this, JobPostDescription.class);
+//                            intent.putExtra("jobId", document.getId());
+//                            startActivity(intent);
+//                        });
+//
+//                        gigWorkList.addView(gigWorkItem);
+//                    }
+//                }
+//            }
+//        });
+//    }
+
+    private EditText searchEditText;
+    private Button searchButton;
+
     private void fetchJobPostings() {
         Toast.makeText(this, "Fetching job postings", Toast.LENGTH_SHORT).show();
+
+        searchEditText = findViewById(R.id.search);
+
+        searchEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                Log.d(TAG, "fetchJobPostings: enter pressed");
+                String searchText = searchEditText.getText().toString().trim();
+                if (!searchText.isEmpty()) {
+                    searchJobPostings(searchText);
+                } else {
+                    Toast.makeText(this, "Please enter search text", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+            return false;
+        });
 
         db.collection("job_postings").get().addOnCompleteListener(task -> {
             Log.d(TAG, "fetchJobPostings: Fetching on db");
@@ -121,6 +186,50 @@ public class GigWork extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void searchJobPostings(String searchText) {
+        db.collection("job_postings")
+                .whereEqualTo("title", searchText)
+                .get()
+                .addOnCompleteListener(task -> {
+                    Log.d(TAG, "searchJobPostings: Fetching on db");
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        Log.d("GigWork", "Fetched " + querySnapshot.size() + " job postings");
+                        if (querySnapshot != null) {
+                            LinearLayout gigWorkList = findViewById(R.id.gig_work_list);
+                            gigWorkList.removeAllViews();
+                            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                                Log.d(TAG, "searchJobPostings: Document ID: " + document.getId());
+                                String jobTitle = document.getString("title");
+                                String jobDescription = document.getString("employer_name");
+                                String profile_picture_firebase = document.getString("employer_profile_pic");
+
+                                // Display job postings in the UI
+                                View gigWorkItem = getLayoutInflater().inflate(R.layout.gig_work_item, null);
+                                TextView jobTitleTextView = gigWorkItem.findViewById(R.id.job_title);
+                                TextView jobDescriptionTextView = gigWorkItem.findViewById(R.id.worker_name);
+                                TextView online_or_not = gigWorkItem.findViewById(R.id.online_or_not);
+                                ImageView profile_picture = gigWorkItem.findViewById(R.id.profile_picture);
+
+
+                                jobTitleTextView.setText(jobTitle);
+                                jobDescriptionTextView.setText(jobDescription);
+                                online_or_not.setText("Looking for Hiring:");
+                                Picasso.get().load(profile_picture_firebase).into(profile_picture);
+
+                                gigWorkItem.setOnClickListener(v -> {
+                                    Intent intent = new Intent(GigWork.this, JobPostDescription.class);
+                                    intent.putExtra("jobId", document.getId());
+                                    startActivity(intent);
+                                });
+
+                                gigWorkList.addView(gigWorkItem);
+                            }
+                        }
+                    }
+                });
     }
 
     private void fetchWorkers() {
