@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +24,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,6 +35,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Dashboard extends AppCompatActivity {
 
@@ -72,6 +79,7 @@ public class Dashboard extends AppCompatActivity {
         barangay_button = findViewById(R.id.barangay_button);
         gig_work = findViewById(R.id.gig_work);
         ImageView notification = findViewById(R.id.notification);
+        LinearLayout transaction_history_container = findViewById(R.id.transaction_history_container);
 
         notification.setOnClickListener(v -> {
             Intent intent = new Intent(Dashboard.this, Notifications.class);
@@ -147,5 +155,91 @@ public class Dashboard extends AppCompatActivity {
 
 
         });
+
+
+
+        String documentId = sharedPrefs.getString("documentId", "");
+
+        db.collection("work_contracts")
+                .whereEqualTo("for", documentId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        transaction_history_container.removeAllViews();
+                        for (DocumentSnapshot document : task.getResult()) {
+                            Log.d(TAG, document.getId() + " => " + document.getData());
+//                            work_contract_list.add(document.getData());
+
+
+                            View view = getLayoutInflater().inflate(R.layout.transaction_history, null, false);
+                            TextView contractor_name = view.findViewById(R.id.name);
+                            TextView job_title = view.findViewById(R.id.type_of_work);
+                            TextView status = view.findViewById(R.id.status);
+                            ImageView contractor_image = view.findViewById(R.id.image);
+
+                            contractor_name.setText(document.getString("notesToContractor"));
+                            job_title.setText(document.getString("modeOfPayment"));
+                            status.setText(document.getString("status"));
+
+                            view.setOnClickListener(v -> {
+                                Intent intent = new Intent(Dashboard.this, ContractPreview.class);
+                                intent.putExtra("contractId", document.getId());
+                                startActivity(intent);
+                            });
+
+                            if (status.getText().toString().equals("Completed")) {
+                                status.setTextColor(Color.GREEN);
+                            } else {
+                                status.setTextColor(Color.parseColor("#FFA500"));
+                            }
+
+                            transaction_history_container.addView(view);
+                        }
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
+
+        db.collection("work_contracts")
+                .whereEqualTo("by", documentId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        transaction_history_container.removeAllViews();
+                        for (DocumentSnapshot document : task.getResult()) {
+                            Log.d(TAG, document.getId() + " => " + document.getData());
+//                            work_contract_list.add(document.getData());
+
+                            View view = getLayoutInflater().inflate(R.layout.transaction_history, null, false);
+                            TextView contractor_name = view.findViewById(R.id.name);
+                            TextView job_title = view.findViewById(R.id.type_of_work);
+                            TextView status = view.findViewById(R.id.status);
+                            ImageView contractor_image = view.findViewById(R.id.image);
+
+                            contractor_name.setText(document.getString("notesToContractor"));
+                            job_title.setText(document.getString("modeOfPayment"));
+                            status.setText(document.getString("status"));
+
+                            if (status.getText().toString().equals("Completed")) {
+                                status.setTextColor(Color.GREEN);
+                            } else {
+                                status.setTextColor(Color.parseColor("#FFA500"));
+                            }
+
+
+                            view.setOnClickListener(v -> {
+                                Intent intent = new Intent(Dashboard.this, ContractPreview.class);
+                                intent.putExtra("contractId", document.getId());
+                                startActivity(intent);
+                            });
+
+
+                            transaction_history_container.addView(view);
+                        }
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
+
     }
 }

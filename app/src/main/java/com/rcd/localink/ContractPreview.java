@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -169,6 +170,12 @@ public class ContractPreview extends AppCompatActivity {
                     by.set(document.getString("by"));
                     for_id.set(document.getString("for"));
                     job_id.set(document.getString("jobId"));
+
+                    ImageView back_button = findViewById(R.id.back_button);
+
+                    back_button.setOnClickListener(v -> {
+                        finish();
+                    });
 
                     String type = document.getString("type");
 

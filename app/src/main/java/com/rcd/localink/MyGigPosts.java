@@ -76,7 +76,7 @@ public class MyGigPosts extends AppCompatActivity {
     private void fetchJobPostings() {
         Toast.makeText(this, "Fetching job postings", Toast.LENGTH_SHORT).show();
 
-        db.collection("job_postings").whereEqualTo("employer_id", sharedPrefs.getString("documentId", "")).get().addOnCompleteListener(task -> {
+        db.collection("job_postings").whereEqualTo("employer_id", sharedPrefs.getString("documentId", "")).limit(1).get().addOnCompleteListener(task -> {
             Log.d(TAG, "fetchJobPostings: Fetching on db");
             if (task.isSuccessful()) {
                 QuerySnapshot querySnapshot = task.getResult();

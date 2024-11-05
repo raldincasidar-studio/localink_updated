@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -39,6 +40,14 @@ public class BarangayHiring extends AppCompatActivity {
         Button volunteer_button = findViewById(R.id.volunteer_button);
         SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
         String user_type = sharedPrefs.getString("user_type", "");
+
+        ImageView back_button = findViewById(R.id.back_button);
+
+        back_button.setOnClickListener(v -> {
+            finish();
+        });
+
+
         if(user_type.equals("admin")){
             fab.show();
         } else {

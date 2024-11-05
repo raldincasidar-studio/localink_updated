@@ -3,16 +3,21 @@ package com.rcd.localink;
 import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +36,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -53,6 +60,9 @@ public class Signup extends AppCompatActivity {
     private EditText confirmPasswordEditText;
     private EditText phoneNumberEditText;
     private EditText addressEditText;
+    private EditText age;
+    private Spinner gender;
+    private EditText Birthdate;
 
     private ImageView profile_image;
 
@@ -88,12 +98,58 @@ public class Signup extends AppCompatActivity {
         lastNameEditText = findViewById(R.id.last_name);
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
+        age = findViewById(R.id.age);
+        gender = findViewById(R.id.gender);
+        Birthdate = findViewById(R.id.birthdate);
         confirmPasswordEditText = findViewById(R.id.confirm_password);
         phoneNumberEditText = findViewById(R.id.phone_number);
         addressEditText = findViewById(R.id.address);
         loginButton = findViewById(R.id.login_button);
         upload_profile = findViewById(R.id.upload_profile);
         profile_image = findViewById(R.id.profile_image);
+        CheckBox checkbox = findViewById(R.id.checkbox);
+
+        passwordEditText.setOnTouchListener((v, event) -> {
+            final int DRAWABLE_LEFT = 0;
+            final int DRAWABLE_TOP = 1;
+            final int DRAWABLE_RIGHT = 2;
+            final int DRAWABLE_BOTTOM = 3;
+
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= (passwordEditText.getRight() - passwordEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    if (passwordEditText.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                        passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+
+                    } else {
+                        passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+                    }
+                    return true;
+                }
+            }
+            return false;
+        });
+
+        confirmPasswordEditText.setOnTouchListener((v, event) -> {
+            final int DRAWABLE_LEFT = 0;
+            final int DRAWABLE_TOP = 1;
+            final int DRAWABLE_RIGHT = 2;
+            final int DRAWABLE_BOTTOM = 3;
+
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= (confirmPasswordEditText.getRight() - confirmPasswordEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    if (confirmPasswordEditText.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                        confirmPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+
+                    } else {
+                        confirmPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+                    }
+                    return true;
+                }
+            }
+            return false;
+        });
 
         // signup onclick listener
 
@@ -149,6 +205,16 @@ public class Signup extends AppCompatActivity {
             }
         });
 
+        Birthdate.setOnClickListener(v -> {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, (datePicker, year, month, dayOfMonth) -> {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, dayOfMonth);
+                SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy");
+                Birthdate.setText(format.format(calendar.getTime()));
+            }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.show();
+        });
+
         signupGoogleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,9 +232,17 @@ public class Signup extends AppCompatActivity {
                 String password = passwordEditText.getText().toString();
                 String phoneNumber = phoneNumberEditText.getText().toString();
                 String address = addressEditText.getText().toString();
+                String age1 = age.getText().toString();
+                String gender1 = gender.getSelectedItem().toString();
+                String birthdate = Birthdate.getText().toString();
 
 
-                if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || profile_uri == null) {
+                if (!checkbox.isChecked()) {
+                    Toast.makeText(Signup.this, "Please agree to the terms and conditions", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || profile_uri == null || age1.isEmpty() || gender1.isEmpty() || birthdate.isEmpty()) {
                     Toast.makeText(Signup.this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -251,6 +325,9 @@ public class Signup extends AppCompatActivity {
                         user.put("phoneNumber", phoneNumber);
                         user.put("address", address);
                         user.put("user_type", user_type);
+                        user.put("age", age1);
+                        user.put("gender", gender1);
+                        user.put("birthdate", birthdate);
                         user.put("profile_picture", firebaseDownloadUrl);
 
 
