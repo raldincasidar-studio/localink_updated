@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,6 +26,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ContractPreview extends AppCompatActivity {
 
+
+    public LinearLayout review_to_user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,12 +54,20 @@ public class ContractPreview extends AppCompatActivity {
         Button contract_details = findViewById(R.id.contract_details);
         Button complete_contract = findViewById(R.id.complete_contract);
 
-        LinearLayout user_profile_container = findViewById(R.id.user_profile_container);
+
+
+
+
+
+
 
         LinearLayout accept_buttons = findViewById(R.id.accept_buttons);
+        review_to_user = findViewById(R.id.review_to_user);
 
         String id = getIntent().getStringExtra("contractId");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
 
         AtomicReference<String> by = new AtomicReference<>();
         AtomicReference<String> for_id = new AtomicReference<>();
@@ -79,7 +90,7 @@ public class ContractPreview extends AppCompatActivity {
                             put("for", by.get());
                             put("by", sharedPrefs.getString("documentId", ""));
                             put("picture", sharedPrefs.getString("profile_picture", ""));
-                            put("notification_content", "Your contract with " + sharedPrefs.getString("firstName", "") + " has been completed. Check your contract information here");
+                            put("notification_content", "Your contract with " + sharedPrefs.getString("firstName", "") + " has been completed. Leave a Review now!");
                             put("isSeen", false);
                             put("extraIntent", id);
                             put("type", "contract");
@@ -194,6 +205,12 @@ public class ContractPreview extends AppCompatActivity {
                         complete_contract.setVisibility(View.GONE);
                     }
 
+                    if (document.getString("status").equals("Completed")) {
+                        review_to_user.setVisibility(View.VISIBLE);
+                    } else {
+                        review_to_user.setVisibility(View.GONE);
+                    }
+
                     if (type.equals("worker")) {
                         contract_details.setText("Hiring Details");
                         contract_details.setOnClickListener(v -> {
@@ -209,6 +226,37 @@ public class ContractPreview extends AppCompatActivity {
                             startActivity(intent);
                         });
                     }
+
+                    EditText comment_box = findViewById(R.id.comment_box);
+                    Button comment_button = findViewById(R.id.comment_button);
+
+                    comment_button.setOnClickListener(v -> {
+                        String comment = comment_box.getText().toString();
+
+                        SharedPreferences userPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
+                        String jobId = userPrefs.getString("jobId", "");
+                        String posterId = (by.get().equals(userPrefs.getString("documentId", "")) ? for_id.get() : by.get());
+                        String userId = userPrefs.getString("documentId", "");
+                        String firstName = userPrefs.getString("firstName", "");
+                        String middleName = userPrefs.getString("middleName", "");
+                        String lastName = userPrefs.getString("lastName", "");
+                        String userName = firstName + " " + middleName + " " + lastName;
+                        String userProfilePicture = userPrefs.getString("profile_picture", "");
+
+                        HashMap<String, Object> review = new HashMap<>();
+                        review.put("by", userId);
+                        review.put("for", posterId);
+                        review.put("by_name", userName);
+                        review.put("by_profile_picture", userProfilePicture);
+                        review.put("content", comment);
+                        review.put("date_added", FieldValue.serverTimestamp());
+
+                        db.collection("reviews").add(review).addOnSuccessListener(documentReference -> {
+                            Toast.makeText(ContractPreview.this, "Review sent", Toast.LENGTH_SHORT).show();
+                            comment_box.setText("");
+                        });
+
+                    });
                 }
             }
         });

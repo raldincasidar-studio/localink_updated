@@ -315,113 +315,11 @@
 
                 </LinearLayout>
 
-                <!-- Transaction History Person -->
                 <LinearLayout
+                    android:id="@+id/reviews_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="15dp"
-                    android:gravity="center"
-                    >
-
-                    <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:baselineAlignBottom="false"
-                        android:layout_margin="10dp"
-                        android:maxWidth="30dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/avatar"
-                        android:background="@drawable/circle_avatar"
-                        android:clipToOutline="true"
-                        android:textAlignment="center" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Aubrey Gonzales"
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            android:layout_marginBottom="10dp"
-                            android:textStyle="bold"/>
-
-
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Sobrang Bait ni maam Zephanie. She handled it ..."
-                            android:textColor="#808080"
-                            android:textSize="15sp"
-                            android:lineHeight="20dp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="10dp"/>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <!-- Transaction History Person -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="15dp"
-                    android:gravity="center"
-                    >
-
-                    <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:baselineAlignBottom="false"
-                        android:layout_margin="10dp"
-                        android:maxWidth="30dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/avatar"
-                        android:background="@drawable/circle_avatar"
-                        android:clipToOutline="true"
-                        android:textAlignment="center" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Aubrey Gonzales"
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            android:layout_marginBottom="10dp"
-                            android:textStyle="bold"/>
-
-
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Sobrang Bait ni maam Zephanie. She handled it ..."
-                            android:textColor="#808080"
-                            android:textSize="15sp"
-                            android:lineHeight="20dp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="10dp"/>
-
-                    </LinearLayout>
+                    android:orientation="vertical">
 
                 </LinearLayout>
 
@@ -459,6 +357,19 @@
                     android:layout_marginEnd="10dp"></Button>
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/delete_job_post"
+                android:layout_width="match_parent"
+                android:layout_margin="15dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:backgroundTint="#FF0000"
+                android:text="Delete Job Post"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"></Button>
 
 
         </LinearLayout>

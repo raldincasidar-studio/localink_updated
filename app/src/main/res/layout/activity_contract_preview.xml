@@ -254,6 +254,39 @@
                 android:orientation="vertical">
 
 
+                <!-- Comment Box -->
+                <LinearLayout
+                    android:id="@+id/review_to_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_border"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/comment_box"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:layout_weight="1"
+                        android:hint="Give Review"
+                        android:paddingVertical="10dp"
+                        android:paddingHorizontal="15dp"
+                        android:textSize="15sp"
+                        android:inputType="text" />
+
+                    <Button
+                        android:id="@+id/comment_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:stateListAnimator="@null"
+                        android:text="Submit"
+                        android:background="@null"
+                        android:layout_marginRight="10dp"
+                        android:textSize="15sp"
+                        android:textColor="#22996E" />
+
+                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/accept_buttons"
                     android:layout_width="match_parent"

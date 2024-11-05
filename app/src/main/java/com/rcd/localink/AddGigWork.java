@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -105,15 +106,32 @@ public class AddGigWork extends AppCompatActivity {
         jobPost.put("date_added", dateAdded);
         jobPost.put("ratings", new ArrayList<>()); // Empty ratings array
 
-        // Add job post to Firestore
-        jobPostingsRef.add(jobPost)
-            .addOnSuccessListener(documentReference -> {
-                Toast.makeText(this, "Job post saved successfully!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, GigWork.class);
-                startActivity(intent);
-            })
-            .addOnFailureListener(e -> {
-                Toast.makeText(this, "Error saving job post: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            });
+
+        // Check if job post with employer_id already exists
+        jobPostingsRef.whereEqualTo("employer_id", employerId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null && querySnapshot.size() > 0) {
+                            Toast.makeText(this, "You can only have one active job posting!", Toast.LENGTH_SHORT).show();
+                            finish();
+                            return;
+                        } else {
+                            // Add job post to Firestore
+                            jobPostingsRef.add(jobPost)
+                                    .addOnSuccessListener(documentReference -> {
+                                        Toast.makeText(this, "Job post saved successfully!", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(this, GigWork.class);
+                                        startActivity(intent);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(this, "Error saving job post: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
+                        }
+                    }
+                });
+
+
     }
 }

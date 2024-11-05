@@ -1,12 +1,19 @@
 package com.rcd.localink;
 
+import static android.content.ContentValues.TAG;
+
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -81,10 +88,64 @@ public class JobPostDescription extends AppCompatActivity {
 
                             SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
                             String documentId = sharedPrefs.getString("documentId", "");
+                            Button delete_job_post = findViewById(R.id.delete_job_post);
                             if (documentId.equals(employerId)) {
                                 chat.setVisibility(View.GONE);
                                 propose_contract.setVisibility(View.GONE);
+
+                                delete_job_post.setVisibility(View.VISIBLE);
+                                delete_job_post.setOnClickListener(v -> {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                                    builder.setTitle("Delete Job Post");
+                                    builder.setMessage("Are you sure you want to delete this job post?");
+                                    builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+
+                                        db.collection("job_postings").document(jobId).delete();
+                                        finish();
+                                    });
+                                    builder.setNegativeButton("No", (dialogInterface, i) -> {
+
+                                    });
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                });
+                            } else {
+                                delete_job_post.setVisibility(View.GONE);
                             }
+                            LinearLayout transaction_history_container = findViewById(R.id.reviews_container);
+
+//                          Get reviews
+                            db.collection("reviews")
+                                    .whereEqualTo("for", employerId)
+                                    .get()
+                                    .addOnCompleteListener(task2 -> {
+                                        if (task2.isSuccessful()) {
+                                            transaction_history_container.removeAllViews();
+                                            for (DocumentSnapshot document2 : task2.getResult()) {
+                                                Log.d(TAG, document2.getId() + " => " + document2.getData());
+
+                                                View view = getLayoutInflater().inflate(R.layout.review_item, null, false);
+                                                TextView name = view.findViewById(R.id.name);
+                                                ImageView image = view.findViewById(R.id.image);
+                                                TextView content = view.findViewById(R.id.content);
+
+                                                name.setText(document2.getString("by_name"));
+                                                Picasso.get().load(document2.getString("by_profile_picture")).into(image);
+                                                content.setText(document2.getString("content"));
+
+                                                view.setOnClickListener(v -> {
+                                                    Toast.makeText(this, "Review item clicked", Toast.LENGTH_SHORT).show();
+                                                });
+
+                                                transaction_history_container.addView(view);
+                                                view.setVisibility(View.VISIBLE);
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task2.getException());
+                                        }
+                                    });
+
+
 
                             propose_contract.setOnClickListener(v -> {
 

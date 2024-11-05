@@ -1,10 +1,16 @@
 package com.rcd.localink;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,6 +79,38 @@ public class GigWorkerProfile extends AppCompatActivity {
                         intent.putExtra("person", workerId);
                         startActivity(intent);
                     });
+
+                    // Get reviews
+                    LinearLayout transaction_history_container = findViewById(R.id.reviews_container);
+                    db.collection("reviews")
+                            .whereEqualTo("for", workerId)
+                            .get()
+                            .addOnCompleteListener(task2 -> {
+                                if (task2.isSuccessful()) {
+                                    transaction_history_container.removeAllViews();
+                                    for (DocumentSnapshot document2 : task2.getResult()) {
+                                        Log.d(TAG, document2.getId() + " => " + document2.getData());
+
+                                        View view = getLayoutInflater().inflate(R.layout.review_item, null, false);
+                                        TextView name2 = view.findViewById(R.id.name);
+                                        ImageView image = view.findViewById(R.id.image);
+                                        TextView content = view.findViewById(R.id.content);
+
+                                        name2.setText(document2.getString("by_name"));
+                                        Picasso.get().load(document2.getString("by_profile_picture")).into(image);
+                                        content.setText(document2.getString("content"));
+
+                                        view.setOnClickListener(v -> {
+                                            Toast.makeText(this, "Review item clicked", Toast.LENGTH_SHORT).show();
+                                        });
+
+                                        transaction_history_container.addView(view);
+                                        view.setVisibility(View.VISIBLE);
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task2.getException());
+                                }
+                            });
 
                     propose_contract.setOnClickListener(v -> {
 

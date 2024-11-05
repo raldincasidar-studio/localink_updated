@@ -16,6 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -121,6 +122,13 @@ public class MainActivity extends AppCompatActivity {
                 // Get the text from email and password EditText
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
+
+                CheckBox checkbox = findViewById(R.id.checkbox);
+
+                if (!checkbox.isChecked()) {
+                    Toast.makeText(MainActivity.this, "Please agree to the terms and conditions", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 loginButton.setEnabled(false);
                 loginButton.setText("Loading ...");
