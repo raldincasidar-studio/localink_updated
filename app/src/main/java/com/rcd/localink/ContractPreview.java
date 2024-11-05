@@ -69,6 +69,9 @@ public class ContractPreview extends AppCompatActivity {
 
                     String type = document.getString("type");
 
+
+
+
                     if (type.equals("worker")) {
                         contract_details.setText("Hiring Details");
                         contract_details.setOnClickListener(v -> {
