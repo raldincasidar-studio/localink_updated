@@ -44,6 +44,21 @@ public class GigWork extends AppCompatActivity {
 
         ImageView backButton = findViewById(R.id.back_button);
 
+        Button my_posts_button = findViewById(R.id.my_posts_button);
+
+
+        if (!userType.equals("Employer")) {
+            my_posts_button.setVisibility(View.GONE);
+        }
+
+        if (userType.equals("Employer")) {
+            fab.show();
+        } else {
+            fab.hide();
+        }
+
+
+
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, Dashboard.class);
             startActivity(intent);

@@ -51,6 +51,14 @@ public class Barangay extends AppCompatActivity {
         profile_image = findViewById(R.id.profile_image);
         add_post_button = findViewById(R.id.add_post_button);
 
+        SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
+        String user_type = sharedPrefs.getString("user_type", "");
+        if(user_type.equals("admin")){
+            add_post_button.show();
+        } else {
+            add_post_button.hide();
+        }
+
         Button hiring_button = findViewById(R.id.hiring_button);
         hiring_button.setOnClickListener(v -> {
             Intent intent = new Intent(this, BarangayHiring.class);
@@ -60,7 +68,6 @@ public class Barangay extends AppCompatActivity {
         volunteer_works_list = findViewById(R.id.volunteer_works_list);
         current_volunteer_works_list = findViewById(R.id.current_volunteer_works_list);
 
-        SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
         String profilePicture = sharedPrefs.getString("profile_picture", "");
         Picasso.get().load(profilePicture).into(profile_image);
 

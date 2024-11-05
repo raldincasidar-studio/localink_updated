@@ -1,6 +1,7 @@
 package com.rcd.localink;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,12 @@ public class Notifications extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        ImageView back_button = findViewById(R.id.back_button);
+
+        back_button.setOnClickListener(view -> {
+            finish();
         });
     }
 }

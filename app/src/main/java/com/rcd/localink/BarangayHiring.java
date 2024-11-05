@@ -37,6 +37,13 @@ public class BarangayHiring extends AppCompatActivity {
         LinearLayout volunteer_works_list = findViewById(R.id.volunteer_works_list);
         LinearLayout current_volunteer_works_list = findViewById(R.id.current_volunteer_works_list);
         Button volunteer_button = findViewById(R.id.volunteer_button);
+        SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
+        String user_type = sharedPrefs.getString("user_type", "");
+        if(user_type.equals("admin")){
+            fab.show();
+        } else {
+            fab.hide();
+        }
 
         volunteer_button.setOnClickListener(v -> {
             Intent intent = new Intent(this, Barangay.class);
@@ -83,7 +90,6 @@ public class BarangayHiring extends AppCompatActivity {
             }
         });
 
-        SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
         String documentId = sharedPrefs.getString("documentId", "");
         db.collection("barangay_hiring_contracts").whereEqualTo("userId", documentId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
