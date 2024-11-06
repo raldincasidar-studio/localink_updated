@@ -98,5 +98,12 @@ public class AdminPanel extends AppCompatActivity {
             Intent intent = new Intent(AdminPanel.this, Barangay.class);
             startActivity(intent);
         });
+
+        Button community_wall = findViewById(R.id.community_wall);
+
+        community_wall.setOnClickListener(view -> {
+            Intent intent = new Intent(AdminPanel.this, CommunityWall.class);
+            startActivity(intent);
+        });
     }
 }

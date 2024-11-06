@@ -204,6 +204,7 @@ This objective is only valid for one-time participation."
 
                 <!-- Participants -->
                 <LinearLayout
+                    android:id="@+id/participants_box"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="15dp"

@@ -113,10 +113,12 @@ public class VolunteerWorkDescription extends AppCompatActivity {
         LinearLayout participants_container = findViewById(R.id.participants_container);
         String user_id = sharedPrefs.getString("documentId", "");
 
+        LinearLayout participants_box = findViewById(R.id.participants_box);
+
         if (type.equals("Admin")) {
-            participants_container.setVisibility(View.VISIBLE);
+            participants_box.setVisibility(View.VISIBLE);
         } else {
-            participants_container.setVisibility(View.GONE);
+            participants_box.setVisibility(View.GONE);
         }
 
         db.collection("volunteer_transactions").whereEqualTo("volunteer_work", volunteer_work_id).get().addOnCompleteListener(task -> {

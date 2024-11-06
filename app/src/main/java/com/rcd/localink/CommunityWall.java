@@ -315,7 +315,7 @@ public class CommunityWall extends AppCompatActivity {
 
                                 SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
                                 String documentId = sharedPrefs.getString("documentId", "");
-                                if (userId3.equals(documentId)) {
+                                if (userId3.equals(documentId) || sharedPrefs.getString("user_type", "").equals("Admin")) {
                                     edit_post.setVisibility(View.VISIBLE);
                                 } else {
                                     edit_post.setVisibility(View.GONE);
@@ -472,7 +472,7 @@ public class CommunityWall extends AppCompatActivity {
 
                                         String myDocumentId = sharedPrefs.getString("documentId", "");
 
-                                        if (userId.equals(myDocumentId)) {
+                                        if (userId.equals(myDocumentId) || sharedPrefs.getString("user_type", "").equals("Admin")) {
                                             edit_comment.setVisibility(View.VISIBLE);
                                         } else {
                                             edit_comment.setVisibility(View.GONE);
