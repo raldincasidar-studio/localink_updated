@@ -240,6 +240,12 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
+
+        if (user_type.equals("Admin")) {
+            employer_button.setVisibility(View.GONE);
+            worker.setVisibility(View.GONE);
+        }
+
         signupGoogleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

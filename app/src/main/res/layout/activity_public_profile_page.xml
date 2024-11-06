@@ -154,6 +154,7 @@
 
             <!-- Pinned Announcements -->
             <LinearLayout
+                android:id="@+id/document_submitted"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
@@ -287,6 +288,24 @@
                     android:textSize="16dp"
                     android:layout_marginTop="10dp"/>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Verification Status"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/verification_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="09752059872"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
 
             </LinearLayout>
 
@@ -339,6 +358,84 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Reviews -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/dashboard_border"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="10dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Document Submitted"
+                        android:textColor="@color/black"
+                        android:textSize="19sp"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="See More"
+                        android:visibility="invisible"
+                        android:textColor="#868484"
+                        android:textSize="15sp"
+                        android:textAlignment="textEnd"
+                        />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/document_valid_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_image_post"
+                    android:layout_marginTop="0dp"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:clipToOutline="true"
+                    android:src="@drawable/post_image" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/verify_user"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Verify User"
+                        android:backgroundTint="#77DD77" />
+                    <Button
+                        android:id="@+id/decline_user"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Decline User"
+                        android:backgroundTint="#FF6961" />
                 </LinearLayout>
 
             </LinearLayout>

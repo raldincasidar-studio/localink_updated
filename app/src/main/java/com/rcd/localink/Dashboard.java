@@ -101,6 +101,16 @@ public class Dashboard extends AppCompatActivity {
             startActivity(intent);
         });
 
+
+        SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
+        String user_type = sharedPrefs.getString("user_type", "");
+
+        if (user_type.equals("Admin")) {
+            Intent intent = new Intent(Dashboard.this, AdminPanel.class);
+            startActivity(intent);
+            finish();
+        }
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("announcements").whereEqualTo("isPinned", true)
                 .limit(1)
@@ -123,7 +133,6 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
-        SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
         String profilePicture = sharedPrefs.getString("profile_picture", "");
         Picasso.get().load(profilePicture).into(profile_image);
 
@@ -162,6 +171,7 @@ public class Dashboard extends AppCompatActivity {
 
         db.collection("work_contracts")
                 .whereEqualTo("for", documentId)
+                .whereEqualTo("status", "Completed")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -254,7 +264,56 @@ public class Dashboard extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        ongoing_transaction_container.removeAllViews();
+                        if (!task.getResult().isEmpty()) {
+                            ongoing_transaction_container.removeAllViews();
+                        }
+                        for (DocumentSnapshot document : task.getResult()) {
+                            Log.d(TAG, document.getId() + " => " + document.getData());
+//                            work_contract_list.add(document.getData());
+
+                            View view = getLayoutInflater().inflate(R.layout.transaction_history, null, false);
+                            TextView contractor_name = view.findViewById(R.id.name);
+                            TextView job_title = view.findViewById(R.id.type_of_work);
+                            TextView status = view.findViewById(R.id.status);
+                            ImageView contractor_image = view.findViewById(R.id.image);
+
+                            contractor_name.setText(document.getString("notesToContractor"));
+                            job_title.setText(document.getString("modeOfPayment"));
+                            status.setText(document.getString("status"));
+
+                            if (status.getText().toString().equals("Completed")) {
+                                status.setTextColor(Color.GREEN);
+                            } else {
+                                status.setTextColor(Color.parseColor("#FFA500"));
+                            }
+
+
+                            view.setOnClickListener(v -> {
+                                Intent intent = new Intent(Dashboard.this, ContractPreview.class);
+                                intent.putExtra("contractId", document.getId());
+                                startActivity(intent);
+                            });
+
+
+                            ongoing_transaction_container.addView(view);
+                        }
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
+
+        db.collection("work_contracts")
+                .whereEqualTo("for", documentId)
+                .whereEqualTo("status", "On-going transaction")
+                .limit(1)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+
+                        if (!task.getResult().isEmpty()) {
+                            ongoing_transaction_container.removeAllViews();
+                        }
+
                         for (DocumentSnapshot document : task.getResult()) {
                             Log.d(TAG, document.getId() + " => " + document.getData());
 //                            work_contract_list.add(document.getData());

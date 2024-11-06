@@ -202,6 +202,127 @@ This objective is only valid for one-time participation."
                         android:layout_marginBottom="10dp"/>
                 </LinearLayout>
 
+                <!-- Participants -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/dashboard_border"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginBottom="10dp"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Participants"
+                            android:textColor="@color/black"
+                            android:textSize="19sp"
+                            />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:visibility="invisible"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="See More"
+                            android:textColor="#868484"
+                            android:textSize="15sp"
+                            android:textAlignment="textEnd"
+                            />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/participants_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- Volunteers -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="15dp"
+                            android:gravity="center"
+                            app:layout_constraintStart_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            >
+
+                            <ImageView
+                                android:id="@+id/image"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:baselineAlignBottom="false"
+                                android:layout_margin="10dp"
+                                android:maxWidth="30dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/avatar"
+                                android:background="@drawable/circle_avatar"
+                                android:clipToOutline="true"
+                                android:textAlignment="center" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Aubrey Gonzales"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:layout_marginBottom="10dp"
+                                    android:textStyle="bold"/>
+
+
+
+                                <TextView
+                                    android:id="@+id/content"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Not yet completed"
+                                    android:textColor="#808080"
+                                    android:textSize="15sp"
+                                    android:lineHeight="20dp"
+                                    android:textStyle="bold"
+                                    android:layout_marginBottom="10dp"/>
+
+                                <Button
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:text="Mark as Complete" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
                 <!-- Confirmation -->
                 <LinearLayout
                     android:layout_width="wrap_content"

@@ -86,7 +86,7 @@ public class VolunteerWorkDescription extends AppCompatActivity {
         question_prompt = findViewById(R.id.question_prompt);
 
         String type = sharedPrefs.getString("user_type", "");
-        if (type.equals("admin")) {
+        if (type.equals("Admin")) {
             edit_button.setVisibility(View.VISIBLE);
         } else {
             edit_button.setVisibility(View.GONE);
@@ -110,8 +110,79 @@ public class VolunteerWorkDescription extends AppCompatActivity {
                 }
             }
         });
-
+        LinearLayout participants_container = findViewById(R.id.participants_container);
         String user_id = sharedPrefs.getString("documentId", "");
+
+        if (type.equals("Admin")) {
+            participants_container.setVisibility(View.VISIBLE);
+        } else {
+            participants_container.setVisibility(View.GONE);
+        }
+
+        db.collection("volunteer_transactions").whereEqualTo("volunteer_work", volunteer_work_id).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                QuerySnapshot querySnapshot = task.getResult();
+                if (querySnapshot != null && querySnapshot.size() > 0) {
+
+                    for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                        View view = getLayoutInflater().inflate(R.layout.barangay_participants, participants_container, false);
+                        TextView name = view.findViewById(R.id.name);
+                        TextView status = view.findViewById(R.id.status);
+                        ImageView profile_image = view.findViewById(R.id.image);
+
+                        name.setText(document.getString("volunteer_name"));
+                        status.setText(document.getBoolean("isCompleted") ? "Completed" : "Not yet completed");
+
+                        String profile_picture = document.getString("profile_image");
+                        if (profile_picture != null) {
+                            Picasso.get().load(profile_picture).into(profile_image);
+                        }
+
+
+
+                        Button mark_as_complete = view.findViewById(R.id.mark_as_complete);
+
+                        if (document.getBoolean("isCompleted")) {
+                            status.setText("Completed");
+                            mark_as_complete.setEnabled(false);
+                            mark_as_complete.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+                        }
+
+                        mark_as_complete.setOnClickListener(v -> {
+                            db.collection("volunteer_transactions").document(document.getId()).update("isCompleted", true).addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    Toast.makeText(VolunteerWorkDescription.this, "Transaction marked as completed", Toast.LENGTH_SHORT).show();
+                                    status.setText("Completed");
+                                    mark_as_complete.setEnabled(false);
+                                    mark_as_complete.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+
+
+                                    // Add Notification
+                                    db.collection("notifications").add(new HashMap<String, Object>(){{
+                                        put("date_added", FieldValue.serverTimestamp());
+                                        put("for", document.getString("volunteer"));
+                                        put("by", sharedPrefs.getString("documentId", ""));
+                                        put("picture", sharedPrefs.getString("profile_picture", ""));
+                                        put("notification_content", "Administrator has marked your participation as completed!");
+                                        put("isSeen", false);
+                                        put("extraIntent", volunteer_work_id);
+                                        put("type", "volunteer_work");
+                                    }}).addOnSuccessListener(documentReference -> {
+                                        Toast.makeText(VolunteerWorkDescription.this, "Successfuly marked as completed", Toast.LENGTH_SHORT).show();
+                                    });
+                                } else {
+                                    Toast.makeText(VolunteerWorkDescription.this, "Error marking transaction as completed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        });
+
+                        participants_container.addView(view);
+                    }
+                }
+            }
+        });
+
         AtomicReference<String> volunteerTransactionId = new AtomicReference<>();
         db.collection("volunteer_transactions").whereEqualTo("volunteer", user_id).whereEqualTo("volunteer_work", volunteer_work_id).limit(1).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -121,7 +192,7 @@ public class VolunteerWorkDescription extends AppCompatActivity {
 
                     yes_no.setVisibility(View.GONE);
 
-                    if (type.equals("admin")) {
+                    if (type.equals("Admin")) {
                         done_cont.setVisibility(View.VISIBLE);
                     }
 
@@ -191,6 +262,12 @@ public class VolunteerWorkDescription extends AppCompatActivity {
             });
 
         });
+
+
+
+        if (type.equals("Admin")) {
+            yes_no.setVisibility(View.GONE);
+        }
 
 
 

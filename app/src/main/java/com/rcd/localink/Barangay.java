@@ -53,7 +53,7 @@ public class Barangay extends AppCompatActivity {
 
         SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
         String user_type = sharedPrefs.getString("user_type", "");
-        if(user_type.equals("admin")){
+        if(user_type.equals("Admin")){
             add_post_button.show();
         } else {
             add_post_button.hide();

@@ -3,6 +3,7 @@ package com.rcd.localink;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -79,9 +80,31 @@ public class PublicProfilePage extends AppCompatActivity {
                     String lastNameValue = document.getString("lastName");
                     String middleNameValue = document.getString("middleName");
                     String phoneNumberValue = document.getString("phoneNumber");
+                    String verificationStatus = document.getString("verificationStatus");
+                    String validId = document.getString("valid_id");
+
+                    TextView verification_status = findViewById(R.id.verification_status);
+                    if (verificationStatus != null) {
+                        verification_status.setText(verificationStatus);
+                    } else {
+                        verification_status.setText("Pending");
+                    }
+
+                    Button verify_user = findViewById(R.id.verify_user);
+                    Button decline_user = findViewById(R.id.decline_user);
+                    if (verificationStatus != null && !verificationStatus.equals("Pending")) {
+                        verify_user.setVisibility(View.GONE);
+                        decline_user.setVisibility(View.GONE);
+                    }
 
                     Picasso.get().load(profile_picture_firebase).into(profileImage);
                     name.setText(workerName);
+
+                    ImageView document_valid_id = findViewById(R.id.document_valid_id);
+
+
+
+                    Picasso.get().load(validId).into(document_valid_id);
 
                     address.setText(addressValue);
                     availability.setText(availabilityValue);
@@ -96,6 +119,31 @@ public class PublicProfilePage extends AppCompatActivity {
                         intent.putExtra("person", workerId);
                         startActivity(intent);
                     });
+
+                    verify_user.setOnClickListener(v -> {
+                        db.collection("users").document(workerId).update("verificationStatus", "Verified");
+                        verify_user.setVisibility(View.GONE);
+                        decline_user.setVisibility(View.GONE);
+                        verification_status.setText("Verified");
+                        finish();
+                    });
+
+                    decline_user.setOnClickListener(v -> {
+                        db.collection("users").document(workerId).update("verificationStatus", "Declined");
+                        verify_user.setVisibility(View.GONE);
+                        decline_user.setVisibility(View.GONE);
+                        verification_status.setText("Declined");
+                        finish();
+                    });
+
+                    SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
+                    String user_type = sharedPrefs.getString("user_type", "");
+                    LinearLayout document_submitted = findViewById(R.id.document_submitted);
+                    if (user_type.equals("Admin")) {
+                        document_submitted.setVisibility(View.VISIBLE);
+                    } else {
+                        document_submitted.setVisibility(View.GONE);
+                    }
 
                     // Get reviews
                     LinearLayout transaction_history_container = findViewById(R.id.reviews_container);
