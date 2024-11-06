@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F1F1F1"
+    tools:context=".CommunityWall">
+
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <!-- Navbar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                >
+
+
+                <ImageView
+                    android:id="@+id/back_button"
+                    android:layout_width="42dp"
+                    android:layout_height="38dp"
+                    android:baselineAlignBottom="false"
+                    android:maxWidth="30dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/back"
+                    android:textAlignment="center" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Terms and Conditions"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:textStyle="bold"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:visibility="invisible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:baselineAlignBottom="false"
+                        android:maxWidth="30dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/bell"
+                        android:textAlignment="center" />
+
+                    <ImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="10dp"
+                        android:baselineAlignBottom="false"
+                        android:background="@drawable/circle_avatar"
+                        android:clipToOutline="true"
+
+                        android:maxWidth="30dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/avatar"
+                        android:textAlignment="center" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1. Acceptance of Terms\nBy using LocaLink, you agree to be bound by these Terms and Conditions. If you do not agree, please do not use the app. LocaLink reserves the right to update these terms at any time.\n\n2. User Eligibility and Verification\n	•	Users must be at least 18 years old to register.\n	•	All users are required to verify their identity with a government-issued ID, Barangay Clearance and NBI clearance. \n	•	Providing false information during verification will result in account termination.\n\n3. Account Responsibilities\n	•	Users are responsible for maintaining the confidentiality of their login credentials.\n	•	Users agree to use LocaLink for lawful purposes only and will not engage in fraudulent or abusive activities.\n	•	If any suspicious activity is detected, users must report it immediately to LocaLink support.\n\n4. Payment and Transaction Terms\n	•	Payments for services are to be agreed upon between clients and service providers. LocaLink does not handle payments directly.\n	•	Users should avoid upfront payments unless there is mutual trust, and always retain proof of transactions.\n\n5. Ratings and Reviews\n	•	After each completed service, users can leave honest reviews and ratings.\n	\n6. Reporting and Penalties for Misconduct\n	•	Users can report any fraudulent activity, harassment, or other misconduct directly in the app. Reports will be reviewed by barangay officials.\n	•	LocaLink reserves the right to suspend or permanently ban accounts that violate these terms or engage in suspicious activities.\n\n7. Data Privacy and Security\n	•	LocaLink uses Firebase to securely store user data. All data is encrypted and follows data protection regulations.\n	•	User data will not be shared with third parties unless required by law or to prevent fraud.\n\n8. Limitation of Liability\n	•	LocaLink is a platform that connects clients and service providers but is not liable for any disputes or issues arising from transactions between users.\n	•	Any transaction or agreement made between users is solely their responsibility.\nBy agreeing to these Terms and Conditions, you acknowledge that you have read, understood, and agree to follow all rules and policies set forth by LocaLink." />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

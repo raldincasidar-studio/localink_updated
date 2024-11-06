@@ -151,7 +151,6 @@ public class VolunteerWorkDescription extends AppCompatActivity {
                         mark_as_complete.setOnClickListener(v -> {
                             db.collection("volunteer_transactions").document(document.getId()).update("isCompleted", true).addOnCompleteListener(task1 -> {
                                 if (task1.isSuccessful()) {
-                                    Toast.makeText(VolunteerWorkDescription.this, "Transaction marked as completed", Toast.LENGTH_SHORT).show();
                                     status.setText("Completed");
                                     mark_as_complete.setEnabled(false);
                                     mark_as_complete.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
