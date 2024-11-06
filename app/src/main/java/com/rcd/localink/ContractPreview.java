@@ -341,6 +341,8 @@ public class ContractPreview extends AppCompatActivity {
                     } else {
                         show_for_admin_clickable.setVisibility(View.GONE);
                         review_to_user.setVisibility(View.VISIBLE);
+                        contract_details_text.setVisibility(View.GONE);
+                        contract_details.setVisibility(View.GONE);
                     }
 
                     db.collection("users").document(other_id).get().addOnSuccessListener(documentSnapshot -> {
