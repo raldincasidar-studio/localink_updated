@@ -331,9 +331,13 @@ public class ContractPreview extends AppCompatActivity {
                         startActivity(intent);
                     });
 
+
+                    TextView contract_details_text = findViewById(R.id.contract_details_text);
                     if (sharedPrefs.getString("user_type", "").equals("Admin")) {
                         show_for_admin_clickable.setVisibility(View.VISIBLE);
                         review_to_user.setVisibility(View.GONE);
+                        contract_details_text.setVisibility(View.GONE);
+                        contract_details.setVisibility(View.GONE);
                     } else {
                         show_for_admin_clickable.setVisibility(View.GONE);
                         review_to_user.setVisibility(View.VISIBLE);
