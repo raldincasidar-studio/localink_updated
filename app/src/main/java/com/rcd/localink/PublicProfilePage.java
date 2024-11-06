@@ -44,6 +44,13 @@ public class PublicProfilePage extends AppCompatActivity {
         TextView availability = findViewById(R.id.availability);
         Button chat = findViewById(R.id.chat);
 
+        TextView address = findViewById(R.id.address);
+        TextView email = findViewById(R.id.email);
+        TextView firstName = findViewById(R.id.first_name);
+        TextView lastName = findViewById(R.id.last_name);
+        TextView middleName = findViewById(R.id.middle_name);
+        TextView phoneNumber = findViewById(R.id.phone_number);
+
         ImageView back_button = findViewById(R.id.back_button);
 
         back_button.setOnClickListener(v -> {
@@ -65,12 +72,24 @@ public class PublicProfilePage extends AppCompatActivity {
                     String workerRates = document.getString("rates");
                     String workerAvailability = document.getString("availability");
 
+                    String addressValue = document.getString("address");
+                    String availabilityValue = document.getString("availability");
+                    String emailValue = document.getString("email");
+                    String firstNameValue = document.getString("firstName");
+                    String lastNameValue = document.getString("lastName");
+                    String middleNameValue = document.getString("middleName");
+                    String phoneNumberValue = document.getString("phoneNumber");
+
                     Picasso.get().load(profile_picture_firebase).into(profileImage);
                     name.setText(workerName);
-                    service.setText(workerTitle != null ? workerTitle : "Not set yet");
-                    location.setText(workerLocation != null ? workerLocation : "Not set yet");
-                    rates.setText(workerRates != null ? workerRates : "Not set yet");
-                    availability.setText(workerAvailability != null ? workerAvailability : "Not set yet");
+
+                    address.setText(addressValue);
+                    availability.setText(availabilityValue);
+                    email.setText(emailValue);
+                    firstName.setText(firstNameValue);
+                    lastName.setText(lastNameValue);
+                    middleName.setText(middleNameValue);
+                    phoneNumber.setText(phoneNumberValue);
 
                     chat.setOnClickListener(v -> {
                         Intent intent = new Intent(PublicProfilePage.this, ChatPage.class);
