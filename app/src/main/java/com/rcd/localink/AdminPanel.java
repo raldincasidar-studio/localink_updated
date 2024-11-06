@@ -112,5 +112,12 @@ public class AdminPanel extends AppCompatActivity {
             Intent intent = new Intent(AdminPanel.this, TransactionMonitoring.class);
             startActivity(intent);
         });
+
+        Button pinned_announcement_edit = findViewById(R.id.pinned_announcement_edit);
+
+        pinned_announcement_edit.setOnClickListener(view -> {
+            Intent intent = new Intent(AdminPanel.this, EditPinnedAnnouncement.class);
+            startActivity(intent);
+        });
     }
 }
