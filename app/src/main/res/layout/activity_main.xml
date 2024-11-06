@@ -78,21 +78,6 @@
 
                 android:layout_marginBottom="10dp"></EditText>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_marginTop="30dp"
-                android:layout_height="wrap_content">
-
-                <CheckBox
-                    android:id="@+id/checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_gravity="center"
-                    android:text="I agree to the terms and conditions"></CheckBox>
-
-            </LinearLayout>
-
             <Button
                 android:id="@+id/login_button"
                 android:layout_width="match_parent"

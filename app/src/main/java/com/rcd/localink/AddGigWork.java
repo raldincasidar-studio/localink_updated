@@ -65,6 +65,12 @@ public class AddGigWork extends AppCompatActivity {
         publishButton.setOnClickListener(v -> {
             saveJobPost();
         });
+
+        ImageView backButton = findViewById(R.id.back_button);
+
+        backButton.setOnClickListener(view -> {
+            finish();
+        });
     }
 
     // Function to save job post data

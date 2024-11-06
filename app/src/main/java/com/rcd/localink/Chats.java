@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
@@ -50,6 +51,7 @@ public class Chats extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("chats")
+            .orderBy("date_added", Query.Direction.DESCENDING)
             .get()
             .addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {

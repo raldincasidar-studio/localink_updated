@@ -19,6 +19,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -125,6 +126,7 @@ public class ChatPage extends AppCompatActivity {
             if (!messageText.isEmpty()) {
                 db.collection("chats").document(chatId).set(new HashMap<String, Object>() {{
                     put("last_message", messageText);
+                    put("date_added", FieldValue.serverTimestamp());
                 }}, SetOptions.merge());
                 db.collection("chats").document(chatId).collection("chats")
                     .add(new HashMap<String, Object>() {{

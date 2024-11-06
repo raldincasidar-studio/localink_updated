@@ -123,13 +123,6 @@ public class MainActivity extends AppCompatActivity {
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
-                CheckBox checkbox = findViewById(R.id.checkbox);
-
-                if (!checkbox.isChecked()) {
-                    Toast.makeText(MainActivity.this, "Please agree to the terms and conditions", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 loginButton.setEnabled(false);
                 loginButton.setText("Loading ...");
 
