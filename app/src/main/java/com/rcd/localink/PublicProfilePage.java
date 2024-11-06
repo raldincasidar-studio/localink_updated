@@ -22,20 +22,19 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
-public class GigWorkerProfile extends AppCompatActivity {
+public class PublicProfilePage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_gig_worker_profile);
+        setContentView(R.layout.activity_public_profile_page);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        
-        
+
         ImageView profileImage = findViewById(R.id.worker_image);
         TextView name = findViewById(R.id.name);
         TextView workTitle = findViewById(R.id.work_title);
@@ -43,7 +42,6 @@ public class GigWorkerProfile extends AppCompatActivity {
         TextView location = findViewById(R.id.location);
         TextView rates = findViewById(R.id.rates);
         TextView availability = findViewById(R.id.availability);
-        Button propose_contract = findViewById(R.id.propose_contract);
         Button chat = findViewById(R.id.chat);
 
         ImageView back_button = findViewById(R.id.back_button);
@@ -52,9 +50,9 @@ public class GigWorkerProfile extends AppCompatActivity {
             finish();
         });
 
-        
-        
-        String workerId = getIntent().getStringExtra("workerId");
+
+
+        String workerId = getIntent().getStringExtra("id");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(workerId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -67,15 +65,6 @@ public class GigWorkerProfile extends AppCompatActivity {
                     String workerRates = document.getString("rates");
                     String workerAvailability = document.getString("availability");
 
-
-                    LinearLayout profile_container = findViewById(R.id.profile_container);
-
-                    profile_container.setOnClickListener(v -> {
-                        Intent intent = new Intent(GigWorkerProfile.this, PublicProfilePage.class);
-                        intent.putExtra("id", workerId);
-                        startActivity(intent);
-                    });
-
                     Picasso.get().load(profile_picture_firebase).into(profileImage);
                     name.setText(workerName);
                     service.setText(workerTitle != null ? workerTitle : "Not set yet");
@@ -84,7 +73,7 @@ public class GigWorkerProfile extends AppCompatActivity {
                     availability.setText(workerAvailability != null ? workerAvailability : "Not set yet");
 
                     chat.setOnClickListener(v -> {
-                        Intent intent = new Intent(GigWorkerProfile.this, ChatPage.class);
+                        Intent intent = new Intent(PublicProfilePage.this, ChatPage.class);
                         intent.putExtra("person", workerId);
                         startActivity(intent);
                     });
@@ -121,14 +110,6 @@ public class GigWorkerProfile extends AppCompatActivity {
                                 }
                             });
 
-                    propose_contract.setOnClickListener(v -> {
-
-                        Intent intent = new Intent(GigWorkerProfile.this, AddContract.class);
-                        intent.putExtra("jobId", workerId);
-                        intent.putExtra("type", "worker");
-                        startActivity(intent);
-
-                    });
                 }
             }
         });

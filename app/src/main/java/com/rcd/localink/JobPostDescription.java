@@ -72,6 +72,14 @@ public class JobPostDescription extends AppCompatActivity {
                             double rateText = document.getDouble("rate");
                             double requiredHoursText = document.getDouble("required_hours");
 
+                            LinearLayout profile_container = findViewById(R.id.user_profile_container);
+
+                            profile_container.setOnClickListener(v -> {
+                                Intent intent = new Intent(JobPostDescription.this, PublicProfilePage.class);
+                                intent.putExtra("id", employerId);
+                                startActivity(intent);
+                            });
+
                             posterName.setText(posterNameText);
                             Picasso.get().load(posterImageText).into(posterImage);
                             description.setText(descriptionText);

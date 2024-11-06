@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GigWorkerProfile">
+    tools:context=".PublicProfilePage">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -91,7 +91,6 @@
 
             <!-- Ongoing Transaction -->
             <LinearLayout
-                android:id="@+id/profile_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -295,26 +294,13 @@
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/propose_contract"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="15dp"
-                    android:backgroundTint="#22996E"
-                    android:text="Propose Contract"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"></Button>
-
                 <Button
                     android:id="@+id/chat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="15dp"
                     android:backgroundTint="#808080"
-                    android:text="Chat Worker"
+                    android:text="Chat This Person"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:layout_marginTop="10dp"
