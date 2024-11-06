@@ -59,6 +59,22 @@ public class Barangay extends AppCompatActivity {
             add_post_button.hide();
         }
 
+        FloatingActionButton chat_support = findViewById(R.id.chat_support);
+
+
+        chat_support.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ChatPage.class);
+            intent.putExtra("person", "admin");
+            startActivity(intent);
+        });
+
+        String admin = sharedPrefs.getString("user_type", "");
+        if (!admin.equals("Admin")) {
+            chat_support.setVisibility(View.VISIBLE);
+        } else {
+            chat_support.setVisibility(View.GONE);
+        }
+
         Button hiring_button = findViewById(R.id.hiring_button);
         hiring_button.setOnClickListener(v -> {
             Intent intent = new Intent(this, BarangayHiring.class);

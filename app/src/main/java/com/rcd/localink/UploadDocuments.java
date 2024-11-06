@@ -74,7 +74,7 @@ public class UploadDocuments extends AppCompatActivity {
 
         if (!valid_id.isEmpty()) {
             // go to Dashboard Activity
-            Intent intent = new Intent(UploadDocuments.this, Dashboard.class);
+            Intent intent = new Intent(UploadDocuments.this, AdminVerificationProcess.class);
             startActivity(intent);
             finish();
         }
@@ -118,7 +118,7 @@ public class UploadDocuments extends AppCompatActivity {
 
                         Toast.makeText(UploadDocuments.this, "Upload of valid id successful", Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(UploadDocuments.this, Dashboard.class);
+                        Intent intent = new Intent(UploadDocuments.this, AdminVerificationProcess.class);
                         startActivity(intent);
                         finish();
 

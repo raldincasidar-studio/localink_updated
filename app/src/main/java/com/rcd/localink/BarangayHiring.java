@@ -41,6 +41,22 @@ public class BarangayHiring extends AppCompatActivity {
         SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
         String user_type = sharedPrefs.getString("user_type", "");
 
+        FloatingActionButton chat_support = findViewById(R.id.chat_support);
+
+
+        chat_support.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ChatPage.class);
+            intent.putExtra("person", "admin");
+            startActivity(intent);
+        });
+
+        String admin = sharedPrefs.getString("user_type", "");
+        if (!admin.equals("Admin")) {
+            chat_support.setVisibility(View.VISIBLE);
+        } else {
+            chat_support.setVisibility(View.GONE);
+        }
+
         ImageView back_button = findViewById(R.id.back_button);
 
         back_button.setOnClickListener(v -> {

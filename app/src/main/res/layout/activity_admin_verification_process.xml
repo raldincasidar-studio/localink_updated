@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdminVerificationProcess">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="10dp">
+
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="142dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="100dp"
+                android:baselineAlignBottom="false"
+                android:maxWidth="30dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/logo"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="0dp"
+                android:text="Thank you for registering!"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:text="Your registration has been successfuly received."
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="16dp" />
+
+            <!--  Signup form -->
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="0dp"
+                android:text="What's Next"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="We have received your registration request. The administrator is still checking your document's validty. Please wait for the meantime or you can chat with administrator to followup your verification process."
+                android:layout_marginTop="10dp"
+                android:lineHeight="30dp"
+                android:layout_marginBottom="0dp"
+                android:textColor="#828282" />
+
+            <Button
+                android:id="@+id/chat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chat with Administrator"
+                android:textColor="@color/white"
+                android:backgroundTint="#22996E"
+                android:shadowDy="3"
+                android:layout_marginTop="30dp"
+                android:padding="15dp"
+
+                android:shadowRadius="20"/>
+
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                android:layout_marginBottom="0dp"
+                android:textAlignment="center"
+                android:text="LOGOUT INSTEAD"
+                android:paddingHorizontal="30dp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

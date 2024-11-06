@@ -54,6 +54,21 @@ public class GigWork extends AppCompatActivity {
 
         Button worker_list_button = findViewById(R.id.worker_list_button);
 
+        FloatingActionButton chat_support = findViewById(R.id.chat_support);
+
+
+        chat_support.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ChatPage.class);
+            intent.putExtra("person", "admin");
+            startActivity(intent);
+        });
+
+        String admin = sharedPrefs.getString("user_type", "");
+        if (!admin.equals("Admin")) {
+            chat_support.setVisibility(View.VISIBLE);
+        } else {
+            chat_support.setVisibility(View.GONE);
+        }
 
         if (!userType.equals("Employer")) {
             my_posts_button.setVisibility(View.GONE);

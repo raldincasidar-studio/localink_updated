@@ -46,6 +46,21 @@ public class MyGigPosts extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
 
+        FloatingActionButton chat_support = findViewById(R.id.chat_support);
+
+
+        chat_support.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ChatPage.class);
+            intent.putExtra("person", "admin");
+            startActivity(intent);
+        });
+
+        String admin = sharedPrefs.getString("user_type", "");
+        if (!admin.equals("Admin")) {
+            chat_support.setVisibility(View.VISIBLE);
+        } else {
+            chat_support.setVisibility(View.GONE);
+        }
 
         Button mesages = findViewById(R.id.mesages);
 
