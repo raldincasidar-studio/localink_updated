@@ -242,9 +242,15 @@
                 android:hint="Password *"
                 android:inputType="textPassword"
                 android:padding="15dp"
-                android:background="@drawable/edittext_border"
-                android:layout_marginBottom="10dp" />
+                android:background="@drawable/edittext_border" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"
+                android:text="* Password should be 6 characters with A-Z, a-z, 0-9 and special characters (@#\$%^+=~`|:,;?/&lt;&gt;.,!@#\$%^*()-+)" />
 
             <EditText
                 android:id="@+id/confirm_password"

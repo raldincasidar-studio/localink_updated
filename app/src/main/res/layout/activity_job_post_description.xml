@@ -137,16 +137,6 @@
                         android:textStyle="bold"/>
 
                     <TextView
-                        android:id="@+id/poster_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Micky Saposino"
-                        android:textColor="@color/black"
-                        android:layout_marginTop="10dp"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
-
-                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Job Poster"

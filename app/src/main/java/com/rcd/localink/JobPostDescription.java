@@ -38,7 +38,6 @@ public class JobPostDescription extends AppCompatActivity {
             return insets;
         });
 
-        TextView posterName = findViewById(R.id.poster_name);
         ImageView posterImage = findViewById(R.id.poster_image);
         TextView description = findViewById(R.id.description);
         TextView employerName = findViewById(R.id.employer_name);
@@ -80,7 +79,6 @@ public class JobPostDescription extends AppCompatActivity {
                                 startActivity(intent);
                             });
 
-                            posterName.setText(posterNameText);
                             Picasso.get().load(posterImageText).into(posterImage);
                             description.setText(descriptionText);
                             employerName.setText(employerNameText);

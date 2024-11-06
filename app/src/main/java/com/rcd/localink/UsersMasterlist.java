@@ -76,6 +76,7 @@ public class UsersMasterlist extends AppCompatActivity {
     private void initializeData(LinearLayout chat_container) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users")
+                .orderBy("verificationStatus", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

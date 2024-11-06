@@ -61,7 +61,6 @@ public class ContractPreview extends AppCompatActivity {
 
 
 
-
         LinearLayout accept_buttons = findViewById(R.id.accept_buttons);
         review_to_user = findViewById(R.id.review_to_user);
 
@@ -86,9 +85,11 @@ public class ContractPreview extends AppCompatActivity {
                         status.setText("Completed");
 
 
+                        String user_to_notify = by.get().equals(sharedPrefs.getString("documentId", "")) ? for_id.get() : by.get();
+
                         db.collection("notifications").add(new HashMap<String, Object>(){{
                             put("date_added", FieldValue.serverTimestamp());
-                            put("for", by.get());
+                            put("for", user_to_notify);
                             put("by", sharedPrefs.getString("documentId", ""));
                             put("picture", sharedPrefs.getString("profile_picture", ""));
                             put("notification_content", "Your contract with " + sharedPrefs.getString("firstName", "") + " has been completed. Leave a Review now!");
@@ -275,11 +276,25 @@ public class ContractPreview extends AppCompatActivity {
 
 
                     String opponent_id;
+                    String other_id;
                     if(by.get().equals(sharedPrefs.getString("documentId", ""))){
                         opponent_id = for_id.get();
+                        other_id = by.get();
                     } else {
                         opponent_id = by.get();
+                        other_id = for_id.get();
                     }
+
+
+                    LinearLayout profile_clickable = findViewById(R.id.profile_clickable);
+
+                    profile_clickable.setOnClickListener(v -> {
+                        Intent intent = new Intent(ContractPreview.this, PublicProfilePage.class);
+                        intent.putExtra("id", opponent_id);
+                        startActivity(intent);
+                    });
+
+
 
 
                     db.collection("users").document(opponent_id).get().addOnSuccessListener(documentSnapshot -> {
@@ -299,6 +314,50 @@ public class ContractPreview extends AppCompatActivity {
                             Picasso.get().load(opponentProfilePicture).into(profile_pic);
                             name.setText(opponentName);
                             user_type.setText(opponentuserType);
+
+                            // Use opponentName and opponentEmail as required
+                        } else {
+                            Toast.makeText(ContractPreview.this, "Opponent not found", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(ContractPreview.this, "Error fetching opponent data", Toast.LENGTH_SHORT).show();
+                    });
+
+                    LinearLayout show_for_admin_clickable = findViewById(R.id.show_for_admin_clickable);
+
+                    show_for_admin_clickable.setOnClickListener(v -> {
+                        Intent intent = new Intent(ContractPreview.this, PublicProfilePage.class);
+                        intent.putExtra("id", other_id);
+                        startActivity(intent);
+                    });
+
+                    if (sharedPrefs.getString("user_type", "").equals("Admin")) {
+                        show_for_admin_clickable.setVisibility(View.VISIBLE);
+                        review_to_user.setVisibility(View.GONE);
+                    } else {
+                        show_for_admin_clickable.setVisibility(View.GONE);
+                        review_to_user.setVisibility(View.GONE);
+                    }
+
+                    db.collection("users").document(other_id).get().addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String opponentFirstName = documentSnapshot.getString("firstName");
+                            String opponentMiddleName = documentSnapshot.getString("middleName");
+                            String opponentLastName = documentSnapshot.getString("lastName");
+                            String opponentName = opponentFirstName + " " + opponentMiddleName + " " + opponentLastName;
+                            String opponentEmail = documentSnapshot.getString("email");
+                            String opponentProfilePicture = documentSnapshot.getString("profile_picture");
+                            String opponentuserType = documentSnapshot.getString("user_type");
+
+                            ImageView profile_pic = findViewById(R.id.worker_image2);
+                            TextView name = findViewById(R.id.name2);
+                            TextView user_type = findViewById(R.id.user_type2);
+
+                            Picasso.get().load(opponentProfilePicture).into(profile_pic);
+                            name.setText(opponentName);
+                            user_type.setText(opponentuserType);
+
+
 
                             // Use opponentName and opponentEmail as required
                         } else {

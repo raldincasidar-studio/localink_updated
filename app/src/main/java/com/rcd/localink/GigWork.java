@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
@@ -209,7 +210,7 @@ public class GigWork extends AppCompatActivity {
             return false;
         });
 
-        db.collection("job_postings").get().addOnCompleteListener(task -> {
+        db.collection("job_postings").orderBy("title", Query.Direction.ASCENDING).get().addOnCompleteListener(task -> {
             Log.d(TAG, "fetchJobPostings: Fetching on db");
             if (task.isSuccessful()) {
                 QuerySnapshot querySnapshot = task.getResult();

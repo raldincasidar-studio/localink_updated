@@ -51,12 +51,16 @@ public class Barangay extends AppCompatActivity {
         profile_image = findViewById(R.id.profile_image);
         add_post_button = findViewById(R.id.add_post_button);
 
+        LinearLayout hide_for_admin = findViewById(R.id.hide_for_admin);
+
         SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
         String user_type = sharedPrefs.getString("user_type", "");
         if(user_type.equals("Admin")){
             add_post_button.show();
+            hide_for_admin.setVisibility(View.GONE);
         } else {
             add_post_button.hide();
+            hide_for_admin.setVisibility(View.VISIBLE);
         }
 
         FloatingActionButton chat_support = findViewById(R.id.chat_support);

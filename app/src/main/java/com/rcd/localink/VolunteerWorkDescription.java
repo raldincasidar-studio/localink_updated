@@ -132,7 +132,7 @@ public class VolunteerWorkDescription extends AppCompatActivity {
                         TextView status = view.findViewById(R.id.status);
                         ImageView profile_image = view.findViewById(R.id.image);
 
-                        name.setText(document.getString("volunteer_name"));
+                        name.setText(document.getString("user_fullname"));
                         status.setText(document.getBoolean("isCompleted") ? "Completed" : "Not yet completed");
 
                         String profile_picture = document.getString("profile_image");

@@ -191,6 +191,25 @@ public class Dashboard extends AppCompatActivity {
                             job_title.setText("Transaction Id: "+document.getId());
                             status.setText(document.getString("status"));
 
+
+                            String by_data = document.getString("by");
+                            String for_dat = document.getString("for");
+
+                            String opponentId = documentId.equals(by_data) ? for_dat : by_data;
+
+                            db.collection("users").document(opponentId).get().addOnCompleteListener(task2 -> {
+                                if (task2.isSuccessful()) {
+                                    DocumentSnapshot document2 = task2.getResult();
+                                    if (document2 != null) {
+                                        String profilePicture2 = document2.getString("profile_picture");
+                                        Picasso.get().load(profilePicture2).into(contractor_image);
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task2.getException());
+                                }
+                            });
+
+
                             view.setOnClickListener(v -> {
                                 Intent intent = new Intent(Dashboard.this, ContractPreview.class);
                                 intent.putExtra("contractId", document.getId());
@@ -216,7 +235,6 @@ public class Dashboard extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        transaction_history_container.removeAllViews();
                         for (DocumentSnapshot document : task.getResult()) {
                             Log.d(TAG, document.getId() + " => " + document.getData());
 //                            work_contract_list.add(document.getData());
@@ -238,6 +256,23 @@ public class Dashboard extends AppCompatActivity {
                             } else {
                                 status.setTextColor(Color.parseColor("#FFA500"));
                             }
+
+                            String by_data = document.getString("by");
+                            String for_dat = document.getString("for");
+
+                            String opponentId = documentId.equals(by_data) ? for_dat : by_data;
+
+                            db.collection("users").document(opponentId).get().addOnCompleteListener(task2 -> {
+                                if (task2.isSuccessful()) {
+                                    DocumentSnapshot document2 = task2.getResult();
+                                    if (document2 != null) {
+                                        String profilePicture2 = document2.getString("profile_picture");
+                                        Picasso.get().load(profilePicture2).into(contractor_image);
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task2.getException());
+                                }
+                            });
 
 
                             view.setOnClickListener(v -> {
@@ -264,9 +299,8 @@ public class Dashboard extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        if (!task.getResult().isEmpty()) {
-                            ongoing_transaction_container.removeAllViews();
-                        }
+
+                        ongoing_transaction_container.removeAllViews();
                         for (DocumentSnapshot document : task.getResult()) {
                             Log.d(TAG, document.getId() + " => " + document.getData());
 //                            work_contract_list.add(document.getData());
@@ -287,6 +321,22 @@ public class Dashboard extends AppCompatActivity {
                                 status.setTextColor(Color.parseColor("#FFA500"));
                             }
 
+                            String by_data = document.getString("by");
+                            String for_dat = document.getString("for");
+
+                            String opponentId = documentId.equals(by_data) ? for_dat : by_data;
+
+                            db.collection("users").document(opponentId).get().addOnCompleteListener(task2 -> {
+                                if (task2.isSuccessful()) {
+                                    DocumentSnapshot document2 = task2.getResult();
+                                    if (document2 != null) {
+                                        String profilePicture2 = document2.getString("profile_picture");
+                                        Picasso.get().load(profilePicture2).into(contractor_image);
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task2.getException());
+                                }
+                            });
 
                             view.setOnClickListener(v -> {
                                 Intent intent = new Intent(Dashboard.this, ContractPreview.class);
@@ -310,9 +360,9 @@ public class Dashboard extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
 
-                        if (!task.getResult().isEmpty()) {
-                            ongoing_transaction_container.removeAllViews();
-                        }
+//                        if (!task.getResult().isEmpty()) {
+//                            ongoing_transaction_container.removeAllViews();
+//                        }
 
                         for (DocumentSnapshot document : task.getResult()) {
                             Log.d(TAG, document.getId() + " => " + document.getData());
@@ -334,6 +384,23 @@ public class Dashboard extends AppCompatActivity {
                                 status.setTextColor(Color.parseColor("#FFA500"));
                             }
 
+
+                            String by_data = document.getString("by");
+                            String for_dat = document.getString("for");
+
+                            String opponentId = documentId.equals(by_data) ? for_dat : by_data;
+
+                            db.collection("users").document(opponentId).get().addOnCompleteListener(task2 -> {
+                                if (task2.isSuccessful()) {
+                                    DocumentSnapshot document2 = task2.getResult();
+                                    if (document2 != null) {
+                                        String profilePicture2 = document2.getString("profile_picture");
+                                        Picasso.get().load(profilePicture2).into(contractor_image);
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task2.getException());
+                                }
+                            });
 
                             view.setOnClickListener(v -> {
                                 Intent intent = new Intent(Dashboard.this, ContractPreview.class);

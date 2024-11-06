@@ -154,6 +154,7 @@
 
             <!-- Current Volunteer Work -->
             <LinearLayout
+                android:id="@+id/hide_for_admin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

@@ -32,6 +32,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -261,7 +262,7 @@ public class Signup extends AppCompatActivity {
                     return;
                 }
 
-                String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{6,}$";
+                String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=~`|:;?/_<>.,!@#$%^&*()-+]).{6,}$";
                 Pattern passwordPat = Pattern.compile(passwordRegex);
                 if (!passwordPat.matcher(password).matches()) {
                     Toast.makeText(Signup.this, "Password must be at least 6 characters long, include an uppercase letter, a lowercase letter, a number, and a special character", Toast.LENGTH_SHORT).show();
@@ -331,29 +332,44 @@ public class Signup extends AppCompatActivity {
                         user.put("profile_picture", firebaseDownloadUrl);
 
 
-                        // Add a new document with a generated ID in the "users" collection
-                        db.collection("users")
-                            .add(user)
-                            .addOnSuccessListener(documentReference -> {
-                                // Successful addition
-                                Toast.makeText(Signup.this, "User added Please login", Toast.LENGTH_SHORT).show();
+                        db.collection("users").whereEqualTo("email", email).limit(1).get().addOnCompleteListener(task2 -> {
+                            if (task2.isSuccessful()) {
+                                QuerySnapshot querySnapshot = task2.getResult();
+                                if (querySnapshot != null && querySnapshot.size() > 0) {
+                                    Toast.makeText(Signup.this, "Email already existed", Toast.LENGTH_SHORT).show();
+                                    signupGoogleButton.setText("SIGNUP (NEXT STEP)");
+                                    signupGoogleButton.setEnabled(true);
+                                    return;
+                                }
+                                else {
+                                    // Add a new document with a generated ID in the "users" collection
+                                    db.collection("users")
+                                            .add(user)
+                                            .addOnSuccessListener(documentReference -> {
+                                                // Successful addition
+                                                Toast.makeText(Signup.this, "User added Please login", Toast.LENGTH_SHORT).show();
 
-                                // Redirect to the login page
-                                Intent intent = new Intent(Signup.this, MainActivity.class);
-                                startActivity(intent);
+                                                // Redirect to the login page
+                                                Intent intent = new Intent(Signup.this, MainActivity.class);
+                                                startActivity(intent);
 
 
-                                signupGoogleButton.setText("SIGNUP (NEXT STEP)");
-                                signupGoogleButton.setEnabled(true);
-                            })
-                            .addOnFailureListener(e -> {
-                                // Failed addition
-                                Toast.makeText(Signup.this, "Error adding user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                signupGoogleButton.setText("SIGNUP (NEXT STEP)");
+                                                signupGoogleButton.setEnabled(true);
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                // Failed addition
+                                                Toast.makeText(Signup.this, "Error adding user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
 
-                                signupGoogleButton.setText("SIGNUP (NEXT STEP)");
-                                signupGoogleButton.setEnabled(true);
-                            });
+                                                signupGoogleButton.setText("SIGNUP (NEXT STEP)");
+                                                signupGoogleButton.setEnabled(true);
+                                            });
+                                }
+                            }
+                        });
+
+
                     } else {
                         Log.e(TAG, "Error getting download URL", task.getException());
 

@@ -64,10 +64,14 @@ public class BarangayHiring extends AppCompatActivity {
         });
 
 
-        if(user_type.equals("admin")){
+        LinearLayout hide_for_admin = findViewById(R.id.hide_for_admin);
+
+        if(user_type.equals("Admin")){
             fab.show();
+            hide_for_admin.setVisibility(View.GONE);
         } else {
             fab.hide();
+            hide_for_admin.setVisibility(View.VISIBLE);
         }
 
         volunteer_button.setOnClickListener(v -> {

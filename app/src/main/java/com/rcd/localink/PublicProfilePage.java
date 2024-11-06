@@ -38,7 +38,6 @@ public class PublicProfilePage extends AppCompatActivity {
 
         ImageView profileImage = findViewById(R.id.worker_image);
         TextView name = findViewById(R.id.name);
-        TextView workTitle = findViewById(R.id.work_title);
         TextView service = findViewById(R.id.service);
         TextView location = findViewById(R.id.location);
         TextView rates = findViewById(R.id.rates);
