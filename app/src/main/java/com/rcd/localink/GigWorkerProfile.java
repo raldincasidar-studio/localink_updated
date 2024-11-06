@@ -64,7 +64,7 @@ public class GigWorkerProfile extends AppCompatActivity {
                     String workerName = document.getString("firstName") + " " + document.getString("middleName") + " " + document.getString("lastName");
                     String workerTitle = document.getString("type_of_work");
                     String workerLocation = document.getString("address");
-                    String workerRates = document.getString("rate");
+                    String workerRates = document.getString("rates");
                     String workerAvailability = document.getString("availability");
 
                     Picasso.get().load(profile_picture_firebase).into(profileImage);

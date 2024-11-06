@@ -106,8 +106,52 @@ public class ContractPreview extends AppCompatActivity {
 
 
         accept.setOnClickListener(v -> {
+
+
+            db.collection("work_contracts")
+                .whereEqualTo("for", sharedPrefs.getString("documentId", ""))
+                .whereEqualTo("status", "On-going transaction")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        Toast.makeText(ContractPreview.this, "You already have an ongoing transaction", Toast.LENGTH_SHORT).show();
+                    } else {
+                        db.collection("work_contracts")
+                            .whereEqualTo("by", sharedPrefs.getString("documentId", ""))
+                            .whereEqualTo("status", "On-going transaction")
+                            .get()
+                            .addOnCompleteListener(task2 -> {
+                                if (task2.isSuccessful() && !task2.getResult().isEmpty()) {
+                                    Toast.makeText(ContractPreview.this, "You already have an ongoing transaction", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    db.collection("work_contracts").document(id).update("status", "On-going transaction")
+                                        .addOnSuccessListener(aVoid -> {
+                                            status.setText("On-going transaction");
+                                            accept_buttons.setVisibility(View.GONE);
+
+                                            db.collection("notifications").add(new HashMap<String, Object>() {{
+                                                put("date_added", FieldValue.serverTimestamp());
+                                                put("for", by.get());
+                                                put("by", sharedPrefs.getString("documentId", ""));
+                                                put("picture", sharedPrefs.getString("profile_picture", ""));
+                                                put("notification_content", sharedPrefs.getString("firstName", "") + " have accepted your contract");
+                                                put("isSeen", false);
+                                                put("extraIntent", id);
+                                                put("type", "contract");
+                                            }}).addOnSuccessListener(documentReference -> {
+                                                Toast.makeText(ContractPreview.this, "Successfully accepted", Toast.LENGTH_SHORT).show();
+                                                initializeData(db, id, date_of_contract, duration, mode_of_payment, notes_to_contractor, other_specific_negotiations, site_of_contract, status, by, for_id, job_id, sharedPrefs, accept_buttons, complete_contract, contract_details);
+                                            });
+                                        });
+                                }
+                            });
+                    }
+                });
+
+
             db.collection("work_contracts").document(id).update("status", "On-going transaction")
                 .addOnSuccessListener(aVoid -> {
+
                     status.setText("On-going transaction");
 
 

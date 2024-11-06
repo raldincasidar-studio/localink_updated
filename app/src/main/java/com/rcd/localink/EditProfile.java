@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -95,6 +96,12 @@ public class EditProfile extends AppCompatActivity {
         upload_profile = findViewById(R.id.upload_profile);
         profile_image = findViewById(R.id.profile_image);
 
+        LinearLayout workerInformationLayout = findViewById(R.id.worker_information);
+        EditText ratesEditText = findViewById(R.id.rates);
+        EditText availabilityEditText = findViewById(R.id.availability);
+        EditText typeOfWorkEditText = findViewById(R.id.type_of_work);
+
+
         ImageView back_button = findViewById(R.id.back_button);
         back_button.setOnClickListener(v -> {
             finish();
@@ -111,6 +118,11 @@ public class EditProfile extends AppCompatActivity {
         String phoneNumber = sharedPrefs.getString("phoneNumber", "");
         String address = sharedPrefs.getString("address", "");
         String profilePicture = sharedPrefs.getString("profile_picture", "");
+        String type_of_work = sharedPrefs.getString("type_of_work", "");
+        String availability = sharedPrefs.getString("availability", "");
+        String rates = sharedPrefs.getString("rates", "");
+
+
 
         firstNameEditText.setText(firstName);
         middleNameEditText.setText(middleName);
@@ -118,6 +130,9 @@ public class EditProfile extends AppCompatActivity {
         emailEditText.setText(email);
         phoneNumberEditText.setText(phoneNumber);
         addressEditText.setText(address);
+        ratesEditText.setText(rates);
+        availabilityEditText.setText(availability);
+        typeOfWorkEditText.setText(type_of_work);
         user_type = sharedPrefs.getString("user_type", "");
 
         if (user_type.equals("Worker")) {
@@ -125,11 +140,13 @@ public class EditProfile extends AppCompatActivity {
             worker.setTextColor(Color.BLACK);
             employer_button.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
             employer_button.setTextColor(Color.WHITE);
+            workerInformationLayout.setVisibility(View.VISIBLE);
         } else {
             employer_button.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#22996E")));
             employer_button.setTextColor(Color.BLACK);
             worker.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
             worker.setTextColor(Color.WHITE);
+            workerInformationLayout.setVisibility(View.GONE);
         }
 
         Picasso.get().load(profilePicture).into(profile_image);
@@ -203,6 +220,9 @@ public class EditProfile extends AppCompatActivity {
                 String password = passwordEditText.getText().toString();
                 String phoneNumber = phoneNumberEditText.getText().toString();
                 String address = addressEditText.getText().toString();
+                String type_of_work = typeOfWorkEditText.getText().toString();
+                String availability = availabilityEditText.getText().toString();
+                String rate = ratesEditText.getText().toString();
 
 
                 if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || profile_uri == null) {
@@ -278,6 +298,9 @@ public class EditProfile extends AppCompatActivity {
                         user.put("phoneNumber", phoneNumber);
                         user.put("address", address);
                         user.put("user_type", user_type);
+                        user.put("type_of_work", type_of_work);
+                        user.put("availability", availability);
+                        user.put("rates", rate);
                         user.put("profile_picture", firebaseDownloadUrl);
 
 

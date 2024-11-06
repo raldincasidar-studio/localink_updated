@@ -202,10 +202,59 @@ public class Dashboard extends AppCompatActivity {
 
         db.collection("work_contracts")
                 .whereEqualTo("by", documentId)
+                .whereEqualTo("status", "Completed")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         transaction_history_container.removeAllViews();
+                        for (DocumentSnapshot document : task.getResult()) {
+                            Log.d(TAG, document.getId() + " => " + document.getData());
+//                            work_contract_list.add(document.getData());
+
+                            View view = getLayoutInflater().inflate(R.layout.transaction_history, null, false);
+                            TextView contractor_name = view.findViewById(R.id.name);
+                            TextView job_title = view.findViewById(R.id.type_of_work);
+                            TextView status = view.findViewById(R.id.status);
+                            ImageView contractor_image = view.findViewById(R.id.image);
+
+                            contractor_name.setText(document.getString("notesToContractor"));
+                            job_title.setText(document.getString("modeOfPayment"));
+                            status.setText(document.getString("status"));
+
+                            Picasso.get().load(document.getString("profile_picture")).into(contractor_image);
+
+                            if (status.getText().toString().equals("Completed")) {
+                                status.setTextColor(Color.GREEN);
+                            } else {
+                                status.setTextColor(Color.parseColor("#FFA500"));
+                            }
+
+
+                            view.setOnClickListener(v -> {
+                                Intent intent = new Intent(Dashboard.this, ContractPreview.class);
+                                intent.putExtra("contractId", document.getId());
+                                startActivity(intent);
+                            });
+
+
+                            transaction_history_container.addView(view);
+                        }
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
+
+
+        LinearLayout ongoing_transaction_container = findViewById(R.id.ongoing_transaction_container);
+
+        db.collection("work_contracts")
+                .whereEqualTo("by", documentId)
+                .whereEqualTo("status", "On-going transaction")
+                .limit(1)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        ongoing_transaction_container.removeAllViews();
                         for (DocumentSnapshot document : task.getResult()) {
                             Log.d(TAG, document.getId() + " => " + document.getData());
 //                            work_contract_list.add(document.getData());
@@ -234,12 +283,14 @@ public class Dashboard extends AppCompatActivity {
                             });
 
 
-                            transaction_history_container.addView(view);
+                            ongoing_transaction_container.addView(view);
                         }
                     } else {
                         Log.d(TAG, "Error getting documents: ", task.getException());
                     }
                 });
+
+
 
     }
 }
