@@ -178,7 +178,7 @@ public class Dashboard extends AppCompatActivity {
                             ImageView contractor_image = view.findViewById(R.id.image);
 
                             contractor_name.setText(document.getString("notesToContractor"));
-                            job_title.setText(document.getString("modeOfPayment"));
+                            job_title.setText("Transaction Id: "+document.getId());
                             status.setText(document.getString("status"));
 
                             view.setOnClickListener(v -> {
@@ -218,7 +218,7 @@ public class Dashboard extends AppCompatActivity {
                             ImageView contractor_image = view.findViewById(R.id.image);
 
                             contractor_name.setText(document.getString("notesToContractor"));
-                            job_title.setText(document.getString("modeOfPayment"));
+                            job_title.setText("Transaction Id: "+document.getId());
                             status.setText(document.getString("status"));
 
                             Picasso.get().load(document.getString("profile_picture")).into(contractor_image);

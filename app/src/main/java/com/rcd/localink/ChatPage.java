@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -85,6 +87,7 @@ public class ChatPage extends AppCompatActivity {
             .orderBy("date_added", Query.Direction.ASCENDING)
             .addSnapshotListener((value, error) -> {
                 chat_container.removeAllViews();
+
                 if (error != null) {
                     // Handle the error
                     return;
@@ -111,12 +114,18 @@ public class ChatPage extends AppCompatActivity {
 
 
                     }
+
+                    ScrollView scrollView = findViewById(R.id.chat_scroll);
+                    scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
                 }
             });
 
         sendButton.setOnClickListener(v -> {
             String messageText = message.getText().toString();
             if (!messageText.isEmpty()) {
+                db.collection("chats").document(chatId).set(new HashMap<String, Object>() {{
+                    put("last_message", messageText);
+                }}, SetOptions.merge());
                 db.collection("chats").document(chatId).collection("chats")
                     .add(new HashMap<String, Object>() {{
                         put("sender", documentId);

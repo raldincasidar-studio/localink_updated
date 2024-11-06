@@ -20,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
@@ -270,6 +271,42 @@ public class ContractPreview extends AppCompatActivity {
                             startActivity(intent);
                         });
                     }
+
+
+
+                    String opponent_id;
+                    if(by.get().equals(sharedPrefs.getString("documentId", ""))){
+                        opponent_id = for_id.get();
+                    } else {
+                        opponent_id = by.get();
+                    }
+
+
+                    db.collection("users").document(opponent_id).get().addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String opponentFirstName = documentSnapshot.getString("firstName");
+                            String opponentMiddleName = documentSnapshot.getString("middleName");
+                            String opponentLastName = documentSnapshot.getString("lastName");
+                            String opponentName = opponentFirstName + " " + opponentMiddleName + " " + opponentLastName;
+                            String opponentEmail = documentSnapshot.getString("email");
+                            String opponentProfilePicture = documentSnapshot.getString("profile_picture");
+                            String opponentuserType = documentSnapshot.getString("user_type");
+
+                            ImageView profile_pic = findViewById(R.id.worker_image);
+                            TextView name = findViewById(R.id.name);
+                            TextView user_type = findViewById(R.id.user_type);
+
+                            Picasso.get().load(opponentProfilePicture).into(profile_pic);
+                            name.setText(opponentName);
+                            user_type.setText(opponentuserType);
+
+                            // Use opponentName and opponentEmail as required
+                        } else {
+                            Toast.makeText(ContractPreview.this, "Opponent not found", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(ContractPreview.this, "Error fetching opponent data", Toast.LENGTH_SHORT).show();
+                    });
 
                     EditText comment_box = findViewById(R.id.comment_box);
                     Button comment_button = findViewById(R.id.comment_button);

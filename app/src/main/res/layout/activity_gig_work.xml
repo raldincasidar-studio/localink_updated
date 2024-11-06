@@ -133,6 +133,16 @@
                     android:text="Your Posts"
                     android:stateListAnimator="@null"
                     android:padding="15dp"/>
+
+                <Button
+                    android:id="@+id/mesages"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Messages"
+                    android:stateListAnimator="@null"
+                    android:backgroundTint="#0084FF"
+                    android:textColor="@color/white"
+                    android:padding="15dp"/>
             </LinearLayout>
 
 

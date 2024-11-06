@@ -28,6 +28,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -121,6 +122,42 @@ public class EditProfile extends AppCompatActivity {
         String type_of_work = sharedPrefs.getString("type_of_work", "");
         String availability = sharedPrefs.getString("availability", "");
         String rates = sharedPrefs.getString("rates", "");
+
+
+
+
+        // Get reviews
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        LinearLayout transaction_history_container = findViewById(R.id.reviews_container);
+        db.collection("reviews")
+                .whereEqualTo("for", userId)
+                .get()
+                .addOnCompleteListener(task2 -> {
+                    if (task2.isSuccessful()) {
+                        transaction_history_container.removeAllViews();
+                        for (DocumentSnapshot document2 : task2.getResult()) {
+                            Log.d(TAG, document2.getId() + " => " + document2.getData());
+
+                            View view = getLayoutInflater().inflate(R.layout.review_item, null, false);
+                            TextView name2 = view.findViewById(R.id.name);
+                            ImageView image = view.findViewById(R.id.image);
+                            TextView content = view.findViewById(R.id.content);
+
+                            name2.setText(document2.getString("by_name"));
+                            Picasso.get().load(document2.getString("by_profile_picture")).into(image);
+                            content.setText(document2.getString("content"));
+
+                            view.setOnClickListener(v -> {
+                                Toast.makeText(this, "Review item clicked", Toast.LENGTH_SHORT).show();
+                            });
+
+                            transaction_history_container.addView(view);
+                            view.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task2.getException());
+                    }
+                });
 
 
 

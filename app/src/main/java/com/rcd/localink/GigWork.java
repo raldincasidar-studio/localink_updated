@@ -65,6 +65,12 @@ public class GigWork extends AppCompatActivity {
             fab.hide();
         }
 
+        Button mesages = findViewById(R.id.mesages);
+
+        mesages.setOnClickListener(v -> {
+            Intent intent = new Intent(this, Chats.class);
+            startActivity(intent);
+        });
 
 
         EditText search = findViewById(R.id.search);

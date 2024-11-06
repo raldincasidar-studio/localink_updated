@@ -47,6 +47,13 @@ public class MyGigPosts extends AppCompatActivity {
         sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
 
 
+        Button mesages = findViewById(R.id.mesages);
+
+        mesages.setOnClickListener(v -> {
+            Intent intent = new Intent(this, Chats.class);
+            startActivity(intent);
+        });
+
         String userType = sharedPrefs.getString("user_type", "");
 
         FloatingActionButton fab = findViewById(R.id.add_job_posting);
