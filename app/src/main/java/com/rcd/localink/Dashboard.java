@@ -360,9 +360,7 @@ public class Dashboard extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
 
-//                        if (!task.getResult().isEmpty()) {
-//                            ongoing_transaction_container.removeAllViews();
-//                        }
+                        Toast.makeText(this, "Ongoing transactions: "+task.getResult().size(), Toast.LENGTH_SHORT).show();
 
                         for (DocumentSnapshot document : task.getResult()) {
                             Log.d(TAG, document.getId() + " => " + document.getData());
