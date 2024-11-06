@@ -174,7 +174,7 @@ public class ContractPreview extends AppCompatActivity {
                     duration.setText(document.getString("duration"));
                     mode_of_payment.setText(document.getString("modeOfPayment"));
                     notes_to_contractor.setText(document.getString("notesToContractor"));
-                    other_specific_negotiations.setText(document.getString("otherSpecificNegotiation"));
+                    other_specific_negotiations.setText(document.getString("otherSpecificNegotiations"));
                     site_of_contract.setText(document.getString("siteOfContract"));
                     status.setText(document.getString("status"));
 
@@ -251,9 +251,16 @@ public class ContractPreview extends AppCompatActivity {
                         review.put("content", comment);
                         review.put("date_added", FieldValue.serverTimestamp());
 
-                        db.collection("reviews").add(review).addOnSuccessListener(documentReference -> {
-                            Toast.makeText(ContractPreview.this, "Review sent", Toast.LENGTH_SHORT).show();
-                            comment_box.setText("");
+
+                        db.collection("reviews").whereEqualTo("by", userId).whereEqualTo("for", posterId).get().addOnCompleteListener(task2 -> {
+                            if (task2.isSuccessful() && task2.getResult().size() > 0) {
+                                Toast.makeText(ContractPreview.this, "You already reviewed this person", Toast.LENGTH_SHORT).show();
+                            } else {
+                                db.collection("reviews").add(review).addOnSuccessListener(documentReference -> {
+                                    Toast.makeText(ContractPreview.this, "Review sent", Toast.LENGTH_SHORT).show();
+                                    comment_box.setText("");
+                                });
+                            }
                         });
 
                     });
