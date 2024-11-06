@@ -105,5 +105,12 @@ public class AdminPanel extends AppCompatActivity {
             Intent intent = new Intent(AdminPanel.this, CommunityWall.class);
             startActivity(intent);
         });
+
+        Button transaction_monitoring = findViewById(R.id.transaction_monitoring);
+
+        transaction_monitoring.setOnClickListener(view -> {
+            Intent intent = new Intent(AdminPanel.this, TransactionMonitoring.class);
+            startActivity(intent);
+        });
     }
 }
