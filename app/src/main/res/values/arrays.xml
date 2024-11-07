@@ -9,4 +9,11 @@
         <item>Agender</item>
         <item>Other</item>
     </string-array>
+
+    <string-array name="type_of_work">
+        <item>Minor repairs</item>
+        <item>Gardening</item>
+        <item>Laundry</item>
+        <item>Delivery Services</item>
+    </string-array>
 </resources>

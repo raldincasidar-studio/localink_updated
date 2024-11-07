@@ -63,8 +63,7 @@
                 android:id="@+id/type_of_work_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -85,16 +84,15 @@
                     android:layout_marginBottom="0dp"
                     android:textColor="#828282" />
 
-                <EditText
+                <Spinner
                     android:id="@+id/type_of_work"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Type of work"
-                    android:inputType="text"
                     android:layout_marginTop="20dp"
                     android:padding="15dp"
                     android:background="@drawable/edittext_border"
-                    android:layout_marginBottom="10dp" />
+                    android:layout_marginBottom="10dp"
+                    android:entries="@array/type_of_work"/>
             </LinearLayout>
 
 

@@ -36,6 +36,7 @@ public class EditVolunteerWork extends AppCompatActivity {
     private CheckBox activate_accept_volunteer_works;
 
     private Button publish;
+    private Button delete;
 
     private ImageView profile_image;
 
@@ -43,7 +44,7 @@ public class EditVolunteerWork extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_add_volunteer_work);
+        setContentView(R.layout.activity_edit_volunteer_work);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -57,6 +58,7 @@ public class EditVolunteerWork extends AppCompatActivity {
         instruction = findViewById(R.id.instruction);
         activate_accept_volunteer_works = findViewById(R.id.activate_accept_volunteer_works);
         publish = findViewById(R.id.publish);
+        delete = findViewById(R.id.delete_job_post);
 
         back_button = findViewById(R.id.back_button);
 
@@ -75,6 +77,9 @@ public class EditVolunteerWork extends AppCompatActivity {
         String volunteerWorkId = getIntent().getStringExtra("volunteer_work_id");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+
+
+
         db.collection("volunteer_works").document(volunteerWorkId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
@@ -92,6 +97,18 @@ public class EditVolunteerWork extends AppCompatActivity {
             }
         });
 
+
+        delete.setOnClickListener(v -> {
+            db.collection("volunteer_works").document(volunteerWorkId).delete().addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    Toast.makeText(EditVolunteerWork.this, "Volunteer work deleted successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(EditVolunteerWork.this, Barangay.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(EditVolunteerWork.this, "Error deleting volunteer work", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
 
         publish.setOnClickListener(v -> {
             if(volunteer_name.getText().toString().isEmpty() || duration.getText().toString().isEmpty() || instruction.getText().toString().isEmpty()){

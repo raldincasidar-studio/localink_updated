@@ -43,8 +43,7 @@ public class HiringDescription extends AppCompatActivity {
         ImageView back_button = findViewById(R.id.back_button);
 
         back_button.setOnClickListener(v -> {
-            Intent intent = new Intent(HiringDescription.this, BarangayHiring.class);
-            startActivity(intent);
+            finish();
         });
 
 
@@ -164,12 +163,13 @@ public class HiringDescription extends AppCompatActivity {
 
                                                 hiring_contract.set(document2.getId());
 
+                                                TextView status = findViewById(R.id.status);
                                                 if (document2.getString("status").equals("pending")) {
                                                     pending.setVisibility(View.VISIBLE);
                                                     yes_no.setVisibility(View.GONE);
                                                     done_cont.setVisibility(View.GONE);
                                                 } else if (document2.getString("status").equals("active")) {
-                                                    pending.setVisibility(View.GONE);
+                                                    pending.setVisibility(View.VISIBLE);
                                                     yes_no.setVisibility(View.GONE);
                                                     if (type.equals("admin")) {
                                                         done_cont.setVisibility(View.VISIBLE);

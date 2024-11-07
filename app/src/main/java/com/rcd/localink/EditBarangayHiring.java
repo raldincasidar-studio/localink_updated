@@ -57,6 +57,19 @@ public class EditBarangayHiring extends AppCompatActivity {
                     }
                 });
 
+        Button delete = findViewById(R.id.delete);
+        delete.setOnClickListener(v -> {
+            db.collection("volunteer_works").document(barangay_hiring_id).delete().addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    Toast.makeText(EditBarangayHiring.this, "Volunteer work deleted successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(EditBarangayHiring.this, BarangayHiring.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(EditBarangayHiring.this, "Error deleting volunteer work", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
         publish.setOnClickListener(v -> {
             HashMap<String, Object> data = new HashMap<>();
             data.put("contractName", contract_name.getText().toString());

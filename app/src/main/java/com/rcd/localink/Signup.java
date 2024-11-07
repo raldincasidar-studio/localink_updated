@@ -246,6 +246,12 @@ public class Signup extends AppCompatActivity {
                 String birthdate = Birthdate.getText().toString();
 
 
+                if (Integer.parseInt(age1) < 18) {
+                    Toast.makeText(Signup.this, "Below 18 is not available", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
                 if (!checkbox.isChecked()) {
                     Toast.makeText(Signup.this, "Please agree to the terms and conditions", Toast.LENGTH_SHORT).show();
                     return;

@@ -251,12 +251,6 @@ public class ContractPreview extends AppCompatActivity {
                         complete_contract.setVisibility(View.GONE);
                     }
 
-                    if (document.getString("status").equals("Completed")) {
-                        review_to_user.setVisibility(View.VISIBLE);
-                    } else {
-                        review_to_user.setVisibility(View.GONE);
-                    }
-
                     if (type.equals("worker")) {
                         contract_details.setText("Hiring Details");
                         contract_details.setOnClickListener(v -> {
@@ -343,6 +337,12 @@ public class ContractPreview extends AppCompatActivity {
                         review_to_user.setVisibility(View.VISIBLE);
                         contract_details_text.setVisibility(View.GONE);
                         contract_details.setVisibility(View.GONE);
+                    }
+
+                    if (document.getString("status").equals("Completed")) {
+                        review_to_user.setVisibility(View.VISIBLE);
+                    } else {
+                        review_to_user.setVisibility(View.GONE);
                     }
 
                     db.collection("users").document(other_id).get().addOnSuccessListener(documentSnapshot -> {

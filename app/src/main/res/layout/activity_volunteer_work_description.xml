@@ -370,7 +370,6 @@ This objective is only valid for one-time participation."
                     android:orientation="vertical">
 
                     <TextView
-                        android:visibility="gone"
                         android:id="@+id/question_prompt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -194,6 +194,20 @@
 
                     android:shadowRadius="20"/>
 
+                <Button
+                    android:id="@+id/delete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Delete"
+                    android:textColor="@color/white"
+                    android:backgroundTint="#F44336"
+                    android:shadowColor="@color/black"
+                    android:shadowDy="3"
+                    android:layout_marginTop="30dp"
+                    android:padding="15dp"
+
+                    android:shadowRadius="20"/>
+
             </LinearLayout>
 
         </LinearLayout>
