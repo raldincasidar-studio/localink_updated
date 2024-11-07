@@ -64,8 +64,7 @@ public class VolunteerWorkDescription extends AppCompatActivity {
 
 
         back_button.setOnClickListener(v -> {
-            Intent intent = new Intent(VolunteerWorkDescription.this, Barangay.class);
-            startActivity(intent);
+            finish();
         });
 
         SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);

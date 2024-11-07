@@ -111,7 +111,7 @@ public class BarangayHiring extends AppCompatActivity {
                         startActivity(intent);
                     });
 
-                    db.collection("barangay_hiring_contracts").whereEqualTo("hiringId", document.getId()).whereEqualTo("volunteer", sharedPrefs.getString("documentId", "")).limit(1).get().addOnCompleteListener(task2 -> {
+                    db.collection("barangay_hiring_contracts").whereEqualTo("hiringId", document.getId()).whereEqualTo("userId", sharedPrefs.getString("documentId", "")).limit(1).get().addOnCompleteListener(task2 -> {
                         if (task2.isSuccessful()) {
                             QuerySnapshot querySnapshot = task2.getResult();
                             if (querySnapshot != null && querySnapshot.size() > 0) {
