@@ -68,6 +68,7 @@ public class JobPostDescription extends AppCompatActivity {
                             String employerId = document.getString("employer_id");
                             String employerNameText = document.getString("employer_name");
                             String locationText = document.getString("location");
+                            String job_category = document.getString("job_category");
                             double rateText = document.getDouble("rate");
                             double requiredHoursText = document.getDouble("required_hours");
 
@@ -85,6 +86,8 @@ public class JobPostDescription extends AppCompatActivity {
                             location.setText(locationText);
                             rate.setText(String.valueOf(rateText));
                             requiredHours.setText(String.valueOf(requiredHoursText));
+                            TextView job_categ = findViewById(R.id.job_category);
+                            job_categ.setText(job_category != null ? job_category : "N/A");
 
                             chat.setOnClickListener(v -> {
                                 Intent intent = new Intent(this, ChatPage.class);
@@ -106,7 +109,8 @@ public class JobPostDescription extends AppCompatActivity {
                                     builder.setMessage("Are you sure you want to delete this job post?");
                                     builder.setPositiveButton("Yes", (dialogInterface, i) -> {
 
-                                        db.collection("job_postings").document(jobId).delete();
+                                        Intent intent = new Intent(JobPostDescription.this, MyGigPosts.class);
+                                        startActivity(intent);
                                         finish();
                                     });
                                     builder.setNegativeButton("No", (dialogInterface, i) -> {

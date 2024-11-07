@@ -7,7 +7,9 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,6 +53,31 @@ public class TransactionMonitoring extends AppCompatActivity {
         });
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+        EditText search = findViewById(R.id.search);
+        search.setOnTouchListener((v, event) -> {
+            final int DRAWABLE_LEFT = 0;
+            final int DRAWABLE_TOP = 1;
+            final int DRAWABLE_RIGHT = 2;
+            final int DRAWABLE_BOTTOM = 3;
+
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= (search.getRight() - search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+
+                    initializeData(db, chat_container, search.getText().toString());
+
+                    return true;
+                }
+            }
+            return false;
+        });
+
+
+        initializeData(db, chat_container, search.getText().toString());
+    }
+
+    private void initializeData(FirebaseFirestore db, LinearLayout chat_container, String search) {
         db.collection("work_contracts")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -74,7 +101,7 @@ public class TransactionMonitoring extends AppCompatActivity {
 
                             contractor_name.setText(document.getString("notesToContractor"));
                             job_title.setText("Transaction Id: "+document.getId());
-                            status.setText(document.getString("status"));
+                            status.setText(document.getString("status").replace("Accepted", "Pending"));
 
                             view.setOnClickListener(v -> {
                                 Intent intent = new Intent(TransactionMonitoring.this, ContractPreview.class);
@@ -84,11 +111,15 @@ public class TransactionMonitoring extends AppCompatActivity {
 
                             if (status.getText().toString().equals("Completed")) {
                                 status.setTextColor(Color.GREEN);
+                            } else if (status.getText().toString().equals("Declined")) {
+                                status.setTextColor(Color.parseColor("#F44336")); // Material Red
                             } else {
                                 status.setTextColor(Color.parseColor("#FFA500"));
                             }
 
-                            chat_container.addView(view);
+                            if (search.isEmpty() || document.getString("notesToContractor").contains(search)) {
+                                chat_container.addView(view);
+                            }
 
                         }
                     } else {

@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class AddGigWork extends AppCompatActivity {
     EditText jobPostRequiredHours;
     CheckBox activeCheckBox;
     Button publishButton;
+    Spinner job_type;
 
 
     @Override
@@ -61,6 +63,7 @@ public class AddGigWork extends AppCompatActivity {
         jobPostRequiredHours = findViewById(R.id.job_post_required_hours);
         activeCheckBox = findViewById(R.id.active);
         publishButton = findViewById(R.id.publish);
+        job_type = findViewById(R.id.job_type);
 
         publishButton.setOnClickListener(v -> {
             saveJobPost();
@@ -88,6 +91,7 @@ public class AddGigWork extends AppCompatActivity {
         double rate = Double.parseDouble(jobPostRate.getText().toString().trim());
         int requiredHours = Integer.parseInt(jobPostRequiredHours.getText().toString().trim());
         boolean isActive = activeCheckBox.isChecked();
+        String job_type_value = job_type.getSelectedItem().toString();
 
         // Add additional fields
         SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
@@ -108,6 +112,7 @@ public class AddGigWork extends AppCompatActivity {
         jobPost.put("is_active", isActive);
         jobPost.put("employer_id", employerId);
         jobPost.put("employer_name", employerName);
+        jobPost.put("job_type", job_type_value);
         jobPost.put("employer_profile_pic", employerProfilePic);
         jobPost.put("date_added", dateAdded);
         jobPost.put("ratings", new ArrayList<>()); // Empty ratings array
