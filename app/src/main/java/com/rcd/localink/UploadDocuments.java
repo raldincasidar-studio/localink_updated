@@ -270,7 +270,7 @@ public class UploadDocuments extends AppCompatActivity {
                                   });
 
                                   Toast.makeText(UploadDocuments.this, "All files uploaded successfully.", Toast.LENGTH_SHORT).show();
-                                  Intent intent = new Intent(UploadDocuments.this, Dashboard.class);
+                                  Intent intent = new Intent(UploadDocuments.this, AdminVerificationProcess.class);
                                   startActivity(intent);
                               }
                               else{
