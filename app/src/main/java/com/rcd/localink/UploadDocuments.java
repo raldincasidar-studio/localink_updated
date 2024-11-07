@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -40,7 +41,7 @@ public class UploadDocuments extends AppCompatActivity {
 
     Button upload_valid_id;
 
-    EditText type_of_work;
+    Spinner type_of_work;
 
     LinearLayout type_of_work_container;
 
@@ -257,6 +258,10 @@ public class UploadDocuments extends AppCompatActivity {
                                               Toast.makeText(UploadDocuments.this, "Download urls: "+result.get(0).toString()+", "+result.get(1).toString()+", "+result.get(2).toString(), Toast.LENGTH_SHORT).show();
 
                                               db.collection("users").document(sharedPrefs.getString("documentId", "")).update("valid_id", result.get(0).toString(), "barangay_clearance", result.get(1).toString(), "nbi_clearance", result.get(2).toString());
+
+                                              if(sharedPrefs.getString("user_type", "").equals("Worker")){
+                                                  db.collection("users").document(sharedPrefs.getString("documentId", "")).update("type_of_work", type_of_work.getSelectedItem().toString());
+                                              }
                                           }
                                           else{
                                               Toast.makeText(UploadDocuments.this, "Error getting download url.", Toast.LENGTH_SHORT).show();

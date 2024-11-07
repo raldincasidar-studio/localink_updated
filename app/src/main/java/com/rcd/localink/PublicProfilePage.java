@@ -97,6 +97,19 @@ public class PublicProfilePage extends AppCompatActivity {
                         verification_status.setText("Pending");
                     }
 
+                    SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
+                    String user_type = sharedPrefs.getString("user_type", "");
+                    if (user_type.equals("Admin")) {
+                        TextView email_label = findViewById(R.id.email_label);
+                        email_label.setVisibility(View.VISIBLE);
+                        email.setVisibility(View.VISIBLE);
+                        email.setText(emailValue);
+                    } else {
+                        TextView email_label = findViewById(R.id.email_label);
+                        email_label.setVisibility(View.GONE);
+                        email.setVisibility(View.GONE);
+                    }
+
                     Button verify_user = findViewById(R.id.verify_user);
                     Button decline_user = findViewById(R.id.decline_user);
                     if (verificationStatus != null && !verificationStatus.equals("Pending")) {
@@ -148,8 +161,6 @@ public class PublicProfilePage extends AppCompatActivity {
                         finish();
                     });
 
-                    SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
-                    String user_type = sharedPrefs.getString("user_type", "");
                     LinearLayout document_submitted = findViewById(R.id.document_submitted);
                     if (user_type.equals("Admin")) {
                         document_submitted.setVisibility(View.VISIBLE);

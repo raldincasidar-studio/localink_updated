@@ -108,7 +108,7 @@ public class EditProfile extends AppCompatActivity {
         LinearLayout workerInformationLayout = findViewById(R.id.worker_information);
         EditText ratesEditText = findViewById(R.id.rates);
         EditText availabilityEditText = findViewById(R.id.availability);
-        EditText typeOfWorkEditText = findViewById(R.id.type_of_work);
+        Spinner typeOfWorkEditText = findViewById(R.id.type_of_work);
 
 
         ImageView back_button = findViewById(R.id.back_button);
@@ -187,7 +187,13 @@ public class EditProfile extends AppCompatActivity {
         addressEditText.setText(address);
         ratesEditText.setText(rates);
         availabilityEditText.setText(availability);
-        typeOfWorkEditText.setText(type_of_work);
+        if (type_of_work != null) {
+            ArrayAdapter<CharSequence> adapter = (ArrayAdapter<CharSequence>) typeOfWorkEditText.getAdapter();
+            int position = adapter.getPosition(type_of_work);
+            if (position >= 0) {
+                typeOfWorkEditText.setSelection(position);
+            }
+        }
         user_type = sharedPrefs.getString("user_type", "");
 
         if (user_type.equals("Worker")) {
@@ -281,7 +287,7 @@ public class EditProfile extends AppCompatActivity {
                 String password = passwordEditText.getText().toString();
                 String phoneNumber = phoneNumberEditText.getText().toString();
                 String address = addressEditText.getText().toString();
-                String type_of_work = typeOfWorkEditText.getText().toString();
+                String type_of_work = typeOfWorkEditText.getSelectedItem().toString();
                 String availability = availabilityEditText.getText().toString();
                 String rate = ratesEditText.getText().toString();
                 String ageData2 = age.getText().toString();
