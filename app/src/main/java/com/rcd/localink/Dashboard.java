@@ -112,6 +112,20 @@ public class Dashboard extends AppCompatActivity {
         }
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("notifications").whereEqualTo("for", sharedPrefs.getString("documentId", ""))
+                .whereEqualTo("isSeen", false)
+                .get()
+                .addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                int count = task.getResult().size();
+                if (count > 0) {
+                    notification.setImageResource(R.drawable.bell_new);
+                } else {
+                    notification.setImageResource(R.drawable.bell);
+                }
+            }
+        });
+
         db.collection("announcements").whereEqualTo("isPinned", true)
                 .limit(1)
                 .get()

@@ -260,6 +260,61 @@
                     android:textSize="16dp"
                     android:layout_marginTop="10dp"/>
 
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Age"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/age"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="20"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Birthdate"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/birthdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="09752059872"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Gender"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="09752059872"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -397,6 +452,18 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Valid Id"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginVertical="10dp"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    />
+
                 <ImageView
                     android:id="@+id/document_valid_id"
                     android:layout_width="match_parent"
@@ -407,6 +474,53 @@
                     android:adjustViewBounds="true"
                     android:clipToOutline="true"
                     android:src="@drawable/post_image" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Barangay Certificate"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginVertical="10dp"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    />
+
+                <ImageView
+                    android:id="@+id/barangay_certificate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_image_post"
+                    android:layout_marginTop="0dp"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:clipToOutline="true"
+                    android:src="@drawable/post_image" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="NBI Clearance"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginVertical="10dp"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    />
+
+                <ImageView
+                    android:id="@+id/nbi_clearance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_image_post"
+                    android:layout_marginTop="0dp"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:clipToOutline="true"
+                    android:src="@drawable/post_image" />
+
 
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -11,10 +11,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +55,9 @@ public class EditProfile extends AppCompatActivity {
     private EditText middleNameEditText;
     private EditText lastNameEditText;
     private EditText emailEditText;
+    private EditText age;
+    private Spinner gender;
+    private EditText Birthdate;
     private EditText passwordEditText;
     private EditText confirmPasswordEditText;
     private EditText phoneNumberEditText;
@@ -90,6 +95,9 @@ public class EditProfile extends AppCompatActivity {
         middleNameEditText = findViewById(R.id.middle_name);
         lastNameEditText = findViewById(R.id.last_name);
         emailEditText = findViewById(R.id.email);
+        age = findViewById(R.id.age);
+        gender = findViewById(R.id.gender);
+        Birthdate = findViewById(R.id.birthdate);
         passwordEditText = findViewById(R.id.password);
         confirmPasswordEditText = findViewById(R.id.confirm_password);
         phoneNumberEditText = findViewById(R.id.phone_number);
@@ -122,6 +130,9 @@ public class EditProfile extends AppCompatActivity {
         String type_of_work = sharedPrefs.getString("type_of_work", "");
         String availability = sharedPrefs.getString("availability", "");
         String rates = sharedPrefs.getString("rates", "");
+        String ageData = sharedPrefs.getString("age", "");
+        String genderData = sharedPrefs.getString("gender", "");
+        String birthdateData = sharedPrefs.getString("birthdate", "");
 
 
 
@@ -165,6 +176,13 @@ public class EditProfile extends AppCompatActivity {
         middleNameEditText.setText(middleName);
         lastNameEditText.setText(lastName);
         emailEditText.setText(email);
+        age.setText(ageData);
+        if (genderData != null) {
+            ArrayAdapter<CharSequence> adapter = (ArrayAdapter<CharSequence>) gender.getAdapter();
+            int position = adapter.getPosition(genderData);
+            gender.setSelection(position);
+        }
+        Birthdate.setText(birthdateData);
         phoneNumberEditText.setText(phoneNumber);
         addressEditText.setText(address);
         ratesEditText.setText(rates);
@@ -266,6 +284,9 @@ public class EditProfile extends AppCompatActivity {
                 String type_of_work = typeOfWorkEditText.getText().toString();
                 String availability = availabilityEditText.getText().toString();
                 String rate = ratesEditText.getText().toString();
+                String ageData2 = age.getText().toString();
+                String genderData2 = gender.getSelectedItem().toString();
+                String birthdateData2 = Birthdate.getText().toString();
 
 
                 if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || profile_uri == null) {
@@ -344,6 +365,9 @@ public class EditProfile extends AppCompatActivity {
                         user.put("type_of_work", type_of_work);
                         user.put("availability", availability);
                         user.put("rates", rate);
+                        user.put("age", ageData2);
+                        user.put("gender", genderData2);
+                        user.put("birthdate", birthdateData2);
                         user.put("profile_picture", firebaseDownloadUrl);
 
 

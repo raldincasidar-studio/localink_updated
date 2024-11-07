@@ -120,8 +120,7 @@ public class GigWork extends AppCompatActivity {
 
 
         backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, Dashboard.class);
-            startActivity(intent);
+            finish();
         });
 
         fab.setOnClickListener(v -> {

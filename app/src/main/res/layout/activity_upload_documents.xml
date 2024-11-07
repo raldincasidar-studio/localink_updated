@@ -131,6 +131,86 @@
 
                 android:shadowRadius="20"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="0dp"
+                android:text="Upload Barangay Certificate"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Please upload a valid Barangay Certificate. "
+                android:layout_marginTop="10dp"
+                android:lineHeight="30dp"
+                android:layout_marginBottom="0dp"
+                android:textColor="#828282" />
+
+            <Button
+                android:id="@+id/upload_barangay_certificate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Upload Barangay Certificate (PDF/JPG/PNG)"
+                android:textColor="@color/white"
+                android:backgroundTint="#22996E"
+                android:shadowDy="3"
+                android:layout_marginTop="30dp"
+                android:padding="15dp"
+
+                android:shadowRadius="20"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="0dp"
+                android:text="Upload NBI Clearance"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Please upload a valid NBI Clearance. "
+                android:layout_marginTop="10dp"
+                android:lineHeight="30dp"
+                android:layout_marginBottom="0dp"
+                android:textColor="#828282" />
+
+            <Button
+                android:id="@+id/upload_nbi_clearance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Upload NBI Clearance (PDF/JPG/PNG)"
+                android:textColor="@color/white"
+                android:backgroundTint="#22996E"
+                android:shadowDy="3"
+                android:layout_marginTop="30dp"
+                android:padding="15dp"
+
+                android:shadowRadius="20"/>
+
+
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Upload Documents"
+                android:textColor="@color/white"
+                android:backgroundTint="#4A90E2"
+                android:shadowDy="3"
+                android:layout_marginTop="30dp"
+                android:padding="30dp"
+
+                android:shadowRadius="20"/>
+
             <Button
                 android:id="@+id/logout"
                 android:layout_width="wrap_content"

@@ -248,6 +248,43 @@ This objective is only valid for one-time participation."
                     </LinearLayout>
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="10dp">
+
+                    <Button
+                        android:id="@+id/sort_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#03A9F4"
+                        android:text="All"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"/>
+
+                    <Button
+                        android:id="@+id/sort_complete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#22996E"
+                        android:text="Completed"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"/>
+
+                    <Button
+                        android:id="@+id/sort_incomplete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#FFA500"
+                        android:text="Incompleted"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"/>
+
+                </LinearLayout>
+
+
                     <LinearLayout
                         android:id="@+id/participants_container"
                         android:layout_width="match_parent"
@@ -326,6 +363,7 @@ This objective is only valid for one-time participation."
 
                 <!-- Confirmation -->
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="15dp"
@@ -418,6 +456,7 @@ This objective is only valid for one-time participation."
                 </LinearLayout>
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#868484"

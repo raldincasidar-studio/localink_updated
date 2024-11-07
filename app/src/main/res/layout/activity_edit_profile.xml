@@ -308,6 +308,35 @@
                 android:background="@drawable/edittext_border"
                 android:layout_marginBottom="10dp" />
 
+            <EditText
+                android:id="@+id/age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Age *"
+                android:inputType="number"
+                android:padding="15dp"
+                android:background="@drawable/edittext_border"
+                android:layout_marginBottom="10dp" />
+
+            <EditText
+                android:id="@+id/birthdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Birthdate *"
+                android:inputType="text"
+                android:padding="15dp"
+                android:background="@drawable/edittext_border"
+                android:layout_marginBottom="10dp" />
+
+            <Spinner
+                android:id="@+id/gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edittext_border"
+                android:padding="15dp"
+                android:entries="@array/gender_options" />
+
 
             <EditText
                 android:id="@+id/password"

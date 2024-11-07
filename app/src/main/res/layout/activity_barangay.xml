@@ -161,6 +161,7 @@
                 android:padding="10dp">
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Current Volunteer Work"
@@ -170,6 +171,7 @@
                     android:layout_marginBottom="10dp"/>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/current_volunteer_works_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

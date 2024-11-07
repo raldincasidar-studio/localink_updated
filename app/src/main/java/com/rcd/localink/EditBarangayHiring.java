@@ -67,6 +67,18 @@ public class EditBarangayHiring extends AppCompatActivity {
             data.put("activateAcceptVolunteerWorks", activate_accept_volunteer_works.isChecked());
             db.collection("barangay_hiring").document(barangay_hiring_id).update(data);
 
+
+            db.collection("barangay_hiring_contracts")
+                .whereEqualTo("hiringId", barangay_hiring_id)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            db.collection("barangay_hiring_contracts").document(document.getId()).delete();
+                        }
+                    }
+                });
+
             Toast.makeText(EditBarangayHiring.this, "Barangay hiring updated successfully", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(EditBarangayHiring.this, BarangayHiring.class);
             startActivity(intent);

@@ -78,8 +78,7 @@ public class MyGigPosts extends AppCompatActivity {
         Button my_posts_button = findViewById(R.id.worker_list_button);
 
         backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, Dashboard.class);
-            startActivity(intent);
+            finish();
         });
 
         fab.setOnClickListener(v -> {

@@ -49,6 +49,9 @@ public class PublicProfilePage extends AppCompatActivity {
         TextView firstName = findViewById(R.id.first_name);
         TextView lastName = findViewById(R.id.last_name);
         TextView middleName = findViewById(R.id.middle_name);
+        TextView ageEditText = findViewById(R.id.age);
+        TextView genderEditText = findViewById(R.id.gender);
+        TextView birthdateEditText = findViewById(R.id.birthdate);
         TextView phoneNumber = findViewById(R.id.phone_number);
 
         ImageView back_button = findViewById(R.id.back_button);
@@ -78,9 +81,14 @@ public class PublicProfilePage extends AppCompatActivity {
                     String firstNameValue = document.getString("firstName");
                     String lastNameValue = document.getString("lastName");
                     String middleNameValue = document.getString("middleName");
+                    String age = document.getString("age");
+                    String gender = document.getString("gender");
+                    String birthdate = document.getString("birthdate");
                     String phoneNumberValue = document.getString("phoneNumber");
                     String verificationStatus = document.getString("verificationStatus");
                     String validId = document.getString("valid_id");
+                    String barangayCertificate = document.getString("barangay_clearance");
+                    String nbiClearance = document.getString("nbi_clearance");
 
                     TextView verification_status = findViewById(R.id.verification_status);
                     if (verificationStatus != null) {
@@ -100,10 +108,12 @@ public class PublicProfilePage extends AppCompatActivity {
                     name.setText(workerName);
 
                     ImageView document_valid_id = findViewById(R.id.document_valid_id);
-
-
+                    ImageView barangay_certificate = findViewById(R.id.barangay_certificate);
+                    ImageView nbi_clearance = findViewById(R.id.nbi_clearance);
 
                     Picasso.get().load(validId).into(document_valid_id);
+                    Picasso.get().load(barangayCertificate).into(barangay_certificate);
+                    Picasso.get().load(nbiClearance).into(nbi_clearance);
 
                     address.setText(addressValue);
                     availability.setText(availabilityValue);
@@ -111,6 +121,9 @@ public class PublicProfilePage extends AppCompatActivity {
                     firstName.setText(firstNameValue);
                     lastName.setText(lastNameValue);
                     middleName.setText(middleNameValue);
+                    ageEditText.setText(age);
+                    genderEditText.setText(gender);
+                    birthdateEditText.setText(birthdate);
                     phoneNumber.setText(phoneNumberValue);
 
                     chat.setOnClickListener(v -> {

@@ -273,8 +273,7 @@ public class CommunityWall extends AppCompatActivity {
 
 
         back_button.setOnClickListener(v -> {
-            Intent intent = new Intent(CommunityWall.this, Dashboard.class);
-            startActivity(intent);
+            finish();
         });
 
 

@@ -21,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 public class Barangay extends AppCompatActivity {
@@ -92,8 +93,7 @@ public class Barangay extends AppCompatActivity {
         Picasso.get().load(profilePicture).into(profile_image);
 
         back_button.setOnClickListener(v -> {
-            Intent intent = new Intent(this, Dashboard.class);
-            startActivity(intent);
+            finish();
         });
 
         add_post_button.setOnClickListener(v -> {
@@ -125,6 +125,21 @@ public class Barangay extends AppCompatActivity {
                         startActivity(intent);
                     });
 
+                    db.collection("volunteer_transactions").whereEqualTo("volunteer_work", document.getId()).whereEqualTo("volunteer", sharedPrefs.getString("documentId", "")).limit(1).get().addOnCompleteListener(task2 -> {
+                        if (task2.isSuccessful()) {
+                            QuerySnapshot querySnapshot = task2.getResult();
+                            if (querySnapshot != null && querySnapshot.size() > 0) {
+                                // I have already joined this volunteer work
+                                boolean isCompleted = querySnapshot.getDocuments().get(0).getBoolean("isCompleted");
+
+                                String status = isCompleted ? "Completed" : "Pending";
+
+                                volunteer_works_button.setText(volunteerName + " (" + status + ")");
+                            }
+                        }
+                    });
+
+
                     // Add the view to the volunteer_works_list
                     volunteer_works_list.addView(volunteerWorkView);
                 }
@@ -134,36 +149,36 @@ public class Barangay extends AppCompatActivity {
             }
         });
 
-        String documentId = sharedPrefs.getString("documentId", "");
-
-        db.collection("volunteer_transactions").whereEqualTo("volunteer", documentId).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                current_volunteer_works_list.removeAllViews();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    String volunteer_work = document.getString("volunteer_work");
-                    String volunteer_work_name = document.getString("volunteer_name");
-                    String volunteer_work_status = document.getBoolean("isCompleted") ? "Completed" : "Pending";
-
-                    // Create a view to display the volunteer work details
-                    View currentVolunteerWorkView = getLayoutInflater().inflate(R.layout.volunteer_work_item, null);
-                    Button volunteer_works_button = currentVolunteerWorkView.findViewById(R.id.volunteer_works_button);
-
-                    volunteer_works_button.setText(volunteer_work_name + " (" + volunteer_work_status + ")");
-
-                    volunteer_works_button.setOnClickListener(v -> {
-                        Intent intent = new Intent(Barangay.this, VolunteerWorkDescription.class);
-                        intent.putExtra("volunteer_work_id", volunteer_work);
-                        startActivity(intent);
-                    });
-
-                    // Add the view to the current_volunteer_lists
-                    current_volunteer_works_list.addView(currentVolunteerWorkView);
-                }
-            } else {
-                Log.w("Firestore", "Error getting documents.", task.getException());
-                Toast.makeText(this, "Something went wrong, please try again", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        String documentId = sharedPrefs.getString("documentId", "");
+//
+//        db.collection("volunteer_transactions").whereEqualTo("volunteer", documentId).get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                current_volunteer_works_list.removeAllViews();
+//                for (QueryDocumentSnapshot document : task.getResult()) {
+//                    String volunteer_work = document.getString("volunteer_work");
+//                    String volunteer_work_name = document.getString("volunteer_name");
+//                    String volunteer_work_status = document.getBoolean("isCompleted") ? "Completed" : "Pending";
+//
+//                    // Create a view to display the volunteer work details
+//                    View currentVolunteerWorkView = getLayoutInflater().inflate(R.layout.volunteer_work_item, null);
+//                    Button volunteer_works_button = currentVolunteerWorkView.findViewById(R.id.volunteer_works_button);
+//
+//                    volunteer_works_button.setText(volunteer_work_name + " (" + volunteer_work_status + ")");
+//
+//                    volunteer_works_button.setOnClickListener(v -> {
+//                        Intent intent = new Intent(Barangay.this, VolunteerWorkDescription.class);
+//                        intent.putExtra("volunteer_work_id", volunteer_work);
+//                        startActivity(intent);
+//                    });
+//
+//                    // Add the view to the current_volunteer_lists
+//                    current_volunteer_works_list.addView(currentVolunteerWorkView);
+//                }
+//            } else {
+//                Log.w("Firestore", "Error getting documents.", task.getException());
+//                Toast.makeText(this, "Something went wrong, please try again", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
 

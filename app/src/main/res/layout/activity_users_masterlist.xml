@@ -107,6 +107,41 @@
                 android:background="@drawable/edittext_border"></EditText>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <Button
+                    android:id="@+id/sort_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#2196F3"
+                    android:text="All" />
+
+                <Button
+                    android:id="@+id/sort_verified"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#4CAF50"
+                    android:text="Verified" />
+
+                <Button
+                    android:id="@+id/sort_pending"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#FF5722"
+                    android:text="Pending" />
+
+                <Button
+                    android:id="@+id/sort_declined"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#E51C23"
+                    android:text="Declined" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/chat_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

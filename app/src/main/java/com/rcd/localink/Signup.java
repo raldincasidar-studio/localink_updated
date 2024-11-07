@@ -212,6 +212,14 @@ public class Signup extends AppCompatActivity {
                 calendar.set(year, month, dayOfMonth);
                 SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy");
                 Birthdate.setText(format.format(calendar.getTime()));
+
+                // Calculate age
+                Calendar today = Calendar.getInstance();
+                int ageYears = today.get(Calendar.YEAR) - year;
+                if (today.get(Calendar.DAY_OF_YEAR) < calendar.get(Calendar.DAY_OF_YEAR)) {
+                    ageYears--;
+                }
+                age.setText(String.valueOf(ageYears));
             }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
             datePickerDialog.show();
         });
@@ -329,6 +337,7 @@ public class Signup extends AppCompatActivity {
                         user.put("age", age1);
                         user.put("gender", gender1);
                         user.put("birthdate", birthdate);
+                        user.put("verificationStatus", "Pending");
                         user.put("profile_picture", firebaseDownloadUrl);
 
 

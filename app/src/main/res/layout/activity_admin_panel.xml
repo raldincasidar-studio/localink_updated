@@ -63,6 +63,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
+                        android:visibility="invisible"
                         android:id="@+id/notification"
                         android:layout_width="35dp"
                         android:layout_height="35dp"

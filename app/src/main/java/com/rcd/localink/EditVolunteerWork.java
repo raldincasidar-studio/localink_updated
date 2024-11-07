@@ -105,6 +105,19 @@ public class EditVolunteerWork extends AppCompatActivity {
             volunteerWork.put("instruction", instruction.getText().toString());
             volunteerWork.put("activated", activate_accept_volunteer_works.isChecked());
 
+            db.collection("volunteer_transactions")
+                .whereEqualTo("volunteer_work", volunteerWorkId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            db.collection("volunteer_transactions")
+                                .document(document.getId())
+                                .delete();
+                        }
+                    }
+                });
+
             db.collection("volunteer_works").document(volunteerWorkId).update(volunteerWork).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
                     Toast.makeText(EditVolunteerWork.this, "Volunteer work updated successfully", Toast.LENGTH_SHORT).show();

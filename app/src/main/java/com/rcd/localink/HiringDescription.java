@@ -112,69 +112,26 @@ public class HiringDescription extends AppCompatActivity {
             participants_box.setVisibility(View.GONE);
         }
 
-        db.collection("barangay_hiring_contracts").whereEqualTo("hiringId", hiring_id).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                QuerySnapshot querySnapshot = task.getResult();
-                if (querySnapshot != null && querySnapshot.size() > 0) {
+        loadParticipants(db, hiring_id, participants_container, sharedPrefs);
 
-                    for (DocumentSnapshot document : querySnapshot.getDocuments()) {
-                        View view = getLayoutInflater().inflate(R.layout.barangay_participants, participants_container, false);
-                        TextView name = view.findViewById(R.id.name);
-                        TextView status = view.findViewById(R.id.status);
-                        ImageView profile_image = view.findViewById(R.id.image);
-
-                        name.setText(document.getString("user_fullname"));
-                        status.setText(document.getString("status"));
-
-                        String profile_picture = document.getString("profile_image");
-                        if (profile_picture != null) {
-                            Picasso.get().load(profile_picture).into(profile_image);
-                        }
+        Button sort_complete = findViewById(R.id.sort_complete);
+        Button sort_incomplete = findViewById(R.id.sort_incomplete);
+        Button sort_all = findViewById(R.id.sort_all);
 
 
 
-                        Button mark_as_complete = view.findViewById(R.id.mark_as_complete);
-
-                        if (document.getString("status").equals("done")) {
-                            status.setText("Completed");
-                            mark_as_complete.setEnabled(false);
-                            mark_as_complete.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
-                        }
-
-                        mark_as_complete.setOnClickListener(v -> {
-                            db.collection("barangay_hiring_contracts").document(document.getId()).update("status", "done").addOnCompleteListener(task1 -> {
-                                if (task1.isSuccessful()) {
-                                    status.setText("Completed");
-                                    mark_as_complete.setEnabled(false);
-                                    mark_as_complete.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
-
-
-                                    // Add Notification
-                                    db.collection("notifications").add(new HashMap<String, Object>(){{
-                                        put("date_added", FieldValue.serverTimestamp());
-                                        put("for", document.getString("volunteer"));
-                                        put("by", sharedPrefs.getString("documentId", ""));
-                                        put("picture", sharedPrefs.getString("profile_picture", ""));
-                                        put("notification_content", "Administrator has marked your participation as completed!");
-                                        put("isSeen", false);
-                                        put("extraIntent", hiring_id);
-                                        put("type", "barangay_hiring");
-                                    }}).addOnSuccessListener(documentReference -> {
-                                        Toast.makeText(HiringDescription.this, "Successfuly marked as completed", Toast.LENGTH_SHORT).show();
-                                    });
-                                } else {
-                                    Toast.makeText(HiringDescription.this, "Error marking transaction as completed", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-                        });
-
-                        participants_container.addView(view);
-                    }
-                }
-            }
+        sort_all.setOnClickListener(v -> {
+            loadAndSortParticipants(db, hiring_id, participants_container, sharedPrefs, "");
         });
 
+
+        sort_complete.setOnClickListener(v -> {
+            loadAndSortParticipants(db, hiring_id, participants_container, sharedPrefs, "done");
+        });
+
+        sort_incomplete.setOnClickListener(v -> {
+            loadAndSortParticipants(db, hiring_id, participants_container, sharedPrefs, "pending");
+        });
 
 
         db.collection("barangay_hiring").document(hiring_id)
@@ -255,5 +212,143 @@ public class HiringDescription extends AppCompatActivity {
         if (type.equals("Admin")) {
             yes_no.setVisibility(View.GONE);
         }
+    }
+
+    private void loadParticipants(FirebaseFirestore db, String hiring_id, LinearLayout participants_container, SharedPreferences sharedPrefs) {
+        db.collection("barangay_hiring_contracts").whereEqualTo("hiringId", hiring_id).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                participants_container.removeAllViews();
+                QuerySnapshot querySnapshot = task.getResult();
+                if (querySnapshot != null && querySnapshot.size() > 0) {
+
+                    for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                        View view = getLayoutInflater().inflate(R.layout.barangay_participants, participants_container, false);
+                        TextView name = view.findViewById(R.id.name);
+                        TextView status = view.findViewById(R.id.status);
+                        ImageView profile_image = view.findViewById(R.id.image);
+
+                        name.setText(document.getString("user_fullname"));
+                        status.setText(document.getString("status"));
+
+                        String profile_picture = document.getString("profile_image");
+                        if (profile_picture != null) {
+                            Picasso.get().load(profile_picture).into(profile_image);
+                        }
+
+
+
+                        Button mark_as_complete = view.findViewById(R.id.mark_as_complete);
+
+                        if (document.getString("status").equals("done")) {
+                            status.setText("Completed");
+                            mark_as_complete.setEnabled(false);
+                            mark_as_complete.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+                        }
+
+                        mark_as_complete.setOnClickListener(v -> {
+                            db.collection("barangay_hiring_contracts").document(document.getId()).update("status", "done").addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    status.setText("Completed");
+                                    mark_as_complete.setEnabled(false);
+                                    mark_as_complete.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+
+
+                                    // Add Notification
+                                    db.collection("notifications").add(new HashMap<String, Object>(){{
+                                        put("date_added", FieldValue.serverTimestamp());
+                                        put("for", document.getString("volunteer"));
+                                        put("by", sharedPrefs.getString("documentId", ""));
+                                        put("picture", sharedPrefs.getString("profile_picture", ""));
+                                        put("notification_content", "Administrator has marked your participation as completed!");
+                                        put("isSeen", false);
+                                        put("extraIntent", hiring_id);
+                                        put("type", "barangay_hiring");
+                                    }}).addOnSuccessListener(documentReference -> {
+                                        Toast.makeText(HiringDescription.this, "Successfuly marked as completed", Toast.LENGTH_SHORT).show();
+                                    });
+                                } else {
+                                    Toast.makeText(HiringDescription.this, "Error marking transaction as completed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        });
+
+                        participants_container.addView(view);
+                    }
+                }
+            }
+        });
+    }
+
+    private void loadAndSortParticipants(FirebaseFirestore db, String hiring_id, LinearLayout participants_container, SharedPreferences sharedPrefs, String status2) {
+        db.collection("barangay_hiring_contracts").whereEqualTo("hiringId", hiring_id).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                participants_container.removeAllViews();
+                QuerySnapshot querySnapshot = task.getResult();
+                if (querySnapshot != null && querySnapshot.size() > 0) {
+
+                    for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                        View view = getLayoutInflater().inflate(R.layout.barangay_participants, participants_container, false);
+                        TextView name = view.findViewById(R.id.name);
+                        TextView status = view.findViewById(R.id.status);
+                        ImageView profile_image = view.findViewById(R.id.image);
+
+                        name.setText(document.getString("user_fullname"));
+                        status.setText(document.getString("status"));
+
+                        String profile_picture = document.getString("profile_image");
+                        if (profile_picture != null) {
+                            Picasso.get().load(profile_picture).into(profile_image);
+                        }
+
+
+
+                        Button mark_as_complete = view.findViewById(R.id.mark_as_complete);
+
+                        if (document.getString("status").equals("done")) {
+                            status.setText("Completed");
+                            mark_as_complete.setEnabled(false);
+                            mark_as_complete.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+                        }
+
+                        mark_as_complete.setOnClickListener(v -> {
+                            db.collection("barangay_hiring_contracts").document(document.getId()).update("status", "done").addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    status.setText("Completed");
+                                    mark_as_complete.setEnabled(false);
+                                    mark_as_complete.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+
+
+                                    // Add Notification
+                                    db.collection("notifications").add(new HashMap<String, Object>(){{
+                                        put("date_added", FieldValue.serverTimestamp());
+                                        put("for", document.getString("volunteer"));
+                                        put("by", sharedPrefs.getString("documentId", ""));
+                                        put("picture", sharedPrefs.getString("profile_picture", ""));
+                                        put("notification_content", "Administrator has marked your participation as completed!");
+                                        put("isSeen", false);
+                                        put("extraIntent", hiring_id);
+                                        put("type", "barangay_hiring");
+                                    }}).addOnSuccessListener(documentReference -> {
+                                        Toast.makeText(HiringDescription.this, "Successfuly marked as completed", Toast.LENGTH_SHORT).show();
+                                    });
+                                } else {
+                                    Toast.makeText(HiringDescription.this, "Error marking transaction as completed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        });
+
+                        if (document.getString("status").equals(status2)) {
+                            participants_container.addView(view);
+                        }
+
+                        if (status2.equals("")) {
+                            participants_container.addView(view);
+                        }
+                    }
+                }
+            }
+        });
     }
 }
