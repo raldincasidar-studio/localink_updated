@@ -68,7 +68,7 @@ public class JobPostDescription extends AppCompatActivity {
                             String employerId = document.getString("employer_id");
                             String employerNameText = document.getString("employer_name");
                             String locationText = document.getString("location");
-                            String job_category = document.getString("job_category");
+                            String job_category = document.getString("job_type");
                             double rateText = document.getDouble("rate");
                             double requiredHoursText = document.getDouble("required_hours");
 
