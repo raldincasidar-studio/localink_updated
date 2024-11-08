@@ -357,6 +357,13 @@ public class GigWork extends AppCompatActivity {
 
                         workerNameTextView.setText(workerName);
                         workerSkillsTextView.setText(workerSkills);
+
+
+                        String activeStatus = document.getString("activeStatus") != null ? document.getString("activeStatus") : "Active";
+                        TextView online_or_not = gigWorkItemView.findViewById(R.id.online_or_not);
+                        online_or_not.setText(activeStatus);
+
+
                         Picasso.get().load(profile_picture_firebase).into(profile_picture);
 
                         gigWorkItemView.setOnClickListener(v -> {
@@ -402,6 +409,10 @@ public class GigWork extends AppCompatActivity {
                         workerNameTextView.setText(workerName);
                         workerSkillsTextView.setText(workerSkills);
                         Picasso.get().load(profile_picture_firebase).into(profile_picture);
+
+                        String activeStatus = document.getString("activeStatus") != null ? document.getString("activeStatus") : "Active";
+                        TextView online_or_not = gigWorkItemView.findViewById(R.id.online_or_not);
+                        online_or_not.setText(activeStatus);
 
                         gigWorkItemView.setOnClickListener(v -> {
                             Intent intent = new Intent(GigWork.this, GigWorkerProfile.class);
@@ -507,6 +518,10 @@ public class GigWork extends AppCompatActivity {
                             workerNameTextView.setText(workerName);
                             workerSkillsTextView.setText(workerSkills);
                             Picasso.get().load(profile_picture_firebase).into(profile_picture);
+
+                            String activeStatus = document.getString("activeStatus") != null ? document.getString("activeStatus") : "Active";
+                            TextView online_or_not = gigWorkItemView.findViewById(R.id.online_or_not);
+                            online_or_not.setText(activeStatus);
 
                             gigWorkItemView.setOnClickListener(v -> {
                                 Intent intent = new Intent(GigWork.this, GigWorkerProfile.class);

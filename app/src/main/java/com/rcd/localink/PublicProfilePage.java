@@ -89,6 +89,7 @@ public class PublicProfilePage extends AppCompatActivity {
                     String validId = document.getString("valid_id");
                     String barangayCertificate = document.getString("barangay_clearance");
                     String nbiClearance = document.getString("nbi_clearance");
+                    String active_status = document.getString("activeStatus") != null ? document.getString("activeStatus") : "Active";
 
                     TextView verification_status = findViewById(R.id.verification_status);
                     if (verificationStatus != null) {
@@ -138,6 +139,9 @@ public class PublicProfilePage extends AppCompatActivity {
                     genderEditText.setText(gender);
                     birthdateEditText.setText(birthdate);
                     phoneNumber.setText(phoneNumberValue);
+
+                    TextView active_status_label = findViewById(R.id.active_status);
+                    active_status_label.setText(active_status);
 
                     chat.setOnClickListener(v -> {
                         Intent intent = new Intent(PublicProfilePage.this, ChatPage.class);

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -70,6 +71,7 @@ public class EditProfile extends AppCompatActivity {
     private Uri profile_uri = null;
 
     private String firebaseDownloadUrl = null;
+    private CheckBox active_profile;
 
     public Map<String, Object> user = new HashMap<>();
 
@@ -104,6 +106,7 @@ public class EditProfile extends AppCompatActivity {
         addressEditText = findViewById(R.id.address);
         upload_profile = findViewById(R.id.upload_profile);
         profile_image = findViewById(R.id.profile_image);
+        active_profile = findViewById(R.id.active_profile);
 
         LinearLayout workerInformationLayout = findViewById(R.id.worker_information);
         EditText ratesEditText = findViewById(R.id.rates);
@@ -133,6 +136,7 @@ public class EditProfile extends AppCompatActivity {
         String ageData = sharedPrefs.getString("age", "");
         String genderData = sharedPrefs.getString("gender", "");
         String birthdateData = sharedPrefs.getString("birthdate", "");
+        String active_profile_data = sharedPrefs.getString("activeStatus", "Active");
 
 
 
@@ -195,6 +199,13 @@ public class EditProfile extends AppCompatActivity {
             }
         }
         user_type = sharedPrefs.getString("user_type", "");
+
+
+        if (active_profile_data.equals("Active")) {
+            active_profile.setChecked(true);
+        } else {
+            active_profile.setChecked(false);
+        }
 
         if (user_type.equals("Worker")) {
             worker.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#22996E")));
@@ -293,6 +304,7 @@ public class EditProfile extends AppCompatActivity {
                 String ageData2 = age.getText().toString();
                 String genderData2 = gender.getSelectedItem().toString();
                 String birthdateData2 = Birthdate.getText().toString();
+                String active_profile_val = active_profile.isChecked() ? "Active" : "Inactive";
 
 
                 if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || profile_uri == null) {
@@ -374,6 +386,7 @@ public class EditProfile extends AppCompatActivity {
                         user.put("age", ageData2);
                         user.put("gender", genderData2);
                         user.put("birthdate", birthdateData2);
+                        user.put("activeStatus", active_profile_val);
                         user.put("profile_picture", firebaseDownloadUrl);
 
 

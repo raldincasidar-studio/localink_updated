@@ -344,6 +344,7 @@ public class Signup extends AppCompatActivity {
                         user.put("gender", gender1);
                         user.put("birthdate", birthdate);
                         user.put("verificationStatus", "Pending");
+                        user.put("activeStatus", "Active");
                         user.put("profile_picture", firebaseDownloadUrl);
 
 
