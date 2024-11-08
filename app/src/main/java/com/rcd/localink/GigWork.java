@@ -254,8 +254,18 @@ public class GigWork extends AppCompatActivity {
 
                         jobTitleTextView.setText(jobTitle);
                         jobDescriptionTextView.setText(jobDescription);
-                        online_or_not.setText("Looking for Hiring:");
                         Picasso.get().load(profile_picture_firebase).into(profile_picture);
+
+                        // Get Status if the employer is online
+                        db.collection("users").document(document.getString("employer_id")).get().addOnCompleteListener(task2 -> {
+                            if (task2.isSuccessful()) {
+                                DocumentSnapshot userDocument = task2.getResult();
+                                if (userDocument != null) {
+                                    String activeStatus = userDocument.getString("activeStatus") != null ? userDocument.getString("activeStatus") : "Active";
+                                    online_or_not.setText(activeStatus);
+                                }
+                            }
+                        });
 
                         gigWorkItem.setOnClickListener(v -> {
                             Intent intent = new Intent(GigWork.this, JobPostDescription.class);
@@ -314,7 +324,6 @@ public class GigWork extends AppCompatActivity {
 
                         jobTitleTextView.setText(jobTitle);
                         jobDescriptionTextView.setText(jobDescription);
-                        online_or_not.setText("Looking for Hiring:");
                         Picasso.get().load(profile_picture_firebase).into(profile_picture);
 
                         gigWorkItem.setOnClickListener(v -> {
@@ -323,6 +332,16 @@ public class GigWork extends AppCompatActivity {
                             startActivity(intent);
                         });
 
+                        // Get Status if the employer is online
+                        db.collection("users").document(document.getString("employer_id")).get().addOnCompleteListener(task2 -> {
+                            if (task2.isSuccessful()) {
+                                DocumentSnapshot userDocument = task2.getResult();
+                                if (userDocument != null) {
+                                    String activeStatus = userDocument.getString("activeStatus") != null ? userDocument.getString("activeStatus") : "Active";
+                                    online_or_not.setText(activeStatus);
+                                }
+                            }
+                        });
 
 
                         String searchText = searchEditText.getText().toString().trim().toLowerCase();
@@ -469,7 +488,6 @@ public class GigWork extends AppCompatActivity {
 
                             jobTitleTextView.setText(jobTitle);
                             jobDescriptionTextView.setText(jobDescription);
-                            online_or_not.setText("Looking for Hiring:");
                             Picasso.get().load(profile_picture_firebase).into(profile_picture);
 
                             gigWorkItem.setOnClickListener(v -> {
@@ -478,7 +496,16 @@ public class GigWork extends AppCompatActivity {
                                 startActivity(intent);
                             });
 
-
+                            // Get Status if the employer is online
+                            db.collection("users").document(document.getString("employer_id")).get().addOnCompleteListener(task2 -> {
+                                if (task2.isSuccessful()) {
+                                    DocumentSnapshot userDocument = task2.getResult();
+                                    if (userDocument != null) {
+                                        String activeStatus = userDocument.getString("activeStatus") != null ? userDocument.getString("activeStatus") : "Active";
+                                        online_or_not.setText(activeStatus);
+                                    }
+                                }
+                            });
 
                             if (document.getString("job_type") != null && document.getString("job_type").equals(category_search)) {
                                 gigWorkList.addView(gigWorkItem);
