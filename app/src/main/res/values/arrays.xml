@@ -15,12 +15,15 @@
         <item>Gardening</item>
         <item>Laundry</item>
         <item>Delivery Services</item>
+        <item>Pet Services</item>
     </string-array>
 
     <string-array name="type_of_work_with_all">
         <item>All</item>
+        <item>Minor repairs</item>
         <item>Gardening</item>
         <item>Laundry</item>
         <item>Delivery Services</item>
+        <item>Pet Services</item>
     </string-array>
 </resources>
