@@ -94,6 +94,18 @@
 
             </LinearLayout>
 
+            <EditText
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Search transactions ..."
+                android:inputType="text"
+                android:layout_margin="10dp"
+                android:paddingVertical="15dp"
+                android:paddingHorizontal="20dp"
+                android:drawableRight="@drawable/search_icon"
+                android:background="@drawable/edittext_border"></EditText>
+
             <LinearLayout
                 android:id="@+id/chat_container"
                 android:layout_width="match_parent"

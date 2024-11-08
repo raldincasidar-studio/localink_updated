@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,8 +51,30 @@ public class Chats extends AppCompatActivity {
             }
         });
 
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        EditText search = findViewById(R.id.search);
+        search.setOnTouchListener((v, event) -> {
+            final int DRAWABLE_LEFT = 0;
+            final int DRAWABLE_TOP = 1;
+            final int DRAWABLE_RIGHT = 2;
+            final int DRAWABLE_BOTTOM = 3;
+
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= (search.getRight() - search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+
+                    initializeData(db, chat_container, search);
+
+                    return true;
+                }
+            }
+            return false;
+        });
+
+
+        initializeData(db, chat_container, search);
+    }
+
+    private void initializeData(FirebaseFirestore db, LinearLayout chat_container, EditText search) {
         db.collection("chats")
             .orderBy("date_added", Query.Direction.DESCENDING)
             .get()
@@ -97,7 +122,7 @@ public class Chats extends AppCompatActivity {
                                         String middleName = userDocument.getString("middleName");
                                         String profilePicture = userDocument.getString("profile_picture");
 
-                                        View chatRow = getLayoutInflater().inflate(R.layout.review_item, null);
+                                        View chatRow = getLayoutInflater().inflate(R.layout.review_item, null, false);
                                         TextView chatName = chatRow.findViewById(R.id.name);
 
                                         TextView chatContent = chatRow.findViewById(R.id.content);
@@ -117,7 +142,10 @@ public class Chats extends AppCompatActivity {
                                             startActivity(intent);
                                         });
 
-                                        chat_container.addView(chatRow);
+                                        String searchText = search.getText().toString();
+                                        if (fullName.toLowerCase().contains(searchText.toLowerCase()) || searchText.equals("")) {
+                                            chat_container.addView(chatRow);
+                                        }
                                     } else {
                                         Log.w("Chats", "Error getting user documents.", task2.getException());
                                     }

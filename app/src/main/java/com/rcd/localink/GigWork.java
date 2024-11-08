@@ -11,10 +11,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,7 @@ public class GigWork extends AppCompatActivity {
     private SharedPreferences sharedPrefs;
 
     EditText searchEditText;
+    String category_search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,23 @@ public class GigWork extends AppCompatActivity {
 
         FloatingActionButton chat_support = findViewById(R.id.chat_support);
 
+        Spinner category_spinner = findViewById(R.id.category);
+
+        category_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                category_search = parent.getItemAtPosition(position).toString();
+
+                Toast.makeText(GigWork.this, "Searching category: " + category_search, Toast.LENGTH_SHORT).show();
+
+                search_category();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         chat_support.setOnClickListener(v -> {
             Intent intent = new Intent(this, ChatPage.class);
@@ -399,5 +419,117 @@ public class GigWork extends AppCompatActivity {
                 Toast.makeText(this, "Found " + querySnapshot.size() + " workers", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void search_category() {
+        SharedPreferences sharedPreferences = getSharedPreferences("userAuth", MODE_PRIVATE);
+        String userType = sharedPreferences.getString("user_type", "");
+
+
+        LinearLayout gigWorkList = findViewById(R.id.gig_work_list);
+
+        if (userType.equals("Worker")) {
+
+            Toast.makeText(this, "Fetching job postings", Toast.LENGTH_SHORT).show();
+
+
+            db.collection("job_postings").orderBy("title", Query.Direction.ASCENDING).get().addOnCompleteListener(task -> {
+                Log.d(TAG, "fetchJobPostings: Fetching on db");
+                if (task.isSuccessful()) {
+                    gigWorkList.removeAllViews();
+                    QuerySnapshot querySnapshot = task.getResult();
+                    Log.d("GigWork", "Fetched " + querySnapshot.size() + " job postings");
+                    if (querySnapshot != null) {
+                        gigWorkList.removeAllViews();
+                        for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                            Log.d(TAG, "fetchJobPostings: Document ID: " + document.getId());
+                            String jobTitle = document.getString("title");
+                            String jobDescription = document.getString("employer_name");
+                            String profile_picture_firebase = document.getString("employer_profile_pic");
+
+                            // Display job postings in the UI
+                            View gigWorkItem = getLayoutInflater().inflate(R.layout.gig_work_item, null);
+                            TextView jobTitleTextView = gigWorkItem.findViewById(R.id.job_title);
+                            TextView jobDescriptionTextView = gigWorkItem.findViewById(R.id.worker_name);
+                            TextView online_or_not = gigWorkItem.findViewById(R.id.online_or_not);
+                            ImageView profile_picture = gigWorkItem.findViewById(R.id.profile_picture);
+
+
+
+                            jobTitleTextView.setText(jobTitle);
+                            jobDescriptionTextView.setText(jobDescription);
+                            online_or_not.setText("Looking for Hiring:");
+                            Picasso.get().load(profile_picture_firebase).into(profile_picture);
+
+                            gigWorkItem.setOnClickListener(v -> {
+                                Intent intent = new Intent(GigWork.this, JobPostDescription.class);
+                                intent.putExtra("jobId", document.getId());
+                                startActivity(intent);
+                            });
+
+
+
+                            if (document.getString("job_type") != null && document.getString("job_type").equals(category_search)) {
+                                gigWorkList.addView(gigWorkItem);
+                            }
+
+                            if (category_search == null || category_search.equals("All")) {
+                                gigWorkList.addView(gigWorkItem);
+                            }
+                        }
+                    }
+                }
+            });
+
+        } else if (userType.equals("Employer")) {
+            TextView gig_work_title = findViewById(R.id.gig_work_title);
+            gig_work_title.setText("Workers Available");
+
+
+            db.collection("users").whereEqualTo("user_type", "Worker").get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    gigWorkList.removeAllViews();
+                    QuerySnapshot querySnapshot = task.getResult();
+                    if (querySnapshot != null) {
+                        for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                            String workerName = document.getString("firstName") + " " + document.getString("middleName") + " " + document.getString("lastName");
+                            String workerSkills = document.getString("type_of_work");
+                            String profile_picture_firebase = document.getString("profile_picture");
+
+                            // Inflate the gig_work_item layout
+                            View gigWorkItemView = LayoutInflater.from(this).inflate(R.layout.gig_work_item, null);
+
+                            // Set the text in the UI
+                            TextView workerNameTextView = gigWorkItemView.findViewById(R.id.worker_name);
+                            TextView workerSkillsTextView = gigWorkItemView.findViewById(R.id.job_title);
+                            ImageView profile_picture = gigWorkItemView.findViewById(R.id.profile_picture);
+
+                            workerNameTextView.setText(workerName);
+                            workerSkillsTextView.setText(workerSkills);
+                            Picasso.get().load(profile_picture_firebase).into(profile_picture);
+
+                            gigWorkItemView.setOnClickListener(v -> {
+                                Intent intent = new Intent(GigWork.this, GigWorkerProfile.class);
+                                intent.putExtra("workerId", document.getId());
+                                startActivity(intent);
+                            });
+
+                            if (workerSkills == null) {
+                                continue;
+                            }
+
+                            // Add the view to the list
+                            if (workerSkills.equals(category_search) || category_search.equals("All")) {
+                                gigWorkList.addView(gigWorkItemView);
+                            }
+                        }
+                    }
+
+                    Toast.makeText(this, "Found " + querySnapshot.size() + " workers", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+
     }
 }

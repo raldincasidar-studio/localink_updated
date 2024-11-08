@@ -163,6 +163,16 @@
                     android:background="@drawable/edittext_border"
                     android:layout_marginBottom="10dp" />
 
+                <Spinner
+                    android:id="@+id/job_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:padding="15dp"
+                    android:background="@drawable/edittext_border"
+                    android:layout_marginBottom="10dp"
+                    android:entries="@array/type_of_work"/>
+
                 <LinearLayout
                     android:visibility="gone"
                     android:layout_width="match_parent"

@@ -265,6 +265,24 @@
                     android:textSize="16dp"
                     android:layout_marginTop="10dp"/>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Job Category"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/job_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Category Name"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+
             </LinearLayout>
 
             <!-- Reviews -->

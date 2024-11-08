@@ -161,6 +161,32 @@
                     android:padding="15dp"/>
             </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Categories"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="15dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <Spinner
+                    android:id="@+id/category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:padding="15dp"
+                    android:background="@drawable/edittext_border"
+                    android:layout_marginBottom="10dp"
+                    android:entries="@array/type_of_work_with_all"/>
+
+            </LinearLayout>
+
 
             <!-- Transaction History -->
             <LinearLayout
