@@ -428,6 +428,32 @@ public class EditProfile extends AppCompatActivity {
                     // Successful update
                     Toast.makeText(EditProfile.this, "User updated Please login", Toast.LENGTH_SHORT).show();
 
+
+                    // Store the user data in SharedPreferences
+                    SharedPreferences sharedPrefs = getSharedPreferences("userAuth", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPrefs.edit();
+                    editor.putString("firstName", firstName);
+                    editor.putString("middleName", middleName);
+                    editor.putString("lastName", lastName);
+                    editor.putString("email", email);
+                    if (!password.isEmpty()) {
+                        editor.putString("password", password);
+                    }
+                    editor.putString("phoneNumber", phoneNumber);
+                    editor.putString("address", address);
+                    editor.putString("user_type", user_type);
+                    editor.putString("type_of_work", type_of_work);
+                    editor.putString("availability", availability);
+                    editor.putString("rates", rate);
+                    editor.putString("age", ageData2);
+                    editor.putString("gender", genderData2);
+                    editor.putString("birthdate", birthdateData2);
+                    editor.putString("activeStatus", active_profile_val);
+                    if (firebaseDownloadUrl != null) {
+                        editor.putString("profile_picture", firebaseDownloadUrl);
+                    }
+                    editor.commit();
+
                     // Redirect to the login page
                     Intent intent = new Intent(EditProfile.this, MainActivity.class);
                     startActivity(intent);
