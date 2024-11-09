@@ -76,8 +76,7 @@ public class EditPost extends AppCompatActivity {
 
 
         back_button.setOnClickListener(v -> {
-            Intent intent = new Intent(EditPost.this, CommunityWall.class);
-            startActivity(intent);
+            finish();
         });
 
         //        Get the profile image and display it
