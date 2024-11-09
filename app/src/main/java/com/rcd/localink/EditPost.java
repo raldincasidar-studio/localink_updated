@@ -126,6 +126,9 @@ public class EditPost extends AppCompatActivity {
                         upload_image_button.setEnabled(true);
                         upload_image_button.setText("Change image");
                         image_preview.setImageURI(imageUri.get());
+                    } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                        upload_image_button.setEnabled(true);
+                        upload_image_button.setText("Change image");
                     }
                 });
 
