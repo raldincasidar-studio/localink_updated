@@ -202,13 +202,6 @@ public class ContractPreview extends AppCompatActivity {
                     Toast.makeText(ContractPreview.this, "Failed to decline contract", Toast.LENGTH_SHORT).show();
                 });
         });
-
-        chat.setOnClickListener(v -> {
-            Toast.makeText(ContractPreview.this, "Chat with employer", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(ContractPreview.this, ChatPage.class);
-            intent.putExtra("person", by.get());
-            startActivity(intent);
-        });
     }
 
     private void initializeData(FirebaseFirestore db, String id, TextView date_of_contract, TextView duration, TextView mode_of_payment, TextView notes_to_contractor, TextView other_specific_negotiations, TextView site_of_contract, TextView status, AtomicReference<String> by, AtomicReference<String> for_id, AtomicReference<String> job_id, SharedPreferences sharedPrefs, LinearLayout accept_buttons, Button complete_contract, Button contract_details) {
@@ -308,6 +301,15 @@ public class ContractPreview extends AppCompatActivity {
                             Picasso.get().load(opponentProfilePicture).into(profile_pic);
                             name.setText(opponentName);
                             user_type.setText(opponentuserType);
+
+
+                            Button chat = findViewById(R.id.chat);
+                            chat.setText("Chat with " + opponentuserType);
+                            chat.setOnClickListener(v -> {
+                                Intent intent = new Intent(ContractPreview.this, ChatPage.class);
+                                intent.putExtra("person", opponent_id);
+                                startActivity(intent);
+                            });
 
                             // Use opponentName and opponentEmail as required
                         } else {
