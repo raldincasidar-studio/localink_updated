@@ -234,6 +234,9 @@ public class EditProfile extends AppCompatActivity {
                         upload_profile.setEnabled(true);
                         upload_profile.setText("Change profile picture");
                         profile_image.setImageURI(profile_uri);
+                    } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                        upload_profile.setEnabled(true);
+                        upload_profile.setText("Change profile picture");
                     }
                 });
 
@@ -307,7 +310,7 @@ public class EditProfile extends AppCompatActivity {
                 String active_profile_val = active_profile.isChecked() ? "Active" : "Inactive";
 
 
-                if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || profile_uri == null) {
+                if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || address.isEmpty()) {
                     Toast.makeText(EditProfile.this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -345,6 +348,11 @@ public class EditProfile extends AppCompatActivity {
                 // Create a new user with the gathered data
 
 
+                if (profile_uri == null) {
+                    updateProfile(firstName, middleName, lastName, email, password, phoneNumber, address, type_of_work, availability, rate, ageData2, genderData2, birthdateData2, active_profile_val, db, userId);
+                    return;
+                }
+
                 // Upload the profile_uri to Firebase Storage
                 String filename = UUID.randomUUID().toString();
                 FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -370,50 +378,7 @@ public class EditProfile extends AppCompatActivity {
                         Log.d(TAG, "Profile Picture: " + task.getResult());
                         firebaseDownloadUrl = task.getResult().toString();
 
-                        user.put("firstName", firstName);
-                        user.put("middleName", middleName);
-                        user.put("lastName", lastName);
-                        user.put("email", email);
-                        if (!password.isEmpty()) {
-                            user.put("password", password);
-                        }
-                        user.put("phoneNumber", phoneNumber);
-                        user.put("address", address);
-                        user.put("user_type", user_type);
-                        user.put("type_of_work", type_of_work);
-                        user.put("availability", availability);
-                        user.put("rates", rate);
-                        user.put("age", ageData2);
-                        user.put("gender", genderData2);
-                        user.put("birthdate", birthdateData2);
-                        user.put("activeStatus", active_profile_val);
-                        user.put("profile_picture", firebaseDownloadUrl);
-
-
-                        // Update the document with the given ID in the "users" collection
-                        db.collection("users")
-                                .document(userId)
-                                .update(user)
-                                .addOnSuccessListener(unused -> {
-                                    // Successful update
-                                    Toast.makeText(EditProfile.this, "User updated Please login", Toast.LENGTH_SHORT).show();
-
-                                    // Redirect to the login page
-                                    Intent intent = new Intent(EditProfile.this, MainActivity.class);
-                                    startActivity(intent);
-
-
-                                    signupGoogleButton.setText("Update Profile");
-                                    signupGoogleButton.setEnabled(true);
-                                })
-                                .addOnFailureListener(e -> {
-                                    // Failed update
-                                    Toast.makeText(EditProfile.this, "Error updating user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-
-
-                                    signupGoogleButton.setText("Update Profile");
-                                    signupGoogleButton.setEnabled(true);
-                                });
+                        updateProfile(firstName, middleName, lastName, email, password, phoneNumber, address, type_of_work, availability, rate, ageData2, genderData2, birthdateData2, active_profile_val, db, userId);
                     } else {
                         Log.e(TAG, "Error getting download URL", task.getException());
 
@@ -430,5 +395,54 @@ public class EditProfile extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void updateProfile(String firstName, String middleName, String lastName, String email, String password, String phoneNumber, String address, String type_of_work, String availability, String rate, String ageData2, String genderData2, String birthdateData2, String active_profile_val, FirebaseFirestore db, String userId) {
+        user.put("firstName", firstName);
+        user.put("middleName", middleName);
+        user.put("lastName", lastName);
+        user.put("email", email);
+        if (!password.isEmpty()) {
+            user.put("password", password);
+        }
+        user.put("phoneNumber", phoneNumber);
+        user.put("address", address);
+        user.put("user_type", user_type);
+        user.put("type_of_work", type_of_work);
+        user.put("availability", availability);
+        user.put("rates", rate);
+        user.put("age", ageData2);
+        user.put("gender", genderData2);
+        user.put("birthdate", birthdateData2);
+        user.put("activeStatus", active_profile_val);
+        if (firebaseDownloadUrl != null) {
+            user.put("profile_picture", firebaseDownloadUrl);
+        }
+
+
+        // Update the document with the given ID in the "users" collection
+        db.collection("users")
+                .document(userId)
+                .update(user)
+                .addOnSuccessListener(unused -> {
+                    // Successful update
+                    Toast.makeText(EditProfile.this, "User updated Please login", Toast.LENGTH_SHORT).show();
+
+                    // Redirect to the login page
+                    Intent intent = new Intent(EditProfile.this, MainActivity.class);
+                    startActivity(intent);
+
+
+                    signupGoogleButton.setText("Update Profile");
+                    signupGoogleButton.setEnabled(true);
+                })
+                .addOnFailureListener(e -> {
+                    // Failed update
+                    Toast.makeText(EditProfile.this, "Error updating user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+
+                    signupGoogleButton.setText("Update Profile");
+                    signupGoogleButton.setEnabled(true);
+                });
     }
 }

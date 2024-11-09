@@ -109,8 +109,15 @@ public class JobPostDescription extends AppCompatActivity {
                                     builder.setMessage("Are you sure you want to delete this job post?");
                                     builder.setPositiveButton("Yes", (dialogInterface, i) -> {
 
-                                        Intent intent = new Intent(JobPostDescription.this, MyGigPosts.class);
-                                        startActivity(intent);
+                                        db.collection("job_postings").document(jobId)
+                                                .delete()
+                                                .addOnCompleteListener(task3 -> {
+                                                    if (task3.isSuccessful()) {
+                                                        Toast.makeText(JobPostDescription.this, "Job post deleted successfully", Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        Log.w(TAG, "Error deleting document", task3.getException());
+                                                    }
+                                                });
                                         finish();
                                     });
                                     builder.setNegativeButton("No", (dialogInterface, i) -> {

@@ -77,7 +77,10 @@ public class BarangayHiring extends AppCompatActivity {
 
         volunteer_button.setOnClickListener(v -> {
             Intent intent = new Intent(this, Barangay.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
+            finish();
         });
 
 

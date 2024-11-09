@@ -83,7 +83,10 @@ public class Barangay extends AppCompatActivity {
         Button hiring_button = findViewById(R.id.hiring_button);
         hiring_button.setOnClickListener(v -> {
             Intent intent = new Intent(this, BarangayHiring.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
+            finish();
         });
 
         volunteer_works_list = findViewById(R.id.volunteer_works_list);
